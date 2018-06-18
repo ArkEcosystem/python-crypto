@@ -39,6 +39,8 @@ If you discover a security vulnerability within this package, please send an e-m
 
 ## Credits
 
+- [Rok Halužan](https://github.com/roks0n)
+- [Tomaž Šifrer](https://github.com/tsifrer)
 - [Brian Faust](https://github.com/faustbrian)
 - [All Contributors](../../../../contributors)
 
