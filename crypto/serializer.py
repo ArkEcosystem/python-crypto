@@ -1,5 +1,5 @@
 import inspect
-from binascii import unhexlify, hexlify
+from binascii import hexlify, unhexlify
 from importlib import import_module
 
 from binary.hex.writer import write_high, write_low
