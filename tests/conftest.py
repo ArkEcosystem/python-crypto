@@ -3,6 +3,8 @@ import pytest
 
 @pytest.fixture
 def transaction_type_0():
+    """Transaction of type "transfer"
+    """
     data = {
         'version': 1,
         'network': 30,
@@ -22,6 +24,8 @@ def transaction_type_0():
 
 @pytest.fixture
 def transaction_type_1():
+    """Transaction of type "second signature registration"
+    """
     data = {
         'version': 1,
         'network': 30,
@@ -45,6 +49,8 @@ def transaction_type_1():
 
 @pytest.fixture
 def transaction_type_2():
+    """Transaction of type "delegate registration"
+    """
     data = {
         'version': 1,
         'network': 30,
@@ -67,6 +73,8 @@ def transaction_type_2():
 
 @pytest.fixture
 def transaction_type_3():
+    """Transaction of type "vote"
+    """
     data = {
         'version': 1,
         'network': 30,
@@ -88,6 +96,8 @@ def transaction_type_3():
 
 @pytest.fixture
 def transaction_type_4():
+    """Transaction of type "multi signature registration"
+    """
     data = {
         'version': 1,
         'network': 23,
@@ -124,6 +134,8 @@ def transaction_type_4():
 
 @pytest.fixture
 def transaction_type_5():
+    """Transaction of type "ipfs"
+    """
     data = {
         'data': {},
         'serialised': ''
@@ -133,6 +145,8 @@ def transaction_type_5():
 
 @pytest.fixture
 def transaction_type_6():
+    """Transaction of type "timelock transfer"
+    """
     data = {
         'data': {},
         'serialised': ''
@@ -142,6 +156,8 @@ def transaction_type_6():
 
 @pytest.fixture
 def transaction_type_7():
+    """Transaction of type "multi payment"
+    """
     data = {
         'data': {},
         'serialised': ''
@@ -151,6 +167,8 @@ def transaction_type_7():
 
 @pytest.fixture
 def transaction_type_8():
+    """Transaction of type "delegate resignation"
+    """
     data = {
         'data': {},
         'serialised': ''
