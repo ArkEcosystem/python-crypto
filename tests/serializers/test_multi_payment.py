@@ -7,4 +7,4 @@ from crypto.serializer import Serializer
 def test_serializer(transaction_type_7):
     # todo: must implement fallback method for fetching network version in serializer.py
     result = Serializer(transaction_type_7).serialize()
-    assert result.hex() == transaction_type_7['serialized']
+    assert result == transaction_type_7['serialized']

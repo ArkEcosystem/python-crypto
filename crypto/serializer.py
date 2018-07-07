@@ -1,5 +1,5 @@
 import inspect
-from binascii import unhexlify
+from binascii import unhexlify, hexlify
 from importlib import import_module
 
 from binary.hex.writer import write_high, write_low
@@ -58,7 +58,7 @@ class Serializer(object):
         bytes_data = self._handle_transaction_type(bytes_data)
         bytes_data = self._handle_signature(bytes_data)
 
-        return bytes_data
+        return hexlify(bytes_data).decode()
 
     def _handle_transaction_type(self, bytes_data):
         """Serialize transaction specific data (eg. delegate registration)
