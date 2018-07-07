@@ -4,7 +4,8 @@ import setuptools
 
 
 requires = [
-    'binary-helpers'
+    'base58',
+    'binary-helpers',
 ]
 
 tests_require = [
