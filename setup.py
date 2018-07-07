@@ -23,7 +23,7 @@ extras_require = {
 setup_requires = ['pytest-runner'] if {'pytest', 'test', 'ptr'}.intersection(sys.argv) else []
 
 setuptools.setup(
-    name='crypto',
+    name='ark-crypto',
     description='A simple Cryptography Implementation in Python for the ARK Blockchain.',
     version='0.0.1',
     author='',

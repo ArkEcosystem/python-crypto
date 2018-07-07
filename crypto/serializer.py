@@ -5,7 +5,7 @@ from importlib import import_module
 from binary.hex.writer import write_high, write_low
 from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
-from crypto.exceptions import SerializerException
+from crypto.exceptions import ArkSerializerException
 from crypto.serializers.base import BaseSerializer
 
 
@@ -26,7 +26,7 @@ class Serializer(object):
 
     def __init__(self, transaction):
         if not transaction:
-            raise SerializerException('No transaction data provided')
+            raise ArkSerializerException('No transaction data provided')
         self.transaction = transaction
 
     def serialize(self):

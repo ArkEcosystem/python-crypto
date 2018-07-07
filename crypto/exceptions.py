@@ -1,6 +1,6 @@
-class CryptoException(Exception):
+class ArkCryptoException(Exception):
     pass
 
 
-class SerializerException(CryptoException):
+class ArkSerializerException(ArkCryptoException):
     """Raised when there's a serializer related issue"""
