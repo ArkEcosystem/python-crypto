@@ -6,6 +6,7 @@ import setuptools
 requires = [
     'base58',
     'binary-helpers',
+    'ecdsa',
 ]
 
 tests_require = [
