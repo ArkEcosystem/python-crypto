@@ -5,23 +5,13 @@ from importlib import import_module
 from binary.hex.writer import write_high, write_low
 from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
+from crypto.constants import TRANSACTION_TYPES
 from crypto.exceptions import ArkSerializerException
 from crypto.serializers.base import BaseSerializer
 
 
 class Serializer(object):
 
-    serializers = {
-        0: 'transfer',
-        1: 'second_signature_registration',
-        2: 'delegate_registration',
-        3: 'vote',
-        4: 'multi_signature_registration',
-        5: 'ipfs',
-        6: 'timelock_transfer',
-        7: 'multi_payment',
-        8: 'delegate_resignation',
-    }
     transaction = None
 
     def __init__(self, transaction):
@@ -69,7 +59,7 @@ class Serializer(object):
         Returns:
             bytes: bytes string
         """
-        serializer_name = self.serializers[self.transaction['type']]
+        serializer_name = TRANSACTION_TYPES[self.transaction['type']]
 
         module = import_module('crypto.serializers.{}'.format(serializer_name))
         for attr in dir(module):
