@@ -2,8 +2,10 @@ from binascii import hexlify, unhexlify
 from hashlib import sha256
 
 from ecdsa import SECP256k1, SigningKey, VerifyingKey
+from ecdsa.keys import BadDigestError, BadSignatureError
 from ecdsa.util import sigdecode_der, sigencode_der_canonize
 
+from crypto.exceptions import ArkBadDigestException, ArkBadSignatureException
 from crypto.identity.keys import (
     privat_key_from_secret, public_key_from_secret, uncompress_ecdsa_public_key
 )
@@ -49,10 +51,16 @@ def verify_message(message, public_key, signature):
         curve=SECP256k1,
         hashfunc=sha256
     )
-    is_valid = verifying_key.verify(
-        unhexlify(signature),
-        message,
-        hashfunc=sha256,
-        sigdecode=sigdecode_der
-    )
+
+    try:
+        is_valid = verifying_key.verify(
+            unhexlify(signature),
+            message,
+            hashfunc=sha256,
+            sigdecode=sigdecode_der
+        )
+    except BadSignatureError:
+        raise ArkBadSignatureException('Given signature was not valid')
+    except BadDigestError as e:
+        raise ArkBadDigestException(str(e))
     return is_valid
