@@ -11,24 +11,24 @@ from crypto.identity.keys import (
 )
 
 
-def sign_message(message, secret):
+def sign_message(message, passphrase):
     """Sign a message
 
     Args:
         message (bytes): a message you want to signature
-        secret (bytes): passphrase you want to use to sign the message
+        passphrase (bytes): passphrase you want to use to sign the message
 
     Returns:
         dict: dict containing message, public_key and a signature data
     """
-    private_key = privat_key_from_secret(secret)
+    private_key = privat_key_from_secret(passphrase)
     signin_key = SigningKey.from_string(unhexlify(private_key), SECP256k1)
     signature = hexlify(
         signin_key.sign_deterministic(message, hashfunc=sha256, sigencode=sigencode_der_canonize)
     )
     data = {
         'message': message,
-        'public_key': public_key_from_secret(secret),
+        'public_key': public_key_from_secret(passphrase),
         'signature': signature,
     }
     return data
