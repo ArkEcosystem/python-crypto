@@ -77,20 +77,14 @@ class BaseTransaction(object):
         pass  # todo
 
     def sign(self, passphrase):
-        public_key = public_key_from_secret(passphrase)
-        self.sender_public_key = public_key
-        transaction = sha256(self.to_bytes())
-        transaction = transaction.digest()
+        self.sender_public_key = public_key_from_secret(passphrase)
+        transaction = sha256(self.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
         self.signature = hexlify(message['signature'])
 
     def second_sign(self, passphrase):
-        public_key = public_key_from_secret(passphrase)
-        self.sender_public_key = public_key
-        transaction = transaction = sha256(self.to_bytes())
-        transaction = transaction.digest()
+        transaction = sha256(self.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
-        self.sender_public_key = public_key
         self.sign_signature = hexlify(message['signature'])
 
     def verify(self):
