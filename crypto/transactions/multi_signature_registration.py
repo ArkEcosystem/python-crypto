@@ -1,6 +1,6 @@
 from binary.unsigned_integer.writer import write_bit8
 
-from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_FEES
+from crypto.constants import TRANSACTION_FEES, TRANSACTION_MULTI_SIGNATURE_REGISTRATION
 from crypto.transactions.base import BaseTransaction
 
 

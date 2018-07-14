@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_VOTE, TRANSACTION_FEES
+from crypto.constants import TRANSACTION_FEES, TRANSACTION_VOTE
 from crypto.transactions.base import BaseTransaction
 
 

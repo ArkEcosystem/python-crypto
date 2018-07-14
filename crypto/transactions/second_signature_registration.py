@@ -1,8 +1,8 @@
 from binascii import hexlify
 
-from crypto.constants import TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_FEES
-from crypto.transactions.base import BaseTransaction
+from crypto.constants import TRANSACTION_FEES, TRANSACTION_SECOND_SIGNATURE_REGISTRATION
 from crypto.identity.keys import public_key_from_secret
+from crypto.transactions.base import BaseTransaction
 
 
 class SecondSignatureRegistrationTransaction(BaseTransaction):

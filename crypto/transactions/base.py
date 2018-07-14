@@ -1,15 +1,14 @@
+from binascii import hexlify
 from hashlib import sha256
-from base58 import b58decode_check
 from struct import pack
 
-from binascii import hexlify
-
-from binary.unsigned_integer.writer import write_bit32, write_bit64
+from base58 import b58decode_check
 
 from binary.hex.writer import write_high, write_low
+from binary.unsigned_integer.writer import write_bit32, write_bit64
 
-from crypto.message import sign_message, verify_message
 from crypto.identity.keys import public_key_from_secret
+from crypto.message import sign_message, verify_message
 
 
 class BaseTransaction(object):
