@@ -16,7 +16,7 @@ def privat_key_from_secret(secret):
         bytes: private key
     """
     private_key = sha256(secret)
-    return private_key.hexdigest()
+    return private_key.hexdigest().encode()
 
 
 def public_key_from_secret(secret):
@@ -30,7 +30,7 @@ def public_key_from_secret(secret):
     """
     private_key = sha256(secret)
     public_key = compress_ecdsa_public_key(private_key.digest())
-    return public_key
+    return public_key.encode()
 
 
 def compress_ecdsa_public_key(private_key):
