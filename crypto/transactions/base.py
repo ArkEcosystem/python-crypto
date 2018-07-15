@@ -9,6 +9,7 @@ from binary.unsigned_integer.writer import write_bit32, write_bit64
 
 from crypto.identity.keys import public_key_from_secret
 from crypto.message import sign_message, verify_message
+from crypto.slot import get_time
 
 
 class BaseTransaction(object):
@@ -19,7 +20,7 @@ class BaseTransaction(object):
         self.type = self.get_type()
         self.fee = None
         self.vendor_field = None
-        self.timestamp = 1490101200  # todo Slot::getTime()
+        self.timestamp = get_time()
         self.sender_public_key = None
         self.signature = None
         self.sign_signature = None

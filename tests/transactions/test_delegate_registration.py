@@ -1,3 +1,4 @@
+from crypto.conf import use_network
 from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION
 from crypto.transactions.delegate_registration import DelegateRegistrationTransaction
 
@@ -5,6 +6,7 @@ from crypto.transactions.delegate_registration import DelegateRegistrationTransa
 def test_delegate_registration_transaction():
     """Test if a delegate registration transaction gets built
     """
+    use_network('devnet')
     delegate_name = 'mr.delegate'.encode()
     transaction = DelegateRegistrationTransaction(delegate_name)
     transaction.sign('testing'.encode())

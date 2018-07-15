@@ -1,3 +1,4 @@
+from crypto.conf import use_network
 from crypto.constants import TRANSACTION_TRANSFER
 from crypto.transactions.transfer import TransferTransaction
 
@@ -5,6 +6,7 @@ from crypto.transactions.transfer import TransferTransaction
 def test_transfer_transaction():
     """Test if a transfer transaction gets built
     """
+    use_network('devnet')
     transaction = TransferTransaction(
         recipient_id='AXoXnFi4z1Z6aFvjEYkDVCtBGW2PaRiM25',
         amount=133380000000,
