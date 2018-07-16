@@ -5,6 +5,7 @@ from importlib import import_module
 from binary.hex.writer import write_high, write_low
 from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
+from crypto.conf import get_network
 from crypto.constants import TRANSACTION_TYPES
 from crypto.exceptions import ArkSerializerException
 from crypto.serializers.base import BaseSerializer
@@ -25,10 +26,11 @@ class Serializer(object):
         Returns:
             bytes: bytes string
         """
+        network_config = get_network()
         bytes_data = bytes()
         bytes_data += write_bit8(0xff)
         bytes_data += write_low(self.transaction.get('version') or 0x01)
-        bytes_data += write_bit8(self.transaction.get('network') or 1337)  # todo:
+        bytes_data += write_bit8(self.transaction.get('network') or network_config['version'])
         bytes_data += write_low(self.transaction['type'])
         bytes_data += write_bit32(self.transaction['timestamp'])
         bytes_data += write_high(self.transaction['senderPublicKey'])

@@ -12,3 +12,7 @@ class ArkBadSignatureException(ArkCryptoException):
 
 class ArkBadDigestException(ArkCryptoException):
     """Raised when a curve is too short for a digest"""
+
+
+class ArkNetworkSettingsException(ArkCryptoException):
+    """Raised when a curve is too short for a digest"""
