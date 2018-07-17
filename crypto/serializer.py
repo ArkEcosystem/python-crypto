@@ -75,6 +75,7 @@ class Serializer(object):
                 # this attribute is actually a specific serializer that we want to use
                 serializer = attribute
                 break
+
         return serializer(self.transaction, bytes_data).serialize()
 
     def _handle_signature(self, bytes_data):
