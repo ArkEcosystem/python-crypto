@@ -119,6 +119,10 @@ Before you start contributing please take some time and check our official [Pyth
 
 If you have any questions, requests or ideas open an issue or ask us in #python on [ARK's Slack](https://ark.io/slack).
 
+## Documentation
+
+You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/v1.0/docs/cryptography-python).
+
 ## Security
 
 If you discover a security vulnerability within this package, please send an e-mail to security@ark.io. All security vulnerabilities will be promptly addressed.
