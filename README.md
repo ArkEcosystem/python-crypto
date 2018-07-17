@@ -7,6 +7,7 @@
 > A simple Cryptography Implementation in Python for the ARK Blockchain.
 
 [![Build Status](https://img.shields.io/travis/ArkEcosystem/python-crypto/master.svg?style=flat-square)](https://travis-ci.org/ArkEcosystem/python-crypto)
+[![Codecov](https://img.shields.io/codecov/c/github/arkecosystem/python-crypto.svg)](https://codecov.io/gh/arkecosystem/python-crypto)
 [![Latest Version](https://img.shields.io/github/release/ArkEcosystem/python-crypto.svg?style=flat-square)](https://github.com/ArkEcosystem/python-crypto/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -118,6 +119,10 @@ Before you start contributing please take some time and check our official [Pyth
 6. Send a GitHub Pull Request. GitHub Pull Requests are the expected method of code collaboration on this project.
 
 If you have any questions, requests or ideas open an issue or ask us in #python on [ARK's Slack](https://ark.io/slack).
+
+## Documentation
+
+You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/v1.0/docs/cryptography-python).
 
 ## Security
 
