@@ -7,6 +7,7 @@
 > A simple Cryptography Implementation in Python for the ARK Blockchain.
 
 [![Build Status](https://img.shields.io/travis/ArkEcosystem/python-crypto/master.svg?style=flat-square)](https://travis-ci.org/ArkEcosystem/python-crypto)
+[![Codecov](https://img.shields.io/codecov/c/github/arkecosystem/python-crypto.svg)](https://codecov.io/gh/arkecosystem/python-crypto)
 [![Latest Version](https://img.shields.io/github/release/ArkEcosystem/python-crypto.svg?style=flat-square)](https://github.com/ArkEcosystem/python-crypto/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
