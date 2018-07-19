@@ -4,8 +4,8 @@ from struct import pack
 
 from base58 import b58decode_check
 
-from binary.hex.writer import write_high, write_low
-from binary.unsigned_integer.writer import write_bit32, write_bit64
+from binary.hex.writer import write_high
+from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
 from crypto.identity.keys import public_key_from_secret
 from crypto.message import sign_message, verify_message
@@ -51,7 +51,7 @@ class BaseTransaction(object):
 
     def to_bytes(self, skip_signature=True, skip_second_signature=True):
         bytes_data = bytes()
-        bytes_data += write_low(self.type)
+        bytes_data += write_bit8(self.type)
         bytes_data += write_bit32(self.timestamp)
         bytes_data += write_high(self.sender_public_key)
 
@@ -81,20 +81,19 @@ class BaseTransaction(object):
         self.sender_public_key = public_key_from_secret(passphrase)
         transaction = sha256(self.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
-        self.signature = hexlify(message['signature'])
+        self.signature = message['signature']
 
     def second_sign(self, passphrase):
         transaction = sha256(self.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
-        self.sign_signature = hexlify(message['signature'])
+        self.sign_signature = message['signature']
 
     def verify(self):
-        transaction = sha256(self.to_bytes())
-        transaction = transaction.digest()
+        transaction = sha256(self.to_bytes()).digest()
         verify_message(transaction, self.sender_public_key, self.signature)
 
     def second_verify(self, passphrase):
-        transaction = sha256(self.to_bytes())
+        transaction = sha256(self.to_bytes()).digest()
         verify_message(transaction, self.sender_public_key, self.signSignature)
 
     def handle_transaction_type(self, bytes_data):
