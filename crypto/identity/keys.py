@@ -6,29 +6,29 @@ from ecdsa import SECP256k1, SigningKey
 from ecdsa.util import number_to_string
 
 
-def privat_key_from_secret(secret):
-    """Get a private key from a given secret (aka passphrase)
+def privat_key_from_passphrase(passphrase):
+    """Get a private key from a given passphrase
 
     Args:
-        secret (bytes): bytes string
+        passphrase (bytes): bytes string
 
     Returns:
         bytes: private key
     """
-    private_key = sha256(secret)
+    private_key = sha256(passphrase)
     return private_key.hexdigest().encode()
 
 
-def public_key_from_secret(secret):
-    """Get a public key from a given secret (aka passphrase)
+def public_key_from_passphrase(passphrase):
+    """Get a public key from a given passphrase
 
     Args:
-        secret (bytes): bytes string
+        passphrase (bytes): bytes string
 
     Returns:
         bytes: public key
     """
-    private_key = sha256(secret)
+    private_key = sha256(passphrase)
     public_key = compress_ecdsa_public_key(private_key.digest())
     return public_key.encode()
 

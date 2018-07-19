@@ -1,7 +1,7 @@
 from binascii import hexlify
 
 from crypto.constants import TRANSACTION_FEES, TRANSACTION_SECOND_SIGNATURE_REGISTRATION
-from crypto.identity.keys import public_key_from_secret
+from crypto.identity.keys import public_key_from_passphrase
 from crypto.transactions.base import BaseTransaction
 
 
@@ -17,7 +17,7 @@ class SecondSignatureRegistrationTransaction(BaseTransaction):
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
-        public_key = public_key_from_secret(second_passphrase)
+        public_key = public_key_from_passphrase(second_passphrase)
         self.asset['signature'] = {'publicKey': public_key}
         self.fee = fee or TRANSACTION_FEES[self.transaction_type]
 

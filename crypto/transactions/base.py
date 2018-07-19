@@ -7,7 +7,7 @@ from base58 import b58decode_check
 from binary.hex.writer import write_high
 from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
-from crypto.identity.keys import public_key_from_secret
+from crypto.identity.keys import public_key_from_passphrase
 from crypto.message import sign_message, verify_message
 from crypto.slot import get_time
 
@@ -87,7 +87,6 @@ class BaseTransaction(object):
         multi_signature_offset += signature_length * 2
         self.sign_signature = serialized[start_offset + (signature_length * 2):]
 
-        import pdb; pdb.set_trace()
         if not self.sign_signature:
             self.sign_signature = None
         elif 'ff' == self.sign_signature[:2]:
@@ -122,7 +121,7 @@ class BaseTransaction(object):
         return signatures
 
     def sign(self, passphrase):
-        self.sender_public_key = public_key_from_secret(passphrase)
+        self.sender_public_key = public_key_from_passphrase(passphrase)
         transaction = sha256(self.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
         self.signature = message['signature']
