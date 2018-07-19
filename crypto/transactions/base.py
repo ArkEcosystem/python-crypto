@@ -1,4 +1,3 @@
-from binascii import hexlify
 from hashlib import sha256
 from struct import pack
 

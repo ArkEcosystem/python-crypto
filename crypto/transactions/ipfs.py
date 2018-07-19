@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_IPFS, TRANSACTION_FEES
+from crypto.constants import TRANSACTION_FEES, TRANSACTION_IPFS
 from crypto.transactions.base import BaseTransaction
 
 
