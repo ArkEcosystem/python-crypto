@@ -74,8 +74,52 @@ class BaseTransaction(object):
 
         return bytes_data
 
-    def parse_signatures(self):
-        pass  # todo
+    def parse_signatures(self, serialized, start_offset):
+        self.signature = serialized[start_offset:]
+        multi_signature_offset = 0
+
+        if not len(self.signature):
+            self.signature = None
+            return
+
+        signature_length = int(self.signature[2:4], base=16) + 2
+        self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
+        multi_signature_offset += signature_length * 2
+        self.sign_signature = serialized[start_offset + (signature_length * 2):]
+
+        import pdb; pdb.set_trace()
+        if not self.sign_signature:
+            self.sign_signature = None
+        elif 'ff' == self.sign_signature[:2]:
+            self.sign_signature = None
+        else:
+            second_signature_length = int(self.sign_signature[2:4], base=16)
+            self.sign_signature = self.sign_signature[:second_signature_length * 2]
+            multi_signature_offset += second_signature_length * 2
+
+        signatures = serialized[:start_offset + multi_signature_offset]
+
+        if not signatures:
+            return
+
+        if 'ff' != signatures[:2]:
+            return
+
+        signatures = signatures[2:]
+        self.signatures = []
+
+        while True:
+            mlength = int(signatures[2:4], base=16)
+            if mlength > 0:
+                self.signatures.append(signatures[:(mlength + 2) * 2])
+            else:
+                break
+
+            signatures = signatures[(mlength + 2) * 2:]
+            if not signatures:
+                break
+
+        return signatures
 
     def sign(self, passphrase):
         self.sender_public_key = public_key_from_secret(passphrase)
