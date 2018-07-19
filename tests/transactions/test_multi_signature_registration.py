@@ -18,3 +18,4 @@ def test_multi_signature_registration_transaction():
     transaction_dict = transaction.to_dict()
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_MULTI_SIGNATURE_REGISTRATION
+    transaction.verify()  # if no exception is raised, it means the transaction is valid

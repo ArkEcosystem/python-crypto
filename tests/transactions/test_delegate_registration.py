@@ -14,3 +14,4 @@ def test_delegate_registration_transaction():
     assert transaction_dict['signature']
     assert transaction_dict['asset']['delegate']['username'] == delegate_name
     assert transaction_dict['type'] is TRANSACTION_DELEGATE_REGISTRATION
+    transaction.verify()  # if no exception is raised, it means the transaction is valid

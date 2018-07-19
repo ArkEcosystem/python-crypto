@@ -14,3 +14,4 @@ def test_vote_transaction():
     assert transaction_dict['signature']
     assert transaction_dict['asset']['votes']
     assert transaction_dict['type'] is TRANSACTION_VOTE
+    transaction.verify()  # if no exception is raised, it means the transaction is valid
