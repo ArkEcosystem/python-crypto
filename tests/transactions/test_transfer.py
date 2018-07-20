@@ -17,3 +17,16 @@ def test_transfer_transaction():
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_TRANSFER
     transaction.verify()  # if no exception is raised, it means the transaction is valid
+
+
+def test_parse_signatures(transaction_type_0):
+    """Test if parse signature works when parsing serialized data
+    """
+    use_network('devnet')
+    transaction = TransferTransaction(
+        recipient_id=transaction_type_0['recipientId'],
+        amount=transaction_type_0['amount']
+    )
+    assert transaction.signature is None
+    transaction.parse_signatures(transaction_type_0['serialized'], 166)
+    assert transaction.signature
