@@ -39,8 +39,8 @@ class Deserializer(object):
             )[vendor_field_offset:vendor_field_take]
 
         asset_offset = (49 + 1) * 2 + vendor_field_length * 2
-        handled_tranasction = self.handle_transaction_type(asset_offset, transaction)
 
+        handled_tranasction = self.handle_transaction_type(asset_offset, transaction)
         transaction.amount = handled_tranasction.amount
         transaction.version = handled_tranasction.version
         if transaction.version == 1:
