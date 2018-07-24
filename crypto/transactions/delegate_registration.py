@@ -1,8 +1,8 @@
 from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_FEES
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class DelegateRegistrationTransaction(BaseTransaction):
+class DelegateRegistrationTransaction(Transaction):
 
     transaction_type = TRANSACTION_DELEGATE_REGISTRATION
 

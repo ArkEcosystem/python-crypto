@@ -1,8 +1,8 @@
 from crypto.constants import TRANSACTION_FEES, TRANSACTION_TRANSFER
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class TransferTransaction(BaseTransaction):
+class TransferTransaction(Transaction):
 
     transaction_type = TRANSACTION_TRANSFER
 

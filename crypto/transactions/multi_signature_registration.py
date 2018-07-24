@@ -1,10 +1,10 @@
 from binary.unsigned_integer.writer import write_bit8
 
 from crypto.constants import TRANSACTION_FEES, TRANSACTION_MULTI_SIGNATURE_REGISTRATION
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class MultiSignatureRegistrationTransaction(BaseTransaction):
+class MultiSignatureRegistrationTransaction(Transaction):
 
     transaction_type = TRANSACTION_MULTI_SIGNATURE_REGISTRATION
 

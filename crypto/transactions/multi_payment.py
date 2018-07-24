@@ -1,8 +1,8 @@
 from crypto.constants import TRANSACTION_FEES, TRANSACTION_MULTI_PAYMENT
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class IPFSTransaction(BaseTransaction):
+class IPFSTransaction(Transaction):
 
     transaction_type = TRANSACTION_MULTI_PAYMENT
 

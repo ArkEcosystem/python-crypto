@@ -11,28 +11,42 @@ from crypto.message import sign_message, verify_message
 from crypto.slot import get_time
 
 
-class BaseTransaction(object):
+TRANSACTION_ATTRIBUTES = {
+    'amount': 0,
+    'asset': dict,
+    'fee': None,
+    'id': None,
+    'network': None,
+    'recipient_id': None,
+    'second_signature': None,
+    'sender_public_key': None,
+    'signature': None,
+    'signatures': None,
+    'sign_signature': None,
+    'timestamp': get_time,
+    'type': None,
+    'vendor_field': None,
+    'version': None,
+}
 
-    def __init__(self):
-        self.recipient_id = None
-        self.amount = 0
-        self.type = self.get_type()
-        self.fee = None
-        self.vendor_field = None
-        self.timestamp = get_time()
-        self.sender_public_key = None
-        self.signature = None
-        self.sign_signature = None
-        self.id = None
-        self.asset = {}
+
+class Transaction(object):
+
+    def __init__(self, *args, **kwargs):
+        for attribute, attribute_value in TRANSACTION_ATTRIBUTES.items():
+            if callable(attribute_value):
+                attribute_value = attribute_value()
+            elif attribute == 'type' and not attribute_value:
+                attribute_value = self.get_type()
+            setattr(self, attribute, attribute_value)
 
     def get_type(self):
-        """Gets the transaction type from a child transaction
+        """Gets the transaction type from a child transaction or set it to None
 
         Returns:
             str: transaction type
         """
-        return self.transaction_type
+        return getattr(self, 'transaction_type', None)
 
     def get_id(self):
         """Convert the byte representation to a unique identifier

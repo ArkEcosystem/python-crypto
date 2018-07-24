@@ -1,8 +1,8 @@
 from crypto.constants import TRANSACTION_FEES, TRANSACTION_TIMELOCK_TRANSFER
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class TimelockTransferTransaction(BaseTransaction):
+class TimelockTransferTransaction(Transaction):
 
     transaction_type = TRANSACTION_TIMELOCK_TRANSFER
 

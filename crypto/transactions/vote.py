@@ -1,8 +1,8 @@
 from crypto.constants import TRANSACTION_FEES, TRANSACTION_VOTE
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class VoteTransaction(BaseTransaction):
+class VoteTransaction(Transaction):
 
     transaction_type = TRANSACTION_VOTE
 
