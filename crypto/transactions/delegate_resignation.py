@@ -1,8 +1,8 @@
 from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION, TRANSACTION_FEES
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class DelegateResignationTransaction(BaseTransaction):
+class DelegateResignationTransaction(Transaction):
 
     transaction_type = TRANSACTION_DELEGATE_RESIGNATION
 

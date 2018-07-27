@@ -16,14 +16,14 @@
 We will not be accepting new PRs until we are happy with the base of the client and until it has good test coverage. We'll let you know on our #python Slack channel once we'll accept PRs again.
 
 ### AIP11 Serialization
-- [ ] Transfer
-- [ ] Second Signature Registration
-- [ ] Delegate Registration
-- [ ] Vote
-- [ ] Multi Signature Registration
-- [ ] IPFS
-- [ ] Timelock Transfer
-- [ ] Multi Payment
+- [x] Transfer
+- [x] Second Signature Registration
+- [x] Delegate Registration
+- [x] Vote
+- [x] Multi Signature Registration
+- [x] IPFS
+- [x] Timelock Transfer
+- [x] Multi Payment
 - [ ] Delegate Resignation
 
 ### AIP11 Deserialization
@@ -38,18 +38,18 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [ ] Delegate Resignation
 
 ### Transaction Signing
-- [ ] Transfer
-- [ ] Second Signature Registration
-- [ ] Delegate Registration
-- [ ] Vote
-- [ ] Multi Signature Registration
+- [x] Transfer
+- [x] Second Signature Registration
+- [x] Delegate Registration
+- [x] Vote
+- [x] Multi Signature Registration
 
 ### Transaction Verifying
-- [ ] Transfer
-- [ ] Second Signature Registration
-- [ ] Delegate Registration
-- [ ] Vote
-- [ ] Multi Signature Registration
+- [x] Transfer
+- [x] Second Signature Registration
+- [x] Delegate Registration
+- [x] Vote
+- [x] Multi Signature Registration
 
 ### Transaction Entity
 - [ ] getId
@@ -63,10 +63,10 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [ ] toJson
 
 ### Message
-- [ ] sign
-- [ ] verify
-- [ ] toArray
-- [ ] toJson
+- [x] sign
+- [x] verify
+- [ ] toArray - not applicable for python
+- [x] toJson - it returns a dictionary object
 
 ### Address Identity
 - [ ] fromPassphrase
@@ -75,31 +75,31 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [ ] validate
 
 ### Private Key Identity
-- [ ] fromPassphrase
+- [x] fromPassphrase
 - [ ] fromHex
 
 ### Public Key Identity
-- [ ] fromPassphrase
+- [x] fromPassphrase
 - [ ] fromHex
 
 ### WIF Identity
 - [ ] fromPassphrase
 
 ### Configuration
-- [ ] getNetwork
-- [ ] setNetwork
+- [x] getNetwork
+- [x] setNetwork
 - [ ] getFee
 - [ ] setFee
 
 ### Slot
-- [ ] time
+- [x] time
 - [ ] epoch
 
 ### Networks (Mainnet, Devnet & Testnet)
-- [ ] epoch
-- [ ] version
-- [ ] nethash
-- [ ] wif
+- [x] epoch
+- [x] version
+- [x] nethash
+- [x] wif
 
 ## Installation
 

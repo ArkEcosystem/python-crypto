@@ -1,3 +1,4 @@
+from binascii import hexlify
 from hashlib import sha256
 from struct import pack
 
@@ -6,33 +7,52 @@ from base58 import b58decode_check
 from binary.hex.writer import write_high
 from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
+from crypto.constants import (
+    TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION,
+    TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
+)
 from crypto.identity.keys import public_key_from_passphrase
 from crypto.message import sign_message, verify_message
 from crypto.slot import get_time
 
 
-class BaseTransaction(object):
+TRANSACTION_ATTRIBUTES = {
+    'amount': 0,
+    'asset': dict,
+    'fee': None,
+    'id': None,
+    'network': None,
+    'recipient_id': None,
+    'second_signature': None,
+    'sender_public_key': None,
+    'signature': None,
+    'signatures': None,
+    'sign_signature': None,
+    'timestamp': get_time,
+    'type': None,
+    'vendor_field': None,
+    'vendor_field_hex': None,
+    'version': None,
+}
 
-    def __init__(self):
-        self.recipient_id = None
-        self.amount = 0
-        self.type = self.get_type()
-        self.fee = None
-        self.vendor_field = None
-        self.timestamp = get_time()
-        self.sender_public_key = None
-        self.signature = None
-        self.sign_signature = None
-        self.id = None
-        self.asset = {}
+
+class Transaction(object):
+
+    def __init__(self, *args, **kwargs):
+        for attribute, attribute_value in TRANSACTION_ATTRIBUTES.items():
+            if callable(attribute_value):
+                attribute_value = attribute_value()
+            elif attribute == 'type' and not attribute_value:
+                attribute_value = self.get_type()
+            setattr(self, attribute, attribute_value)
 
     def get_type(self):
-        """Gets the transaction type from a child transaction
+        """Gets the transaction type from a child transaction or set it to None
 
         Returns:
             str: transaction type
         """
-        return self.transaction_type
+        return getattr(self, 'transaction_type', None)
 
     def get_id(self):
         """Convert the byte representation to a unique identifier
@@ -49,15 +69,20 @@ class BaseTransaction(object):
             dict:
         """
         data = {
+            'version': self.version,
+            'network': self.network,
             'recipientId': self.recipient_id,
             'type': self.type,
             'amount': self.amount,
             'fee': self.fee,
             'vendorField': self.vendor_field,
+            'vendorFieldHex': self.vendor_field_hex,
             'timestamp': self.timestamp,
             'senderPublicKey': self.sender_public_key,
             'signature': self.signature,
+            'signatures': self.signatures,
             'signSignature': self.sign_signature,
+            'secondSignature': self.second_signature,
             'id': self.id,
             'asset': self.asset,
         }
@@ -188,7 +213,7 @@ class BaseTransaction(object):
         verify_message(transaction, self.sender_public_key, self.signSignature)
 
     def handle_transaction_type(self, bytes_data):
-        """Each child transaction needs to have this method defined
+        """Handled each transaction type differently
 
         Args:
             bytes_data (bytes): input the bytes data to which you want to append new bytes
@@ -197,7 +222,18 @@ class BaseTransaction(object):
             NotImplementedError: raised only if the child transaction doesn't implement this
             required method
         """
-        raise NotImplementedError
+        if self.type == TRANSACTION_SECOND_SIGNATURE_REGISTRATION:
+            public_key = self.asset['signature']['publicKey']
+            bytes_data += hexlify(public_key)
+        elif self.type == TRANSACTION_DELEGATE_REGISTRATION:
+            bytes_data += self.asset['delegate']['username']
+        elif self.type == TRANSACTION_VOTE:
+            bytes_data += ''.join(self.asset['votes']).encode()
+        elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
+            bytes_data += write_bit8(self.asset['multisignature']['min'])
+            bytes_data += write_bit8(self.asset['multisignature']['lifetime'])
+            bytes_data += ''.join(self.asset['multisignature']['keysgroup']).encode()
+        return bytes_data
 
     def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
         """Internal method, used to handle the signature
@@ -209,7 +245,7 @@ class BaseTransaction(object):
             skip_second_signature (bool): whether you want to skip it or not
 
         Returns:
-            TYPE: Description
+            bytes: bytes string
         """
         if not skip_signature and self.signature:
             bytes_data += write_high(self.signature)

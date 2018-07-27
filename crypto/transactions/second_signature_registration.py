@@ -2,10 +2,10 @@ from binascii import hexlify
 
 from crypto.constants import TRANSACTION_FEES, TRANSACTION_SECOND_SIGNATURE_REGISTRATION
 from crypto.identity.keys import public_key_from_passphrase
-from crypto.transactions.base import BaseTransaction
+from crypto.transactions.base import Transaction
 
 
-class SecondSignatureRegistrationTransaction(BaseTransaction):
+class SecondSignatureRegistrationTransaction(Transaction):
 
     transaction_type = TRANSACTION_SECOND_SIGNATURE_REGISTRATION
 
