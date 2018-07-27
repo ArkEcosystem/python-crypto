@@ -9,8 +9,5 @@ class BaseDeserializer(object):
         self.asset_offset = asset_offset
         self.transaction = transaction
 
-    def parse_signatures(self, start_offset):
-        return self.transaction.parse_signatures(self.serialized, start_offset)
-
     def deserialize(self):
         raise NotImplementedError
