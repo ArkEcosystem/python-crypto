@@ -20,7 +20,7 @@ class BaseTransactionBuilder(object):
         Args:
             passphrase (str): passphrase associated with the account sending this transaction
         """
-        self.transaction.sender_public_key = public_key_from_passphrase(passphrase)
+        self.transaction.senderPublicKey = public_key_from_passphrase(passphrase)
         transaction = sha256(self.transaction.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
         self.transaction.signature = message['signature']
@@ -33,7 +33,7 @@ class BaseTransactionBuilder(object):
         """
         transaction = sha256(self.transaction.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
-        self.transaction.sign_signature = message['signature']
+        self.transaction.signSignature = message['signature']
 
     def verify(self):
         self.transaction.verify()

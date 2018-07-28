@@ -16,8 +16,8 @@ class TransferDeserializer(BaseDeserializer):
         self.transaction.expiration = read_bit32(self.serialized, offset=starting_position + 8)
 
         recipient_start_index = (int(self.asset_offset / 2) + 12) * 2
-        recipient_id = hexlify(self.serialized)[recipient_start_index:recipient_start_index + 42]
-        self.transaction.recipient_id = b58encode_check(unhexlify(recipient_id)).decode()
+        recipientId = hexlify(self.serialized)[recipient_start_index:recipient_start_index + 42]
+        self.transaction.recipientId = b58encode_check(unhexlify(recipientId)).decode()
 
         self.transaction.parse_signatures(
             hexlify(self.serialized),

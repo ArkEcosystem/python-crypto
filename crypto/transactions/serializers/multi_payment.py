@@ -16,6 +16,6 @@ class MultiPaymentSerializer(BaseSerializer):
         self.bytes_data += write_bit32(len(self.transaction['asset']['payments']))
         for payment in self.transaction['asset']['payments']:
             self.bytes_data += write_bit64(payment['amount'])
-            recipient_id = b58decode_check(hexlify(payment['recipientId']).encode())
-            self.bytes_data += write_high(recipient_id)
+            recipientId = b58decode_check(hexlify(payment['recipientId']).encode())
+            self.bytes_data += write_high(recipientId)
         return self.bytes_data
