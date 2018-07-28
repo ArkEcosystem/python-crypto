@@ -208,20 +208,20 @@ class Transaction(object):
             bytes_data += ''.join(self.asset['multisignature']['keysgroup']).encode()
         return bytes_data
 
-    def _handle_signature(self, bytes_data, skip_signature, skip_secondSignature):
+    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
         """Internal method, used to handle the signature
 
         Args:
             bytes_data (bytes): input the bytes data to which you want to append new bytes from
             signature
             skip_signature (bool): whether you want to skip it or not
-            skip_secondSignature (bool): whether you want to skip it or not
+            skip_second_signature (bool): whether you want to skip it or not
 
         Returns:
             bytes: bytes string
         """
         if not skip_signature and self.signature:
             bytes_data += write_high(self.signature)
-        if not skip_secondSignature and self.signSignature:
+        if not skip_second_signature and self.signSignature:
             bytes_data += write_high(self.signSignature)
         return bytes_data
