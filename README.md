@@ -27,7 +27,7 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [ ] Delegate Resignation
 
 ### AIP11 Deserialization
-- [ ] Transfer
+- [x] Transfer
 - [ ] Second Signature Registration
 - [ ] Delegate Registration
 - [ ] Vote
@@ -52,13 +52,13 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [x] Multi Signature Registration
 
 ### Transaction Entity
-- [ ] getId
-- [ ] sign
-- [ ] secondSign
-- [ ] parseSignatures
+- [x] getId
+- [x] sign
+- [x] secondSign
+- [x] parseSignatures
 - [ ] serialize
 - [ ] deserialize
-- [ ] toBytes
+- [x] toBytes
 - [ ] toArray
 - [ ] toJson
 

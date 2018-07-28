@@ -8,7 +8,7 @@ from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 from crypto.conf import get_network
 from crypto.constants import TRANSACTION_TYPES
 from crypto.exceptions import ArkSerializerException
-from crypto.serializers.base import BaseSerializer
+from crypto.transactions.serializers.base import BaseSerializer
 
 
 class Serializer(object):
@@ -63,7 +63,7 @@ class Serializer(object):
         """
         serializer_name = TRANSACTION_TYPES[self.transaction['type']]
 
-        module = import_module('crypto.serializers.{}'.format(serializer_name))
+        module = import_module('crypto.transactions.serializers.{}'.format(serializer_name))
         for attr in dir(module):
             # If attr name is `BaseSerializer`, skip it as it's a class and also has a
             # subclass of BaseSerializer
