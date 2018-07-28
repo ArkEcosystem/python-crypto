@@ -1,3 +1,4 @@
+import json
 from binascii import hexlify
 from hashlib import sha256
 from struct import pack
@@ -11,7 +12,9 @@ from crypto.constants import (
     TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION,
     TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 )
+from crypto.deserializer import Deserializer
 from crypto.message import verify_message
+from crypto.serializer import Serializer
 from crypto.slot import get_time
 
 
@@ -21,16 +24,16 @@ TRANSACTION_ATTRIBUTES = {
     'fee': None,
     'id': None,
     'network': None,
-    'recipient_id': None,
-    'second_signature': None,
-    'sender_public_key': None,
+    'recipientId': None,
+    'secondSignature': None,
+    'senderPublicKey': None,
     'signature': None,
     'signatures': None,
-    'sign_signature': None,
+    'signSignature': None,
     'timestamp': get_time,
     'type': None,
-    'vendor_field': None,
-    'vendor_field_hex': None,
+    'vendorField': None,
+    'vendorFieldHex': None,
     'version': None,
 }
 
@@ -41,6 +44,8 @@ class Transaction(object):
         for attribute, attribute_value in TRANSACTION_ATTRIBUTES.items():
             if callable(attribute_value):
                 attribute_value = attribute_value()
+            if attribute in kwargs:
+                attribute_value = kwargs[attribute]
             setattr(self, attribute, attribute_value)
 
     def get_id(self):
@@ -65,12 +70,16 @@ class Transaction(object):
             data[key] = attribute
         return data
 
-    def to_bytes(self, skip_signature=True, skip_second_signature=True):
+    def to_json(self):
+        data = self.to_dict()
+        return json.loads(data)
+
+    def to_bytes(self, skip_signature=True, skip_secondSignature=True):
         """Convert the transaction to its byte representation
 
         Args:
             skip_signature (bool, optional): do you want to skip the signature
-            skip_second_signature (bool, optional): do you want to skip the 2nd signature
+            skip_secondSignature (bool, optional): do you want to skip the 2nd signature
 
         Returns:
             bytes: bytes representation of the transaction
@@ -78,16 +87,16 @@ class Transaction(object):
         bytes_data = bytes()
         bytes_data += write_bit8(self.type)
         bytes_data += write_bit32(self.timestamp)
-        bytes_data += write_high(self.sender_public_key)
+        bytes_data += write_high(self.senderPublicKey)
 
-        if self.recipient_id:
-            bytes_data += b58decode_check(self.recipient_id)
+        if self.recipientId:
+            bytes_data += b58decode_check(self.recipientId)
         else:
             bytes_data += pack('21x')
 
-        if self.vendor_field and len(self.vendor_field) < 64:
-            bytes_data += self.vendor_field
-            bytes_data += pack('{}x'.format(64 - len(self.vendor_field)))
+        if self.vendorField and len(self.vendorField) < 64:
+            bytes_data += self.vendorField
+            bytes_data += pack('{}x'.format(64 - len(self.vendorField)))
         else:
             bytes_data += pack('64x')
 
@@ -95,7 +104,7 @@ class Transaction(object):
         bytes_data += write_bit64(self.fee)
 
         bytes_data = self._handle_transaction_type(bytes_data)
-        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature)
+        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_secondSignature)
 
         return bytes_data
 
@@ -120,16 +129,16 @@ class Transaction(object):
         signature_length = int(self.signature[2:4], base=16) + 2
         self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
         multi_signature_offset += signature_length * 2
-        self.sign_signature = serialized[start_offset + (signature_length * 2):]
+        self.signSignature = serialized[start_offset + (signature_length * 2):]
 
-        if not self.sign_signature:
-            self.sign_signature = None
-        elif 'ff' == self.sign_signature[:2]:
-            self.sign_signature = None
+        if not self.signSignature:
+            self.signSignature = None
+        elif 'ff' == self.signSignature[:2]:
+            self.signSignature = None
         else:
-            second_signature_length = int(self.sign_signature[2:4], base=16)
-            self.sign_signature = self.sign_signature[:second_signature_length * 2]
-            multi_signature_offset += second_signature_length * 2
+            secondSignature_length = int(self.signSignature[2:4], base=16)
+            self.signSignature = self.signSignature[:secondSignature_length * 2]
+            multi_signature_offset += secondSignature_length * 2
 
         signatures = serialized[:start_offset + multi_signature_offset]
 
@@ -153,12 +162,19 @@ class Transaction(object):
             if not signatures:
                 break
 
+    def serialize(self):
+        data = self.to_dict()
+        return Serializer(data).serialize()
+
+    def deserialize(self, serialized):
+        return Deserializer(serialized).deserialize()
+
     def verify(self):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
         will happen.
         """
         transaction = sha256(self.to_bytes()).digest()
-        verify_message(transaction, self.sender_public_key, self.signature)
+        verify_message(transaction, self.senderPublicKey, self.signature)
 
     def second_verify(self, passphrase):
         """Verify the transaction using the 2nd passphrase
@@ -167,7 +183,7 @@ class Transaction(object):
             passphrase (str): 2nd passphrase associated with the account sending this transaction
         """
         transaction = sha256(self.to_bytes()).digest()
-        verify_message(transaction, self.sender_public_key, self.signSignature)
+        verify_message(transaction, self.senderPublicKey, self.signSignature)
 
     def _handle_transaction_type(self, bytes_data):
         """Handled each transaction type differently
@@ -206,6 +222,6 @@ class Transaction(object):
         """
         if not skip_signature and self.signature:
             bytes_data += write_high(self.signature)
-        if not skip_second_signature and self.sign_signature:
-            bytes_data += write_high(self.sign_signature)
+        if not skip_second_signature and self.signSignature:
+            bytes_data += write_high(self.signSignature)
         return bytes_data

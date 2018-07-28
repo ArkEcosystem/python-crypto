@@ -56,11 +56,11 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [x] sign
 - [x] secondSign
 - [x] parseSignatures
-- [ ] serialize
-- [ ] deserialize
+- [x] serialize
+- [x] deserialize
 - [x] toBytes
-- [ ] toArray
-- [ ] toJson
+- [ ] toArray - not applicable for python
+- [x] toJson
 
 ### Message
 - [x] sign

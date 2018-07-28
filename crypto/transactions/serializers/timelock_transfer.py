@@ -16,6 +16,6 @@ class TimelockTransferSerializer(BaseSerializer):
         self.bytes_data += write_bit64(self.transaction['recipientId']['amount'])
         self.bytes_data += write_low(self.transaction['recipientId']['timelocktype'])
         self.bytes_data += write_bit32(self.transaction['recipientId']['timelock'])
-        recipient_id = hexlify(b58decode_check(self.transaction['recipientId']))
-        self.bytes_data += write_high(recipient_id)
+        recipientId = hexlify(b58decode_check(self.transaction['recipientId']))
+        self.bytes_data += write_high(recipientId)
         return self.bytes_data

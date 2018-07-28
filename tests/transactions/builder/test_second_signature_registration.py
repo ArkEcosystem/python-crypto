@@ -5,7 +5,7 @@ from crypto.transactions.builder.second_signature_registration import (
 )
 
 
-def test_second_signature_registration_transaction():
+def test_secondSignature_registration_transaction():
     """Test if a second signature registration transaction gets built
     """
     use_network('devnet')
