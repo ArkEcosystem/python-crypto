@@ -9,9 +9,9 @@ from crypto.constants import (
     TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
     TRANSACTION_TYPES, TRANSACTION_VOTE
 )
-from crypto.deserializers.base import BaseDeserializer
 from crypto.identity.address import address_from_public_key
-from crypto.transactions.base import Transaction
+from crypto.resources.transaction import Transaction
+from crypto.transactions.deserializers.base import BaseDeserializer
 
 
 class Deserializer(object):
@@ -39,8 +39,8 @@ class Deserializer(object):
             )[vendor_field_offset:vendor_field_take]
 
         asset_offset = (49 + 1) * 2 + vendor_field_length * 2
-        handled_tranasction = self.handle_transaction_type(asset_offset, transaction)
 
+        handled_tranasction = self.handle_transaction_type(asset_offset, transaction)
         transaction.amount = handled_tranasction.amount
         transaction.version = handled_tranasction.version
         if transaction.version == 1:
@@ -54,7 +54,7 @@ class Deserializer(object):
 
     def handle_transaction_type(self, asset_offset, transaction):
         deserializer_name = TRANSACTION_TYPES[transaction.type]
-        module = import_module('crypto.deserializers.{}'.format(deserializer_name))
+        module = import_module('crypto.transactions.deserializers.{}'.format(deserializer_name))
         for attr in dir(module):
             # If attr name is `BaseDeserializer`, skip it as it's a class and also has a
             # subclass of BaseDeserializer
