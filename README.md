@@ -28,10 +28,10 @@ We will not be accepting new PRs until we are happy with the base of the client 
 
 ### AIP11 Deserialization
 - [x] Transfer
-- [ ] Second Signature Registration
-- [ ] Delegate Registration
-- [ ] Vote
-- [ ] Multi Signature Registration
+- [x] Second Signature Registration
+- [x] Delegate Registration
+- [x] Vote
+- [x] Multi Signature Registration
 - [ ] IPFS
 - [ ] Timelock Transfer
 - [ ] Multi Payment

@@ -19,7 +19,7 @@ def test_transaction_deserialize(transaction_type_0):
     assert data['recipientId'] == transaction_type_0['recipientId']
     assert data['id'] == transaction_type_0['id']
     assert data['fee'] == transaction_type_0['fee']
-    assert data['signature'].decode() == transaction_type_0['signature']
+    assert data['signature'] == transaction_type_0['signature']
     assert data['version'] == transaction_type_0['version']
     assert data['network'] == transaction_type_0['network']
     assert data['type'] == transaction_type_0['type']
