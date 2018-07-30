@@ -67,7 +67,7 @@ class Transaction(object):
             attribute = getattr(self, key, None)
             if attribute is None:
                 continue
-            data[key] = attribute
+            data[key] = attribute.decode() if isinstance(attribute, bytes) else attribute
         return data
 
     def to_json(self):

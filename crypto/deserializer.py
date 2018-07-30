@@ -104,8 +104,8 @@ class Deserializer(object):
             )
 
         if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            transaction.multisignature['keysgroup'] = [
-                '+{}'.format(key) for key in transaction.multisignature['keysgroup']
+            transaction.asset['multisignature']['keysgroup'] = [
+                '+{}'.format(key) for key in transaction.asset['multisignature']['keysgroup']
             ]
 
         if transaction.vendorFieldHex:
