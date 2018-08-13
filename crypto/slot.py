@@ -11,8 +11,8 @@ def get_time():
     """
     now = datetime.utcnow()
     network = get_network()
-    diff = (now - network['epoch']).seconds
-    return diff
+    seconds = int((now - network['epoch']).total_seconds())
+    return seconds
 
 
 def get_epoch():
