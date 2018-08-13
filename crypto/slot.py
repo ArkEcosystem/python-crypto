@@ -13,3 +13,8 @@ def get_time():
     network = get_network()
     diff = (now - network['epoch']).seconds
     return diff
+
+
+def get_epoch():
+    network = get_network()
+    return network['epoch']
