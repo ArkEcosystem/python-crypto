@@ -6,7 +6,7 @@ from ecdsa import SECP256k1, SigningKey
 from ecdsa.util import number_to_string
 
 
-def privat_key_from_passphrase(passphrase):
+def private_key_from_passphrase(passphrase):
     """Get a private key from a given passphrase
 
     Args:

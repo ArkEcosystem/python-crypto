@@ -1,8 +1,8 @@
-from crypto.identity.keys import privat_key_from_passphrase, public_key_from_passphrase
+from crypto.identity.keys import private_key_from_passphrase, public_key_from_passphrase
 
 
-def test_privat_key_from_passphrase():
-    private_key = privat_key_from_passphrase('this is a top secret passphrase'.encode())
+def test_private_key_from_passphrase():
+    private_key = private_key_from_passphrase('this is a top secret passphrase'.encode())
     assert private_key == b'd8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712'
 
 
