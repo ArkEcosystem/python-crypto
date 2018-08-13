@@ -69,9 +69,9 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [x] toJson - it returns a dictionary object
 
 ### Address Identity
-- [ ] fromPassphrase
-- [ ] fromPublicKey
-- [ ] fromPrivateKey
+- [x] fromPassphrase
+- [x] fromPublicKey
+- [x] fromPrivateKey
 - [ ] validate
 
 ### Private Key Identity
@@ -83,7 +83,7 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [ ] fromHex
 
 ### WIF Identity
-- [ ] fromPassphrase
+- [x] fromPassphrase
 
 ### Configuration
 - [x] getNetwork
@@ -93,7 +93,7 @@ We will not be accepting new PRs until we are happy with the base of the client 
 
 ### Slot
 - [x] time
-- [ ] epoch
+- [x] epoch
 
 ### Networks (Mainnet, Devnet & Testnet)
 - [x] epoch
