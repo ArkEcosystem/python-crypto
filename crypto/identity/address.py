@@ -56,11 +56,7 @@ def address_from_passphrase(passphrase, network_version=None):
         network_version (int, optional):
 
     Returns:
-<<<<<<< HEAD
         string: address
-=======
-        TYPE: Description
->>>>>>> identity: fix typo in function name + add functions for address + tests
     """
     if not network_version:
         network = get_network()
