@@ -7,7 +7,7 @@ from ecdsa.util import sigdecode_der, sigencode_der_canonize
 
 from crypto.exceptions import ArkBadDigestException, ArkBadSignatureException
 from crypto.identity.keys import (
-    privat_key_from_passphrase, public_key_from_passphrase, uncompress_ecdsa_public_key
+    private_key_from_passphrase, public_key_from_passphrase, uncompress_ecdsa_public_key
 )
 
 
@@ -21,7 +21,7 @@ def sign_message(message, passphrase):
     Returns:
         dict: dict containing message, public_key and a signature data
     """
-    private_key = privat_key_from_passphrase(passphrase)
+    private_key = private_key_from_passphrase(passphrase)
     signin_key = SigningKey.from_string(unhexlify(private_key), SECP256k1)
     signature = hexlify(
         signin_key.sign_deterministic(message, hashfunc=sha256, sigencode=sigencode_der_canonize)
