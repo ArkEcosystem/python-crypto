@@ -6,7 +6,7 @@ from base58 import b58encode_check
 from binary.unsigned_integer.writer import write_bit8
 
 from crypto.conf import get_network
-from crypto.identity.keys import private_key_from_passphrase, compress_ecdsa_public_key
+from crypto.identity.keys import compress_ecdsa_public_key
 
 
 def address_from_public_key(public_key, network_version=None):
@@ -56,7 +56,7 @@ def address_from_passphrase(passphrase, network_version=None):
         network_version (int, optional):
 
     Returns:
-        TYPE: Description
+        string: address
     """
     if not network_version:
         network = get_network()

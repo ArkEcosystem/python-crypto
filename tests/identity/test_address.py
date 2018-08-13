@@ -1,6 +1,6 @@
 from crypto.conf import use_network
 from crypto.identity.address import (
-    address_from_public_key, address_from_passphrase, address_from_private_key
+    address_from_passphrase, address_from_private_key, address_from_public_key
 )
 
 
