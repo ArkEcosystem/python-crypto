@@ -1,7 +1,7 @@
 import hashlib
 from binascii import unhexlify
 
-from base58 import b58encode_check
+from base58 import b58decode_check, b58encode_check
 
 from binary.unsigned_integer.writer import write_bit8
 
@@ -65,3 +65,20 @@ def address_from_passphrase(passphrase, network_version=None):
     private_key = hashlib.sha256(passphrase).hexdigest()
     address = address_from_private_key(private_key)
     return address
+
+
+def validate_address(address, network_version=None):
+    """Validate a given address
+
+    Args:
+        address (str): address you wish to validate
+        network_version (None, optional): integer, version of the network
+
+    Returns:
+        bool:
+    """
+    if not network_version:
+        network = get_network()
+        network_version = network['version']
+
+    return network_version == b58decode_check('DRgh1n8oyGHDE6xXVq4yhh3sSajAr7uHJY')[0]
