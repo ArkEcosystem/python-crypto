@@ -9,7 +9,7 @@ def test_vote_transaction():
     use_network('devnet')
     vote = '+034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'
     transaction = VoteTransaction(vote)
-    transaction.sign('testing'.encode())
+    transaction.sign('testing')
     transaction_dict = transaction.to_dict()
     assert transaction_dict['signature']
     assert transaction_dict['asset']['votes']

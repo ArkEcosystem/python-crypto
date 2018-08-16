@@ -18,5 +18,5 @@ class TransferBuilder(BaseTransactionBuilder):
         super().__init__()
         self.transaction.recipientId = recipientId
         self.transaction.amount = amount
-        self.transaction.vendorField = vendorField
+        self.transaction.vendorField = vendorField.encode() if vendorField else None
         self.transaction.fee = fee or TRANSACTION_FEES[self.transaction_type]

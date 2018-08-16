@@ -196,10 +196,10 @@ class Transaction(object):
             required method
         """
         if self.type == TRANSACTION_SECOND_SIGNATURE_REGISTRATION:
-            public_key = self.asset['signature']['publicKey']
+            public_key = self.asset['signature']['publicKey'].encode()
             bytes_data += hexlify(public_key)
         elif self.type == TRANSACTION_DELEGATE_REGISTRATION:
-            bytes_data += self.asset['delegate']['username']
+            bytes_data += self.asset['delegate']['username'].encode()
         elif self.type == TRANSACTION_VOTE:
             bytes_data += ''.join(self.asset['votes']).encode()
         elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:

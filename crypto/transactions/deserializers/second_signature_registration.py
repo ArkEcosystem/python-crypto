@@ -10,7 +10,7 @@ class SecondSignatureRegistrationDeserializer(BaseDeserializer):
 
         self.transaction.asset = {
             'signature': {
-                'publicKey': hexlify(self.serialized)[starting_position:starting_position + 66]
+                'publicKey': hexlify(self.serialized)[starting_position:starting_position + 66].decode()
             }
         }
 
