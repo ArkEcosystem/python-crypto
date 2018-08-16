@@ -22,7 +22,6 @@ def use_network(network_name):
     network = {
         'epoch': datetime.strptime(settings.get(network_name, 'epoch'), '%Y-%m-%d %H:%M:%S'),
         'version': int(settings.get(network_name, 'version')),
-        'nethash': settings.get(network_name, 'nethash'),
         'wif': int(settings.get(network_name, 'wif')),
     }
 
@@ -38,13 +37,12 @@ def get_network():
     return network
 
 
-def set_custom_network(epoch, version, nethash, wif):
+def set_custom_network(epoch, version, wif):
     """Set custom network
 
     Args:
         epoch (datetime): chains epoch time
         version (int): chains version
-        nethash (str): chains nethash
         wif (int): chains wif
     """
     section_name = 'custom'
@@ -52,5 +50,4 @@ def set_custom_network(epoch, version, nethash, wif):
         settings.add_section(section_name)
     settings.set(section_name, 'epoch', epoch.strftime('%Y-%m-%d %H:%M:%S'))
     settings.set(section_name, 'version', str(version))
-    settings.set(section_name, 'nethash', nethash)
     settings.set(section_name, 'wif', str(wif))
