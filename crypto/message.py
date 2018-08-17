@@ -1,14 +1,9 @@
 from binascii import hexlify, unhexlify
 from hashlib import sha256
 
-from ecdsa import SECP256k1, SigningKey, VerifyingKey
-from ecdsa.keys import BadDigestError, BadSignatureError
-from ecdsa.util import sigdecode_der, sigencode_der_canonize
+from bit.format import verify_sig
 
-from crypto.exceptions import ArkBadDigestException, ArkBadSignatureException
-from crypto.identity.keys import (
-    private_key_from_passphrase, public_key_from_passphrase, uncompress_ecdsa_public_key
-)
+from coincurve import PrivateKey
 
 
 def sign_message(message, passphrase):
@@ -16,20 +11,17 @@ def sign_message(message, passphrase):
 
     Args:
         message (bytes): a message you want to signature
-        passphrase (bytes): passphrase you want to use to sign the message
+        passphrase (str): passphrase you want to use to sign the message
 
     Returns:
         dict: dict containing message, public_key and a signature data
     """
-    private_key = private_key_from_passphrase(passphrase)
-    signin_key = SigningKey.from_string(unhexlify(private_key), SECP256k1)
-    signature = hexlify(
-        signin_key.sign_deterministic(message, hashfunc=sha256, sigencode=sigencode_der_canonize)
-    )
+    private_key = PrivateKey.from_hex(sha256(passphrase.encode()).hexdigest())
+    signature = private_key.sign(message)
     data = {
         'message': message,
-        'public_key': public_key_from_passphrase(passphrase),
-        'signature': signature,
+        'public_key': hexlify(private_key.public_key.format()).decode(),
+        'signature': hexlify(signature).decode(),
     }
     return data
 
@@ -45,22 +37,9 @@ def verify_message(message, public_key, signature):
     Returns:
         bool: boolean indicating if a message is valid or not
     """
-    uncompressed_public_key = uncompress_ecdsa_public_key(public_key)
-    verifying_key = VerifyingKey.from_string(
-        unhexlify(uncompressed_public_key),
-        curve=SECP256k1,
-        hashfunc=sha256
+    is_valid = verify_sig(
+        signature=unhexlify(signature.encode()),
+        data=message.encode(),
+        public_key=unhexlify(public_key.encode())
     )
-
-    try:
-        is_valid = verifying_key.verify(
-            unhexlify(signature),
-            message,
-            hashfunc=sha256,
-            sigdecode=sigdecode_der
-        )
-    except BadSignatureError:
-        raise ArkBadSignatureException('Given signature was not valid')
-    except BadDigestError as e:
-        raise ArkBadDigestException(str(e))
     return is_valid

@@ -13,7 +13,7 @@ def address_from_public_key(public_key, network_version=None):
     """Get an address from a public key
 
     Args:
-        public_key (bytes):
+        public_key (str):
         network_version (int, optional):
 
     Returns:
@@ -23,7 +23,7 @@ def address_from_public_key(public_key, network_version=None):
         network = get_network()
         network_version = network['version']
 
-    ripemd160 = hashlib.new('ripemd160', unhexlify(public_key))
+    ripemd160 = hashlib.new('ripemd160', unhexlify(public_key.encode()))
     seed = write_bit8(network_version) + ripemd160.digest()
     return b58encode_check(seed)
 
@@ -52,7 +52,7 @@ def address_from_passphrase(passphrase, network_version=None):
     """Get an address from passphrase
 
     Args:
-        passphrase (bytes):
+        passphrase (str):
         network_version (int, optional):
 
     Returns:
@@ -62,7 +62,7 @@ def address_from_passphrase(passphrase, network_version=None):
         network = get_network()
         network_version = network['version']
 
-    private_key = hashlib.sha256(passphrase).hexdigest()
+    private_key = hashlib.sha256(passphrase.encode()).hexdigest()
     address = address_from_private_key(private_key)
     return address
 

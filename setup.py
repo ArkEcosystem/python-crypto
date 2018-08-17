@@ -7,6 +7,8 @@ requires = [
     'base58',
     'binary-helpers',
     'ecdsa',
+    'coincurve',
+    'bit'
 ]
 
 tests_require = [

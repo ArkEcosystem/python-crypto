@@ -9,8 +9,8 @@ def test_transfer_transaction():
     use_network('devnet')
     transaction = TransferBuilder(
         recipientId='AXoXnFi4z1Z6aFvjEYkDVCtBGW2PaRiM25',
-        amount=133380000000,
-        vendorField='This is a transaction from Python',
+        amount=1000,
+        vendorField='Hello Pythonistas!'
     )
     transaction.sign('This is a top secret passphrase')
     transaction_dict = transaction.to_dict()
