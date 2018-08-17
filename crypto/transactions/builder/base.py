@@ -14,6 +14,9 @@ class BaseTransactionBuilder(object):
     def to_dict(self):
         return self.transaction.to_dict()
 
+    def to_json(self):
+        return self.transaction.to_json()
+
     def sign(self, passphrase):
         """Sign the transaction using the given passphrase
 
