@@ -17,8 +17,8 @@ class SecondSignatureRegistrationTransaction(BaseTransactionBuilder):
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
-        public_key = public_key_from_passphrase(second_passphrase)
-        self.transaction.asset['signature'] = {'publicKey': public_key}
+        public_key = public_key_from_passphrase(second_passphrase.encode())
+        self.transaction.asset['signature'] = {'publicKey': public_key.decode()}
         self.transaction.fee = fee or TRANSACTION_FEES[self.transaction_type]
 
     def handle_transaction_type(self, bytes_data):

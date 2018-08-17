@@ -14,16 +14,19 @@ class BaseTransactionBuilder(object):
     def to_dict(self):
         return self.transaction.to_dict()
 
+    def to_json(self):
+        return self.transaction.to_json()
+
     def sign(self, passphrase):
         """Sign the transaction using the given passphrase
 
         Args:
             passphrase (str): passphrase associated with the account sending this transaction
         """
-        self.transaction.senderPublicKey = public_key_from_passphrase(passphrase)
-        transaction = sha256(self.transaction.to_bytes()).digest()
-        message = sign_message(transaction, passphrase)
+        self.transaction.senderPublicKey = public_key_from_passphrase(passphrase.encode())
+        message = sign_message(self.transaction.to_bytes(), passphrase)
         self.transaction.signature = message['signature']
+        self.transaction.id = self.transaction.get_id()
 
     def second_sign(self, passphrase):
         """Sign the transaction using the given second passphrase
@@ -34,6 +37,7 @@ class BaseTransactionBuilder(object):
         transaction = sha256(self.transaction.to_bytes()).digest()
         message = sign_message(transaction, passphrase)
         self.transaction.signSignature = message['signature']
+        self.transaction.id = self.transaction.get_id()
 
     def verify(self):
         self.transaction.verify()

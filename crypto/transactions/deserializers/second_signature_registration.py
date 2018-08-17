@@ -7,10 +7,10 @@ class SecondSignatureRegistrationDeserializer(BaseDeserializer):
 
     def deserialize(self):
         starting_position = int(self.asset_offset)
-
+        public_key = hexlify(self.serialized)[starting_position:starting_position + 66]
         self.transaction.asset = {
             'signature': {
-                'publicKey': hexlify(self.serialized)[starting_position:starting_position + 66]
+                'publicKey': public_key.decode()
             }
         }
 

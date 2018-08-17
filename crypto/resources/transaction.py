@@ -67,19 +67,20 @@ class Transaction(object):
             attribute = getattr(self, key, None)
             if attribute is None:
                 continue
+            # todo: get rid of the bytes check and handle this outside of the to_dict function
             data[key] = attribute.decode() if isinstance(attribute, bytes) else attribute
         return data
 
     def to_json(self):
         data = self.to_dict()
-        return json.loads(data)
+        return json.dumps(data)
 
-    def to_bytes(self, skip_signature=True, skip_secondSignature=True):
+    def to_bytes(self, skip_signature=True, skip_second_signature=True):
         """Convert the transaction to its byte representation
 
         Args:
             skip_signature (bool, optional): do you want to skip the signature
-            skip_secondSignature (bool, optional): do you want to skip the 2nd signature
+            skip_second_signature (bool, optional): do you want to skip the 2nd signature
 
         Returns:
             bytes: bytes representation of the transaction
@@ -104,7 +105,7 @@ class Transaction(object):
         bytes_data += write_bit64(self.fee)
 
         bytes_data = self._handle_transaction_type(bytes_data)
-        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_secondSignature)
+        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature)
 
         return bytes_data
 
@@ -173,8 +174,8 @@ class Transaction(object):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
         will happen.
         """
-        transaction = sha256(self.to_bytes()).digest()
-        verify_message(transaction, self.senderPublicKey, self.signature)
+        transaction = sha256(self.to_bytes()).hexdigest()
+        verify_message(transaction, self.senderPublicKey.decode(), self.signature)
 
     def second_verify(self, passphrase):
         """Verify the transaction using the 2nd passphrase
@@ -196,10 +197,10 @@ class Transaction(object):
             required method
         """
         if self.type == TRANSACTION_SECOND_SIGNATURE_REGISTRATION:
-            public_key = self.asset['signature']['publicKey']
+            public_key = self.asset['signature']['publicKey'].encode()
             bytes_data += hexlify(public_key)
         elif self.type == TRANSACTION_DELEGATE_REGISTRATION:
-            bytes_data += self.asset['delegate']['username']
+            bytes_data += self.asset['delegate']['username'].encode()
         elif self.type == TRANSACTION_VOTE:
             bytes_data += ''.join(self.asset['votes']).encode()
         elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:

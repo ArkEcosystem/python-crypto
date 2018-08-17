@@ -7,9 +7,9 @@ def test_delegate_registration_transaction():
     """Test if a delegate registration transaction gets built
     """
     use_network('devnet')
-    delegate_name = 'mr.delegate'.encode()
+    delegate_name = 'mr.delegate'
     transaction = DelegateRegistrationTransaction(delegate_name)
-    transaction.sign('testing'.encode())
+    transaction.sign('testing')
     transaction_dict = transaction.to_dict()
     assert transaction_dict['signature']
     assert transaction_dict['asset']['delegate']['username'] == delegate_name

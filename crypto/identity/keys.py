@@ -47,24 +47,3 @@ def compress_ecdsa_public_key(private_key):
     x_str = number_to_string(point.x(), order)
     compressed = hexlify(chr(2 + (point.y() & 1)).encode() + x_str)
     return compressed.decode()
-
-
-def uncompress_ecdsa_public_key(public_key):
-    """
-    Uncompressed public key is:
-    0x04 + x-coordinate + y-coordinate
-    Compressed public key is:
-    0x02 + x-coordinate if y is even
-    0x03 + x-coordinate if y is odd
-    y^2 mod p = (x^3 + 7) mod p
-    read more : https://bitcointalk.org/index.php?topic=644919.msg7205689#msg7205689
-    """
-    p = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f
-    y_parity = int(public_key[:2]) - 2
-    x = int(public_key[2:], 16)
-    a = (pow(x, 3, p) + 7) % p
-    y = pow(a, (p + 1) // 4, p)
-    if y % 2 != y_parity:
-        y = -y % p
-    # return result as der signature (no 0x04 preffix)
-    return '{:x}{:x}'.format(x, y)
