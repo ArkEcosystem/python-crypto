@@ -23,4 +23,4 @@ def wif_from_passphrase(passphrase, network_wif=None):
 
     private_key = hashlib.sha256(passphrase.encode())
     seed = write_bit8(network_wif) + private_key.digest() + write_bit8(0x01)
-    return b58encode_check(seed)
+    return b58encode_check(seed).decode()

@@ -25,7 +25,7 @@ def address_from_public_key(public_key, network_version=None):
 
     ripemd160 = hashlib.new('ripemd160', unhexlify(public_key.encode()))
     seed = write_bit8(network_version) + ripemd160.digest()
-    return b58encode_check(seed)
+    return b58encode_check(seed).decode()
 
 
 def address_from_private_key(private_key, network_version=None):
@@ -45,7 +45,7 @@ def address_from_private_key(private_key, network_version=None):
     public_key = compress_ecdsa_public_key(unhexlify(private_key))
     ripemd160 = hashlib.new('ripemd160', unhexlify(public_key))
     seed = write_bit8(network_version) + ripemd160.digest()
-    return b58encode_check(seed)
+    return b58encode_check(seed).decode()
 
 
 def address_from_passphrase(passphrase, network_version=None):
