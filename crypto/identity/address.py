@@ -81,4 +81,4 @@ def validate_address(address, network_version=None):
         network = get_network()
         network_version = network['version']
 
-    return network_version == b58decode_check('DRgh1n8oyGHDE6xXVq4yhh3sSajAr7uHJY')[0]
+    return network_version == b58decode_check(address)[0]
