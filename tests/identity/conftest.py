@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def identity():
-    """Identity ficture
+    """Identity fixture
     """
     data = {
         'data': {
