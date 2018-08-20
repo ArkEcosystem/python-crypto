@@ -1,12 +1,11 @@
 import json
-from collections import OrderedDict
 
 from crypto.message import Message
 
 
 def test_signing(message):
     result = Message.sign(message['data']['message'], message['passphrase'])
-    assert OrderedDict(result.to_dict()) == OrderedDict(message['data'])
+    assert result.to_dict() == message['data']
 
 
 def test_verify(message):
@@ -16,10 +15,13 @@ def test_verify(message):
 
 def test_to_dict(message):
     result = Message(**message['data'])
-    assert OrderedDict(result.to_dict()) == OrderedDict(message['data'])
+    assert result.to_dict() == message['data']
 
 
 def test_to_json(message):
     result = Message(**message['data'])
     json_data = result.to_json()
-    assert OrderedDict(json.loads(json_data)) == OrderedDict(message['data'])
+    data = json.loads(json_data)
+    assert data['signature'] == message['data']['signature']
+    assert data['public_key'] == message['data']['public_key']
+    assert data['message'] == message['data']['message']
