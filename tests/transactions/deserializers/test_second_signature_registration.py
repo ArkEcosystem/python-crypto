@@ -1,5 +1,5 @@
 from crypto.conf import use_network
-from crypto.deserializer import Deserializer
+from crypto.transactions.deserializer import Deserializer
 
 
 def test_second_signature_registration():
