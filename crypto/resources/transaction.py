@@ -175,7 +175,7 @@ class Transaction(object):
         will happen.
         """
         transaction = sha256(self.to_bytes()).hexdigest()
-        verify_message(transaction, self.senderPublicKey.decode(), self.signature)
+        verify_message(transaction, self.senderPublicKey, self.signature)
 
     def second_verify(self, passphrase):
         """Verify the transaction using the 2nd passphrase
