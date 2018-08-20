@@ -1,6 +1,6 @@
 from binary.unsigned_integer.writer import write_bit8
 
-from crypto.constants import TRANSACTION_FEES, TRANSACTION_MULTI_SIGNATURE_REGISTRATION
+from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -25,7 +25,8 @@ class MultiSignatureRegistrationTransaction(BaseTransactionBuilder):
                 'keysgroup': keysgroup,
             },
         }
-        transaction_fee = fee or TRANSACTION_FEES[self.transaction_type]
+        # default transaction fee for this type i set in the base builder
+        transaction_fee = fee or self.transaction.fee
         self.transaction.fee = (len(keysgroup) + 1) * transaction_fee
 
     def handle_transaction_type(self, bytes_data):

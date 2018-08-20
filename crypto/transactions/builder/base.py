@@ -1,5 +1,6 @@
 from hashlib import sha256
 
+from crypto.conf import get_fee
 from crypto.identity.public_key import PublicKey
 from crypto.transactions.transaction import Transaction
 from crypto.utils.message import Message
@@ -10,6 +11,7 @@ class BaseTransactionBuilder(object):
     def __init__(self):
         self.transaction = Transaction()
         self.transaction.type = getattr(self, 'transaction_type', None)
+        self.transaction.fee = get_fee(getattr(self, 'transaction_type', None))
 
     def to_dict(self):
         return self.transaction.to_dict()

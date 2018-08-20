@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_FEES, TRANSACTION_TIMELOCK_TRANSFER
+from crypto.constants import TRANSACTION_TIMELOCK_TRANSFER
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -13,7 +13,8 @@ class TimelockTransferTransaction(BaseTransactionBuilder):
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
-        self.transaction.fee = fee or TRANSACTION_FEES[self.transaction_type]
+        if fee:
+            self.transaction.fee = fee
 
     def handle_transaction_type(self, bytes_data):
         raise NotImplementedError
