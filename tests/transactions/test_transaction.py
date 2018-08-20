@@ -1,0 +1,26 @@
+from crypto.conf import use_network
+from crypto.transactions.transaction import Transaction
+
+
+def test_transaction_serialize(transaction_type_0):
+    use_network('devnet')
+    transaction = Transaction(**transaction_type_0)
+    serialized = transaction.serialize()
+    assert serialized == transaction_type_0['serialized']
+
+
+def test_transaction_deserialize(transaction_type_0):
+    use_network('devnet')
+    transaction = Transaction()
+    deserialized = transaction.deserialize(transaction_type_0['serialized'])
+    data = deserialized.to_dict()
+    assert data['amount'] == transaction_type_0['amount']
+    assert data['senderPublicKey'] == transaction_type_0['senderPublicKey']
+    assert data['recipientId'] == transaction_type_0['recipientId']
+    assert data['id'] == transaction_type_0['id']
+    assert data['fee'] == transaction_type_0['fee']
+    assert data['signature'] == transaction_type_0['signature']
+    assert data['version'] == transaction_type_0['version']
+    assert data['network'] == transaction_type_0['network']
+    assert data['type'] == transaction_type_0['type']
+    assert data['timestamp'] == transaction_type_0['timestamp']
