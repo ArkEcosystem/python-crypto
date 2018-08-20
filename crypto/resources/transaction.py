@@ -14,9 +14,9 @@ from crypto.constants import (
 )
 from crypto.deserializer import Deserializer
 from crypto.exceptions import ArkInvalidTransaction
-from crypto.message import Message
+from crypto.utils.message import Message
+from crypto.utils.slot import get_time
 from crypto.serializer import Serializer
-from crypto.slot import get_time
 
 
 TRANSACTION_ATTRIBUTES = {

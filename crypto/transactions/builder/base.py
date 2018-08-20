@@ -1,8 +1,8 @@
 from hashlib import sha256
 
 from crypto.identity.public_key import PublicKey
-from crypto.message import Message
 from crypto.resources.transaction import Transaction
+from crypto.utils.message import Message
 
 
 class BaseTransactionBuilder(object):
