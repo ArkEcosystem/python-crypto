@@ -122,7 +122,7 @@ If you have any questions, requests or ideas open an issue or ask us in #python 
 
 ## Documentation
 
-You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/v1.0/docs/cryptography-python).
+You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/developers/sdk/cryptography/python.html).
 
 ## Security
 
