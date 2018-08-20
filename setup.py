@@ -6,8 +6,7 @@ import setuptools
 requires = [
     'base58',
     'binary-helpers',
-    'coincurve',
-    'bit'
+    'coincurve'
 ]
 
 tests_require = [

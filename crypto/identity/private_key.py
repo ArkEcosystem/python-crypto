@@ -19,7 +19,7 @@ class PrivateKey(object):
         Returns:
             str: signature of the signed message
         """
-        signature = self.pvt_key_object.sign(message)
+        signature = self.private_key.sign(message)
         return hexlify(signature).decode()
 
     def to_hex(self):

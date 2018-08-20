@@ -1,45 +1,64 @@
-from binascii import hexlify, unhexlify
-from hashlib import sha256
+import json
+from binascii import unhexlify
 
-from bit.format import verify_sig
-
-from coincurve import PrivateKey
-
-
-def sign_message(message, passphrase):
-    """Sign a message
-
-    Args:
-        message (bytes): a message you want to signature
-        passphrase (str): passphrase you want to use to sign the message
-
-    Returns:
-        dict: dict containing message, public_key and a signature data
-    """
-    private_key = PrivateKey.from_hex(sha256(passphrase.encode()).hexdigest())
-    signature = private_key.sign(message)
-    data = {
-        'message': message,
-        'public_key': hexlify(private_key.public_key.format()).decode(),
-        'signature': hexlify(signature).decode(),
-    }
-    return data
+from crypto.identity.private_key import PrivateKey
+from crypto.identity.public_key import PublicKey
 
 
-def verify_message(message, public_key, signature):
-    """Verify a message
+class Message(object):
 
-    Args:
-        message (str): a message you want to verify
-        public_key (str): public key used to verify a message
-        signature (str): signature of a signed message
+    def __init__(self, message, signature, public_key):
+        self.public_key = public_key
+        self.signature = signature
+        self.message = message
 
-    Returns:
-        bool: boolean indicating if a message is valid or not
-    """
-    is_valid = verify_sig(
-        signature=unhexlify(signature.encode()),
-        data=message.encode(),
-        public_key=unhexlify(public_key.encode())
-    )
-    return is_valid
+    @classmethod
+    def sign(cls, message, passphrase):
+        """Signs a message
+
+        Args:
+            message (str/bytes): a message you wish to sign
+            passphrase (str/byes): passphrase you wish to use to sign the message
+
+        Returns:
+            Message: returns a message object
+        """
+        message_byes = message if isinstance(message, bytes) else message.encode()
+        passphrase = passphrase.decode() if isinstance(passphrase, bytes) else passphrase
+        private_key = PrivateKey.from_passphrase(passphrase)
+        signature = private_key.sign(message_byes)
+        return cls(message, signature, private_key.public_key)
+
+    def verify(self):
+        """Verify the Message object
+
+        Returns:
+            bool: returns a boolean - true if verified, false if not
+        """
+        message = self.message if isinstance(self.message, bytes) else self.message.encode()
+        key = PublicKey.from_hex(self.public_key)
+        signature = unhexlify(self.signature)
+        is_verified = key.public_key.verify(signature, message)
+        return is_verified
+
+    def to_dict(self):
+        """Return a dictionary of the message
+
+        Returns:
+            dict: dictionary consiting of public_key, signature and message
+        """
+        data = {
+            'public_key': self.public_key,
+            'signature': self.signature,
+            'message': self.message,
+        }
+        return data
+
+    def to_json(self):
+        """Returns a json string of the the message
+
+        Returns:
+            str: json string consisting of public_key, signature and message
+        """
+        data = self.to_dict()
+        return json.dumps(data)
