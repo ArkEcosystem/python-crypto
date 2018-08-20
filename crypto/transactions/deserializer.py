@@ -29,7 +29,7 @@ class Deserializer(object):
         # circular import with transaction.py :( - I'm thinking of just returning a dict here
         # which then needs to be passed to a Transaction object, instead of returning a Transaction
         # object
-        from crypto.resources.transaction import Transaction
+        from crypto.transactions.transaction import Transaction
 
         transaction = Transaction()
         transaction.version = read_bit8(self.serialized, offset=1)

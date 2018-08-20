@@ -1,7 +1,7 @@
 from hashlib import sha256
 
 from crypto.identity.public_key import PublicKey
-from crypto.resources.transaction import Transaction
+from crypto.transactions.transaction import Transaction
 from crypto.utils.message import Message
 
 

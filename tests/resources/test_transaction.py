@@ -1,5 +1,5 @@
 from crypto.conf import use_network
-from crypto.resources.transaction import Transaction
+from crypto.transactions.transaction import Transaction
 
 
 def test_transaction_serialize(transaction_type_0):
