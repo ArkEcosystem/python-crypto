@@ -2,12 +2,15 @@ import os
 from configparser import ConfigParser
 from datetime import datetime
 
+from crypto.constants import TRANSACTION_FEES
+
 config_file = os.path.abspath('config.ini')
 
 settings = ConfigParser()
 settings.read(config_file)
 
 network = {}
+fees = TRANSACTION_FEES.copy()
 
 
 def set_network(network_name):
@@ -49,3 +52,26 @@ def set_custom_network(epoch, version, wif):
     settings.set(section_name, 'epoch', epoch.strftime('%Y-%m-%d %H:%M:%S'))
     settings.set(section_name, 'version', str(version))
     settings.set(section_name, 'wif', str(wif))
+
+
+def get_fee(transaction_type):
+    """Get a fee for a given transaction type
+
+    Args:
+        transaction_type (int): transaction type for which we wish to get a fee
+
+    Returns:
+        int: transaction fee
+    """
+    return fees.get(transaction_type)
+
+
+def set_fee(transaction_type, value):
+    """Set a fee
+
+    Args:
+        transaction_type (int): transaction_type for which we wish to set a fee
+        value (int): fee for a given transaction type
+    """
+    global fees
+    fees[transaction_type] = value
