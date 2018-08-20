@@ -59,28 +59,28 @@ We will not be accepting new PRs until we are happy with the base of the client 
 - [x] serialize
 - [x] deserialize
 - [x] toBytes
-- [ ] toArray - not applicable for python
+- [x] toArray - to_dict in Python
 - [x] toJson
 
 ### Message
 - [x] sign
 - [x] verify
-- [ ] toArray - not applicable for python
+- [x] toArray - to_dict in Python
 - [x] toJson - it returns a dictionary object
 
 ### Address Identity
 - [x] fromPassphrase
 - [x] fromPublicKey
 - [x] fromPrivateKey
-- [ ] validate
+- [x] validate
 
 ### Private Key Identity
 - [x] fromPassphrase
-- [ ] fromHex
+- [x] fromHex
 
 ### Public Key Identity
 - [x] fromPassphrase
-- [ ] fromHex
+- [x] fromHex
 
 ### WIF Identity
 - [x] fromPassphrase
@@ -88,8 +88,8 @@ We will not be accepting new PRs until we are happy with the base of the client 
 ### Configuration
 - [x] getNetwork
 - [x] setNetwork
-- [ ] getFee
-- [ ] setFee
+- [x] getFee
+- [x] setFee
 
 ### Slot
 - [x] time
