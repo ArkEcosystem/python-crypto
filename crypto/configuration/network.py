@@ -49,3 +49,4 @@ def set_custom_network(epoch, version, wif):
     settings.set(section_name, 'epoch', epoch.strftime('%Y-%m-%d %H:%M:%S'))
     settings.set(section_name, 'version', str(version))
     settings.set(section_name, 'wif', str(wif))
+    set_network('custom')
