@@ -1,7 +1,7 @@
 import pytest
 
 from crypto.conf import use_network
-from crypto.serializer import Serializer
+from crypto.transactions.serializer import Serializer
 
 
 @pytest.mark.skip(reason='not implemented - missing fixture')

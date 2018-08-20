@@ -12,11 +12,11 @@ from crypto.constants import (
     TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION,
     TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 )
-from crypto.deserializer import Deserializer
 from crypto.exceptions import ArkInvalidTransaction
-from crypto.message import Message
-from crypto.serializer import Serializer
-from crypto.slot import get_time
+from crypto.transactions.deserializer import Deserializer
+from crypto.transactions.serializer import Serializer
+from crypto.utils.message import Message
+from crypto.utils.slot import get_time
 
 
 TRANSACTION_ATTRIBUTES = {

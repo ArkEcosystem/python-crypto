@@ -1,6 +1,6 @@
 import json
 
-from crypto.message import Message
+from crypto.utils.message import Message
 
 
 def test_signing(message):
