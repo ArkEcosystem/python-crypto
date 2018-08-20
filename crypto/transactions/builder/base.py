@@ -1,6 +1,6 @@
 from hashlib import sha256
 
-from crypto.conf import get_fee
+from crypto.configuration.fee import get_fee
 from crypto.identity.public_key import PublicKey
 from crypto.transactions.transaction import Transaction
 from crypto.utils.message import Message
