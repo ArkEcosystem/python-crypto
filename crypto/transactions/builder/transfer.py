@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_FEES, TRANSACTION_TRANSFER
+from crypto.constants import TRANSACTION_TRANSFER
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -19,4 +19,5 @@ class TransferBuilder(BaseTransactionBuilder):
         self.transaction.recipientId = recipientId
         self.transaction.amount = amount
         self.transaction.vendorField = vendorField.encode() if vendorField else None
-        self.transaction.fee = fee or TRANSACTION_FEES[self.transaction_type]
+        if fee:
+            self.transaction.fee = fee

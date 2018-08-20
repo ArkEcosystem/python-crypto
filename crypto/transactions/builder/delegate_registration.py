@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_FEES
+from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -15,4 +15,5 @@ class DelegateRegistrationTransaction(BaseTransactionBuilder):
         """
         super().__init__()
         self.transaction.asset['delegate'] = {'username': username}
-        self.transaction.fee = fee or TRANSACTION_FEES[self.transaction_type]
+        if fee:
+            self.transaction.fee = fee

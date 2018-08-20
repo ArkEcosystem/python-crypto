@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from crypto.conf import get_network
+from crypto.configuration.network import get_network
 
 
 def get_time():

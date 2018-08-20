@@ -5,7 +5,7 @@ from base58 import b58decode_check, b58encode_check
 
 from binary.unsigned_integer.writer import write_bit8
 
-from crypto.conf import get_network
+from crypto.configuration.network import get_network
 from crypto.identity.private_key import PrivateKey
 
 

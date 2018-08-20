@@ -1,4 +1,3 @@
-from crypto.conf import use_network
 from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION
 from crypto.transactions.builder.multi_signature_registration import (
     MultiSignatureRegistrationTransaction
@@ -8,7 +7,6 @@ from crypto.transactions.builder.multi_signature_registration import (
 def test_multi_signature_registration_transaction():
     """Test if a second signature registration transaction gets built
     """
-    use_network('devnet')
     keysgroup = [
         '03a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933',
         '13a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933',

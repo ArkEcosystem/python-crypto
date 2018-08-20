@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_FEES, TRANSACTION_VOTE
+from crypto.constants import TRANSACTION_VOTE
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -15,7 +15,8 @@ class VoteTransaction(BaseTransactionBuilder):
         """
         super().__init__()
         self.transaction.asset['votes'] = [vote]
-        self.transaction.fee = fee or TRANSACTION_FEES[self.transaction_type]
+        if fee:
+            self.transaction.fee = fee
 
     def handle_transaction_type(self, bytes_data):
         bytes_data += ''.join(self.transaction.asset['votes']).encode()

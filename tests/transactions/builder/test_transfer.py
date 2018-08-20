@@ -1,4 +1,3 @@
-from crypto.conf import use_network
 from crypto.constants import TRANSACTION_TRANSFER
 from crypto.transactions.builder.transfer import TransferBuilder
 
@@ -6,7 +5,6 @@ from crypto.transactions.builder.transfer import TransferBuilder
 def test_transfer_transaction():
     """Test if a transfer transaction gets built
     """
-    use_network('devnet')
     transaction = TransferBuilder(
         recipientId='AXoXnFi4z1Z6aFvjEYkDVCtBGW2PaRiM25',
         amount=1000,
@@ -23,7 +21,6 @@ def test_transfer_transaction():
 def test_parse_signatures(transaction_type_0):
     """Test if parse signature works when parsing serialized data
     """
-    use_network('devnet')
     transfer = TransferBuilder(
         recipientId=transaction_type_0['recipientId'],
         amount=transaction_type_0['amount']

@@ -5,7 +5,7 @@ from importlib import import_module
 from binary.hex.writer import write_high, write_low
 from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
-from crypto.conf import get_network
+from crypto.configuration.network import get_network
 from crypto.constants import TRANSACTION_TYPES
 from crypto.exceptions import ArkSerializerException
 from crypto.transactions.serializers.base import BaseSerializer
