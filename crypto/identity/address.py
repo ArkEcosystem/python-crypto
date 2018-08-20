@@ -6,7 +6,7 @@ from base58 import b58decode_check, b58encode_check
 from binary.unsigned_integer.writer import write_bit8
 
 from crypto.conf import get_network
-from crypto.identity.keys import compress_ecdsa_public_key
+from crypto.identity.private_key import PrivateKey
 
 
 def address_from_public_key(public_key, network_version=None):
@@ -42,8 +42,8 @@ def address_from_private_key(private_key, network_version=None):
         network = get_network()
         network_version = network['version']
 
-    public_key = compress_ecdsa_public_key(unhexlify(private_key))
-    ripemd160 = hashlib.new('ripemd160', unhexlify(public_key))
+    private_key = PrivateKey.from_hex(private_key)
+    ripemd160 = hashlib.new('ripemd160', unhexlify(private_key.public_key))
     seed = write_bit8(network_version) + ripemd160.digest()
     return b58encode_check(seed).decode()
 

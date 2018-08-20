@@ -1,6 +1,6 @@
 from hashlib import sha256
 
-from crypto.identity.keys import public_key_from_passphrase
+from crypto.identity.public_key import PublicKey
 from crypto.message import sign_message
 from crypto.resources.transaction import Transaction
 
@@ -23,7 +23,7 @@ class BaseTransactionBuilder(object):
         Args:
             passphrase (str): passphrase associated with the account sending this transaction
         """
-        self.transaction.senderPublicKey = public_key_from_passphrase(passphrase.encode())
+        self.transaction.senderPublicKey = PublicKey.from_passphrase(passphrase)
         message = sign_message(self.transaction.to_bytes(), passphrase)
         self.transaction.signature = message['signature']
         self.transaction.id = self.transaction.get_id()

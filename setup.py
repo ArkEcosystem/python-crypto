@@ -6,7 +6,6 @@ import setuptools
 requires = [
     'base58',
     'binary-helpers',
-    'ecdsa',
     'coincurve',
     'bit'
 ]
