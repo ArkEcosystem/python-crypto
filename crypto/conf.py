@@ -2,8 +2,6 @@ import os
 from configparser import ConfigParser
 from datetime import datetime
 
-from crypto.exceptions import ArkNetworkSettingsException
-
 config_file = os.path.abspath('config.ini')
 
 settings = ConfigParser()
@@ -12,8 +10,8 @@ settings.read(config_file)
 network = {}
 
 
-def use_network(network_name):
-    """Select what network you want to use in the crypto library
+def set_network(network_name):
+    """Set what network you want to use in the crypto library
 
     Args:
         network_name (str): name of a network, default ones are ARK's mainnet, devnet & testnet
@@ -27,13 +25,13 @@ def use_network(network_name):
 
 
 def get_network():
-    """Get settings for a selected network
+    """Get settings for a selected network, default network is devnet
 
     Returns:
-        dict: network settings
+        dict: network settings (default network is devnet)
     """
     if not network:
-        raise ArkNetworkSettingsException('Network has not been set')
+        set_network('devnet')
     return network
 
 

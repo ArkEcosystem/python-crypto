@@ -1,4 +1,3 @@
-from crypto.conf import use_network
 from crypto.constants import TRANSACTION_SECOND_SIGNATURE_REGISTRATION
 from crypto.transactions.builder.second_signature_registration import (
     SecondSignatureRegistrationTransaction
@@ -8,7 +7,6 @@ from crypto.transactions.builder.second_signature_registration import (
 def test_second_signature_registration_transaction():
     """Test if a second signature registration transaction gets built
     """
-    use_network('devnet')
     transaction = SecondSignatureRegistrationTransaction('this is the second passphrase')
     transaction.sign('testing')
     transaction_dict = transaction.to_dict()

@@ -1,16 +1,13 @@
-from crypto.conf import use_network
 from crypto.transactions.transaction import Transaction
 
 
 def test_transaction_serialize(transaction_type_0):
-    use_network('devnet')
     transaction = Transaction(**transaction_type_0)
     serialized = transaction.serialize()
     assert serialized == transaction_type_0['serialized']
 
 
 def test_transaction_deserialize(transaction_type_0):
-    use_network('devnet')
     transaction = Transaction()
     deserialized = transaction.deserialize(transaction_type_0['serialized'])
     data = deserialized.to_dict()
