@@ -13,7 +13,8 @@ from crypto.constants import (
     TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 )
 from crypto.deserializer import Deserializer
-from crypto.message import verify_message
+from crypto.exceptions import ArkInvalidTransaction
+from crypto.message import Message
 from crypto.serializer import Serializer
 from crypto.slot import get_time
 
@@ -174,8 +175,11 @@ class Transaction(object):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
         will happen.
         """
-        transaction = sha256(self.to_bytes()).hexdigest()
-        verify_message(transaction, self.senderPublicKey, self.signature)
+        transaction = self.to_bytes()
+        message = Message(transaction, self.signature, self.senderPublicKey)
+        is_valid = message.verify()
+        if not is_valid:
+            raise ArkInvalidTransaction('Transaction could not be verified')
 
     def second_verify(self, passphrase):
         """Verify the transaction using the 2nd passphrase
@@ -184,7 +188,10 @@ class Transaction(object):
             passphrase (str): 2nd passphrase associated with the account sending this transaction
         """
         transaction = sha256(self.to_bytes()).digest()
-        verify_message(transaction, self.senderPublicKey, self.signSignature)
+        message = Message(transaction, self.signSignature, self.senderPublicKey)
+        is_valid = message.verify()
+        if not is_valid:
+            raise ArkInvalidTransaction('Transaction could not be verified')
 
     def _handle_transaction_type(self, bytes_data):
         """Handled each transaction type differently
