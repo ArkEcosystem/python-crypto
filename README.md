@@ -6,10 +6,10 @@
 
 > A simple Cryptography Implementation in Python for the ARK Blockchain.
 
-[![Build Status](https://img.shields.io/travis/ArkEcosystem/python-crypto/master.svg?style=flat-square)](https://travis-ci.org/ArkEcosystem/python-crypto)
-[![Codecov](https://img.shields.io/codecov/c/github/arkecosystem/python-crypto.svg)](https://codecov.io/gh/arkecosystem/python-crypto)
-[![Latest Version](https://img.shields.io/github/release/ArkEcosystem/python-crypto.svg?style=flat-square)](https://github.com/ArkEcosystem/python-crypto/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://badgen.now.sh/travis/ArkEcosystem/python-crypto/master)](https://travis-ci.org/ArkEcosystem/python-crypto)
+[![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/python-crypto)](https://codecov.io/gh/arkecosystem/python-crypto)
+[![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/python-crypto)](https://github.com/ArkEcosystem/python-crypto/releases/latest)
+[![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
 # Contributions are closed
 
@@ -133,7 +133,7 @@ If you discover a security vulnerability within this package, please send an e-m
 - [Rok Halužan](https://github.com/roks0n)
 - [Tomaž Šifrer](https://github.com/tsifrer)
 - [Brian Faust](https://github.com/faustbrian)
-- [All Contributors](../../../../contributors)
+- [All Contributors](../../contributors)
 
 ## License
 
