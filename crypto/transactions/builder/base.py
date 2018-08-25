@@ -36,8 +36,7 @@ class BaseTransactionBuilder(object):
         Args:
             passphrase (str): 2nd passphrase associated with the account sending this transaction
         """
-        transaction = sha256(self.transaction.to_bytes()).digest()
-        message = Message.sign(transaction, passphrase)
+        message = Message.sign(self.transaction.to_bytes(skip_signature=False), passphrase)
         self.transaction.signSignature = message.signature
         self.transaction.id = self.transaction.get_id()
 
