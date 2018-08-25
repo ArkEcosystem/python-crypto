@@ -1,5 +1,5 @@
 import json
-from binascii import hexlify
+from binascii import unhexlify
 from hashlib import sha256
 from struct import pack
 
@@ -204,8 +204,8 @@ class Transaction(object):
             required method
         """
         if self.type == TRANSACTION_SECOND_SIGNATURE_REGISTRATION:
-            public_key = self.asset['signature']['publicKey'].encode()
-            bytes_data += hexlify(public_key)
+            public_key = self.asset['signature']['publicKey']
+            bytes_data += unhexlify(public_key)
         elif self.type == TRANSACTION_DELEGATE_REGISTRATION:
             bytes_data += self.asset['delegate']['username'].encode()
         elif self.type == TRANSACTION_VOTE:
