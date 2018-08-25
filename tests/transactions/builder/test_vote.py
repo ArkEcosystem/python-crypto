@@ -1,12 +1,12 @@
 from crypto.constants import TRANSACTION_VOTE
-from crypto.transactions.builder.vote import VoteTransaction
+from crypto.transactions.builder.vote import Vote
 
 
 def test_vote_transaction():
     """Test if a vote transaction gets built
     """
     vote = '+034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'
-    transaction = VoteTransaction(vote)
+    transaction = Vote(vote)
     transaction.sign('testing')
     transaction_dict = transaction.to_dict()
     assert transaction_dict['signature']

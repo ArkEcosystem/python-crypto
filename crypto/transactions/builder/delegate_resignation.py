@@ -2,7 +2,7 @@ from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class DelegateResignationTransaction(BaseTransactionBuilder):
+class DelegateResignation(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_DELEGATE_RESIGNATION
 
@@ -15,6 +15,3 @@ class DelegateResignationTransaction(BaseTransactionBuilder):
         super().__init__()
         if fee:
             self.transaction.fee = fee
-
-    def handle_transaction_type(self, bytes_data):
-        raise NotImplementedError

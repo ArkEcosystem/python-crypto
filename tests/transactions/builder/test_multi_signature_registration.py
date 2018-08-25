@@ -1,6 +1,6 @@
 from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION
 from crypto.transactions.builder.multi_signature_registration import (
-    MultiSignatureRegistrationTransaction
+    MultiSignatureRegistration
 )
 
 
@@ -12,7 +12,7 @@ def test_multi_signature_registration_transaction():
         '13a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933',
         '23a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933',
     ]
-    transaction = MultiSignatureRegistrationTransaction(2, 255, keysgroup)
+    transaction = MultiSignatureRegistration(2, 255, keysgroup)
     transaction.sign('secret')
     transaction.second_sign('second secret')
     transaction_dict = transaction.to_dict()

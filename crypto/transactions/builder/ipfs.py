@@ -2,7 +2,7 @@ from crypto.constants import TRANSACTION_IPFS
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class IPFSTransaction(BaseTransactionBuilder):
+class IPFS(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_IPFS
 
@@ -15,6 +15,3 @@ class IPFSTransaction(BaseTransactionBuilder):
         super().__init__()
         if fee:
             self.transaction.fee = fee
-
-    def handle_transaction_type(self, bytes_data):
-        raise NotImplementedError

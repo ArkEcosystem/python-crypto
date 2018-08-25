@@ -2,7 +2,7 @@ from crypto.constants import TRANSACTION_TIMELOCK_TRANSFER
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class TimelockTransferTransaction(BaseTransactionBuilder):
+class TimelockTransfer(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_TIMELOCK_TRANSFER
 
@@ -15,6 +15,3 @@ class TimelockTransferTransaction(BaseTransactionBuilder):
         super().__init__()
         if fee:
             self.transaction.fee = fee
-
-    def handle_transaction_type(self, bytes_data):
-        raise NotImplementedError

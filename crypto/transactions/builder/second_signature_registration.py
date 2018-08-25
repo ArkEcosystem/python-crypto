@@ -1,11 +1,9 @@
-from binascii import hexlify
-
 from crypto.constants import TRANSACTION_SECOND_SIGNATURE_REGISTRATION
 from crypto.identity.public_key import PublicKey
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class SecondSignatureRegistrationTransaction(BaseTransactionBuilder):
+class SecondSignatureRegistration(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_SECOND_SIGNATURE_REGISTRATION
 
@@ -21,8 +19,3 @@ class SecondSignatureRegistrationTransaction(BaseTransactionBuilder):
         self.transaction.asset['signature'] = {'publicKey': public_key}
         if fee:
             self.transaction.fee = fee
-
-    def handle_transaction_type(self, bytes_data):
-        public_key = self.transaction.asset['signature']['publicKey']
-        bytes_data += hexlify(public_key)
-        return bytes_data

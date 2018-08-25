@@ -2,7 +2,7 @@ from crypto.constants import TRANSACTION_TRANSFER
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class TransferBuilder(BaseTransactionBuilder):
+class Transfer(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_TRANSFER
 

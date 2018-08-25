@@ -2,7 +2,7 @@ from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class DelegateRegistrationTransaction(BaseTransactionBuilder):
+class DelegateRegistration(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_DELEGATE_REGISTRATION
 

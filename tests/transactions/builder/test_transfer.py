@@ -1,11 +1,11 @@
 from crypto.constants import TRANSACTION_TRANSFER
-from crypto.transactions.builder.transfer import TransferBuilder
+from crypto.transactions.builder.transfer import Transfer
 
 
 def test_transfer_transaction():
     """Test if a transfer transaction gets built
     """
-    transaction = TransferBuilder(
+    transaction = Transfer(
         recipientId='AXoXnFi4z1Z6aFvjEYkDVCtBGW2PaRiM25',
         amount=1000,
         vendorField='Hello Pythonistas!'
@@ -21,7 +21,7 @@ def test_transfer_transaction():
 def test_parse_signatures(transaction_type_0):
     """Test if parse signature works when parsing serialized data
     """
-    transfer = TransferBuilder(
+    transfer = Transfer(
         recipientId=transaction_type_0['recipientId'],
         amount=transaction_type_0['amount']
     )
