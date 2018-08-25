@@ -1,5 +1,3 @@
-from hashlib import sha256
-
 from crypto.configuration.fee import get_fee
 from crypto.identity.public_key import PublicKey
 from crypto.transactions.transaction import Transaction
