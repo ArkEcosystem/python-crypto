@@ -7,5 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 0.1.1 - 2018-08-29
+
+### Fixed
+
+- created network objects instead of loading network settings from an ini file which is not included in the built package
+
 ## 0.1.0 - 2018-08-27
 - Initial Release
