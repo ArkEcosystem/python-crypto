@@ -6,3 +6,4 @@ def test_vote_deserializer():
     deserializer = Deserializer(serialized)
     actual = deserializer.deserialize()
     assert actual.asset['votes'] == ['+022cca9529ec97a772156c152a00aad155ee6708243e65c9d211a589cb5d43234d']  # noqa
+    actual.verify()

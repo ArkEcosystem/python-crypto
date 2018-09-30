@@ -6,3 +6,4 @@ def test_delegate_registration_deserializer():
     deserializer = Deserializer(serialized)
     actual = deserializer.deserialize()
     assert actual.asset['delegate'] == {'username': 'boldninja'}
+    actual.verify()
