@@ -13,3 +13,4 @@ def test_transfer_deserializer():
     assert actual.recipientId == 'D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib'
     assert actual.senderPublicKey == '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'  # noqa
     assert actual.id == 'da61c6cba363cc39baa0ca3f9ba2c5db81b9805045bd0b9fc58af07ad4206856'
+    actual.verify()
