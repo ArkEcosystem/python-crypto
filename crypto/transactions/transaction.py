@@ -91,7 +91,11 @@ class Transaction(object):
         bytes_data += write_bit32(self.timestamp)
         bytes_data += write_high(self.senderPublicKey)
 
-        skip_recipient_id = self.type == TRANSACTION_SECOND_SIGNATURE_REGISTRATION or self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION
+        skip_recipient_id = self.type in [
+            TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
+            TRANSACTION_MULTI_SIGNATURE_REGISTRATION
+        ]
+
         if self.recipientId and not skip_recipient_id:
             bytes_data += b58decode_check(self.recipientId)
         else:
