@@ -13,3 +13,4 @@ def test_multi_signature_registration_deserializer():
         '+0276dc5b8706a85ca9fdc46e571ac84e52fbb48e13ec7a165a80731b44ae89f1fc',
         '+02e8d5d17eb17bbc8d7bf1001d29a2d25d1249b7bb7a5b7ad8b7422063091f4b31'
     ]
+    actual.verify()

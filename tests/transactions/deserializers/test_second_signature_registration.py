@@ -6,3 +6,4 @@ def test_second_signature_registration():
     deserializer = Deserializer(serialized)
     actual = deserializer.deserialize()
     assert actual.asset['signature']['publicKey'] == '03699e966b2525f9088a6941d8d94f7869964a000efe65783d78ac82e1199fe609'  # noqa
+    actual.verify()
