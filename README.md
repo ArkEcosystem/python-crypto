@@ -1,10 +1,10 @@
-# ARK Python - Crypto
+# Ark Python - Crypto
 
 <p align="center">
-    <img src="https://github.com/ArkEcosystem/python-crypto/blob/master/banner.png" />
+    <img src="./banner.png" />
 </p>
 
-> A simple Cryptography Implementation in Python for the ARK Blockchain.
+> A simple Cryptography Implementation in Python for the Ark Blockchain.
 
 [![Build Status](https://badgen.now.sh/circleci/github/ArkEcosystem/python-crypto)](https://circleci.com/gh/ArkEcosystem/python-crypto)
 [![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/python-crypto)](https://codecov.io/gh/arkecosystem/python-crypto)
@@ -22,7 +22,7 @@ Before you start contributing please take some time and check our official [Pyth
 5. Run the entire test suite again, confirming that all tests pass including the ones you just added.
 6. Send a GitHub Pull Request. GitHub Pull Requests are the expected method of code collaboration on this project.
 
-If you have any questions, requests or ideas open an issue or ask us in #python on [ARK's Slack](https://ark.io/slack).
+If you have any questions, requests or ideas open an issue or ask us in #python on the [ArkEcosystem Slack](https://ark.io/slack).
 
 ## Documentation
 
