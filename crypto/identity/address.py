@@ -63,7 +63,7 @@ def address_from_passphrase(passphrase, network_version=None):
         network_version = network['version']
 
     private_key = hashlib.sha256(passphrase.encode()).hexdigest()
-    address = address_from_private_key(private_key)
+    address = address_from_private_key(private_key, network_version)
     return address
 
 
