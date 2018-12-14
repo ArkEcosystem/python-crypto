@@ -23,5 +23,5 @@ def test_to_json(message):
     json_data = result.to_json()
     data = json.loads(json_data)
     assert data['signature'] == message['data']['signature']
-    assert data['public_key'] == message['data']['public_key']
+    assert data['publickey'] == message['data']['publickey']
     assert data['message'] == message['data']['message']
