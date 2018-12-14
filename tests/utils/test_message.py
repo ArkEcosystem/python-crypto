@@ -4,38 +4,38 @@ from crypto.utils.message import Message
 
 
 def test_signing(message):
-    result = Message.sign(message['data']['message'], message['passphrase'])
-    assert result.to_dict() == message['data']
+    result = Message.sign(message['camelCase_pk']['message'], message['passphrase'])
+    assert result.to_dict() == message['camelCase_pk']
 
 
 def test_verify_with_publickey(message):
-    result = Message(**message['pk'])
+    result = Message(**message['snake_case_pk'])
     assert result.verify() is True
 
 
 def test_verify_with_publicKey(message):
-    result = Message(**message['data'])
+    result = Message(**message['camelCase_pk'])
     assert result.verify() is True
 
 
 def test_to_dict(message):
-    result = Message(**message['data'])
-    assert result.to_dict() == message['data']
+    result = Message(**message['camelCase_pk'])
+    assert result.to_dict() == message['camelCase_pk']
 
 
 def test_to_json_with_publicKey(message):
-    result = Message(**message['data'])
+    result = Message(**message['camelCase_pk'])
     json_data = result.to_json()
     data = json.loads(json_data)
-    assert data['signature'] == message['data']['signature']
-    assert data['publicKey'] == message['data']['publicKey']
-    assert data['message'] == message['data']['message']
+    assert data['signature'] == message['camelCase_pk']['signature']
+    assert data['publicKey'] == message['camelCase_pk']['publicKey']
+    assert data['message'] == message['camelCase_pk']['message']
 
 
 def test_to_json_with_publickey(message):
-    result = Message(**message['pk'])
+    result = Message(**message['snake_case_pk'])
     json_data = result.to_json()
     data = json.loads(json_data)
-    assert data['signature'] == message['pk']['signature']
-    assert data['publickey'] == message['pk']['publickey']
-    assert data['message'] == message['pk']['message']
+    assert data['signature'] == message['snake_case_pk']['signature']
+    assert data['publickey'] == message['snake_case_pk']['publickey']
+    assert data['message'] == message['snake_case_pk']['message']
