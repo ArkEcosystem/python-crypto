@@ -28,7 +28,7 @@ class Message(object):
         passphrase = passphrase.decode() if isinstance(passphrase, bytes) else passphrase
         private_key = PrivateKey.from_passphrase(passphrase)
         signature = private_key.sign(message_bytes)
-        return cls(message=message, signature=signature, publickey=private_key.public_key)
+        return cls(message=message, signature=signature, publicKey=private_key.public_key)
 
     def verify(self):
         """Verify the Message object
@@ -49,7 +49,7 @@ class Message(object):
             dict: dictionary consiting of public_key, signature and message
         """
         data = {
-            ('publickey' if hasattr(self, 'publickey') else 'publicKey'): (self.publickey if hasattr(self, 'publickey') else self.publicKey),
+            ('publicKey' if hasattr(self, 'publicKey') else 'publickey'): (self.publicKey if hasattr(self, 'publicKey') else self.publickey),
             'signature': self.signature,
             'message': self.message,
         }
