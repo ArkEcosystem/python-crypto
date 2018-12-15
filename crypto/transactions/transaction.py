@@ -101,7 +101,7 @@ class Transaction(object):
         else:
             bytes_data += pack('21x')
 
-        if self.vendorField and len(self.vendorField) < 64:
+        if self.vendorField and len(self.vendorField) < 65:
             bytes_data += self.vendorField
             bytes_data += pack('{}x'.format(64 - len(self.vendorField)))
         else:
