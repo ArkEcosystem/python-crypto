@@ -181,7 +181,7 @@ class Transaction(object):
         will happen.
         """
         transaction = self.to_bytes()
-        message = Message(transaction, self.signature, self.senderPublicKey)
+        message = Message(message=transaction, signature=self.signature, publickey=self.senderPublicKey)
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
