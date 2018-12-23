@@ -17,11 +17,10 @@ class Transfer(BaseTransactionBuilder):
         """
         super().__init__()
         self.transaction.recipientId = recipientId
-        if type(amount) == float or type(amount) == int:
-          print(type(amount))
+        if type(amount) == int and amount > 0:
           self.transaction.amount = amount
         else:
-          raise ValueError('Amout is not a number')
+          raise ValueError('Amount is not valid')
         self.transaction.vendorField = vendorField.encode() if vendorField else None
         if fee:
             self.transaction.fee = fee
