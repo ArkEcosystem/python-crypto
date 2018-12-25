@@ -17,7 +17,10 @@ class Transfer(BaseTransactionBuilder):
         """
         super().__init__()
         self.transaction.recipientId = recipientId
-        self.transaction.amount = amount
+        if type(amount) == int and amount > 0:
+          self.transaction.amount = amount
+        else:
+          raise ValueError('Amount is not valid')
         self.transaction.vendorField = vendorField.encode() if vendorField else None
         if fee:
             self.transaction.fee = fee
