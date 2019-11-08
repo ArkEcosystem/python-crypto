@@ -1,3 +1,5 @@
+from enum import Enum
+
 TRANSACTION_TRANSFER = 0
 TRANSACTION_SECOND_SIGNATURE_REGISTRATION = 1
 TRANSACTION_DELEGATE_REGISTRATION = 2
@@ -38,15 +40,18 @@ TRANSACTION_FEES = {
     TRANSACTION_TIMELOCK_REFUND: 0,
 }
 
-TRANSACTION_TYPE_GROUP = {
-    TEST: 0,
-    CORE: 1,
 
-    # Everything above is available to anyone
-    RESERVED: 1000
-}
+class TRANSACTION_TYPE_GROUP(Enum):
+    def __str__(self):
+        return str(self.value)
 
-HTLC_LOCK_EXPIRATION_TYPE = {
-    EPOCH_TIMESTAMP: 1,
-    BLOCK_HEIGHT: 2
-}
+    TEST = 0
+    CORE = 1
+    RESERVED = 1000
+
+class HTLC_LOCK_EXPIRATION_TYPE(Enum):
+    def __str__(self):
+        return str(self.value)
+
+    EPOCH_TIMESTAMP = 1
+    BLOCK_HEIGHT = 2
