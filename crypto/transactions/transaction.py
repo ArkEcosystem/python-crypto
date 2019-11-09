@@ -142,9 +142,9 @@ class Transaction(object):
             if not signatures:
                 break
 
-    def serialize(self):
+    def serialize(self, skip_signature=True, skip_second_signature=True):
         data = self.to_dict()
-        return Serializer(data).serialize()
+        return Serializer(data).serialize(skip_signature, skip_second_signature)
 
     def deserialize(self, serialized):
         return Deserializer(serialized).deserialize()
