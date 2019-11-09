@@ -6,18 +6,19 @@ def transaction_type_0():
     """Transaction of type "transfer"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
         'type': 0,
-        'timestamp': 0,
-        'senderPublicKey': '03cb7bca143376721d0e9e3f3ccb0dc2e7e8470c06e630c3cef73f03e309b558ad',
-        'fee': 0,
-        'amount': 12500000000000000,
+        'nonce': 0,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 10000000,
+        'amount': 200000000,
         'expiration': 0,
-        'recipientId': 'DGihocTkwDygiFvmg6aG8jThYTic47GzU9',
-        'signature': '3044022016ecdf3039e69514c7d75861b22fc076496b61c07a1fcf793dc4f5c76fa0532b0220579c4c0c9d13720f9db5d9df29ed8ceab0adc266c6c160d612d4894dc5867eb1',  # noqa
-        'id': 'e40ce11cab82736da1cc91191716f3c1f446ca7b6a9f4f93b7120ef105ba06e8',
-        'serialized': 'ff011e000000000003cb7bca143376721d0e9e3f3ccb0dc2e7e8470c06e630c3cef73f03e309b558ad0000000000000000000040b10baf682c00000000001e7f048c40fd8a0442ffe79e0aa804f27fd5db15943044022016ecdf3039e69514c7d75861b22fc076496b61c07a1fcf793dc4f5c76fa0532b0220579c4c0c9d13720f9db5d9df29ed8ceab0adc266c6c160d612d4894dc5867eb1'  # noqa
+        'recipientId': 'AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        'signature': '24cb51a214057e4af4fd80cf3a96374c9c16ee1bcd7110684b5995eed1f19a49e08bf032feba18475cf888116826a03fc50c3cf52a7456e7e5085db1191b4568',  # noqa
+        'id': '7258453b1516ecf8be87e9aa0a3d00823197d1504ff76779e28743b4c8b5617c',
+        'serialized': 'ff02170100000000000000000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19280969800000000000000c2eb0b0000000000000000170995750207ecaf0ccf251c1265b92ad84f55366224cb51a214057e4af4fd80cf3a96374c9c16ee1bcd7110684b5995eed1f19a49e08bf032feba18475cf888116826a03fc50c3cf52a7456e7e5085db1191b4568'  # noqa
     }
     return data
 
@@ -27,10 +28,10 @@ def transaction_type_1():
     """Transaction of type "second signature registration"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
         'type': 1,
-        'timestamp': 4895203,
+        'nonce': 0,
         'senderPublicKey': '03a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933',
         'fee': 500000000,
         'asset': {
@@ -52,10 +53,10 @@ def transaction_type_2():
     """Transaction of type "delegate registration"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
         'type': 2,
-        'timestamp': 0,
+        'nonce': 0,
         'senderPublicKey': '03e5b39a83e6c7c952c5908089d4524bb8dda93acc2b2b953247e43dc4fe9aa3d1',
         'fee': 0,
         'asset': {
@@ -76,10 +77,10 @@ def transaction_type_3():
     """Transaction of type "vote"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
         'type': 3,
-        'timestamp': 4349399,
+        'nonce': 0,
         'senderPublicKey': '0374e9a97611540a9ce4812b0980e62d3c5141ea964c2cab051f14a78284570dcd',
         'fee': 100000000,
         'asset': {
@@ -99,12 +100,12 @@ def transaction_type_4():
     """Transaction of type "multi signature registration"
     """
     data = {
-        'version': 1,
+        'version': 2,
         'network': 23,
         'id': 'cbd6862966bb1b03ba742397b7e5a88d6eefb393a362ead0d605723b840db2af',
         'blockid': '1844069042066945391',
         'type': 4,
-        'timestamp': 10112114,
+        'nonce': 0,
         'amount': 0,
         'fee': 2000000000,
         'senderId': 'AMw3TiLrmVmwmFVwRzn96kkUsUpFTqsAEX',

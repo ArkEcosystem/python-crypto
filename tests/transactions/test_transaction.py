@@ -20,4 +20,5 @@ def test_transaction_deserialize(transaction_type_0):
     assert data['version'] == transaction_type_0['version']
     assert data['network'] == transaction_type_0['network']
     assert data['type'] == transaction_type_0['type']
-    assert data['timestamp'] == transaction_type_0['timestamp']
+    assert data['typeGroup'] == transaction_type_0['typeGroup']
+    assert data['nonce'] == transaction_type_0['nonce']

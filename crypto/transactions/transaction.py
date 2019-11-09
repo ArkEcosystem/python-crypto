@@ -16,7 +16,6 @@ from crypto.exceptions import ArkInvalidTransaction
 from crypto.transactions.deserializer import Deserializer
 from crypto.transactions.serializer import Serializer
 from crypto.utils.message import Message
-from crypto.utils.slot import get_time
 
 
 TRANSACTION_ATTRIBUTES = {
@@ -31,11 +30,12 @@ TRANSACTION_ATTRIBUTES = {
     'signature': None,
     'signatures': None,
     'signSignature': None,
-    'timestamp': get_time,
+    'nonce': None, # set it properly
     'type': None,
+    'typeGroup': None, # set it properly
     'vendorField': None,
     'vendorFieldHex': None,
-    'version': None,
+    'version': None, # set it properly
 }
 
 
@@ -55,7 +55,7 @@ class Transaction(object):
         Returns:
             str:
         """
-        return sha256(self.to_bytes(False, False)).hexdigest()
+        return sha256(self.to_bytes(skip_signature=False, skip_second_signature=False)).hexdigest()
 
     def to_dict(self):
         """Convert the transaction into a dictionary representation
@@ -86,35 +86,7 @@ class Transaction(object):
         Returns:
             bytes: bytes representation of the transaction
         """
-        bytes_data = bytes()
-        bytes_data += write_bit8(self.type)
-        bytes_data += write_bit32(self.timestamp)
-        bytes_data += write_high(self.senderPublicKey)
-
-        skip_recipient_id = self.type in [
-            TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
-            TRANSACTION_MULTI_SIGNATURE_REGISTRATION
-        ]
-
-        if self.recipientId and not skip_recipient_id:
-            bytes_data += b58decode_check(self.recipientId)
-        else:
-            bytes_data += pack('21x')
-
-        if self.vendorField and len(self.vendorField) <= 255:
-            bytes_data += self.vendorField
-            if len(self.vendorField) < 64:
-                bytes_data += pack('{}x'.format(64 - len(self.vendorField)))
-        else:
-            bytes_data += pack('64x')
-
-        bytes_data += write_bit64(self.amount)
-        bytes_data += write_bit64(self.fee)
-
-        bytes_data = self._handle_transaction_type(bytes_data)
-        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature)
-
-        return bytes_data
+        return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, raw=True)
 
     def parse_signatures(self, serialized, start_offset):
         """Parse the signature, second signature and multi signatures

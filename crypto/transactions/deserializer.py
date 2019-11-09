@@ -3,7 +3,7 @@ from binascii import hexlify, unhexlify
 from hashlib import sha256
 from importlib import import_module
 
-from binary.unsigned_integer.reader import read_bit32, read_bit64, read_bit8
+from binary.unsigned_integer.reader import read_bit32, read_bit64, read_bit8, read_bit16
 
 from crypto.constants import (
     TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
@@ -34,10 +34,14 @@ class Deserializer(object):
         transaction = Transaction()
         transaction.version = read_bit8(self.serialized, offset=1)
         transaction.network = read_bit8(self.serialized, offset=2)
-        transaction.type = read_bit8(self.serialized, offset=3)
-        transaction.timestamp = read_bit32(self.serialized, offset=4)
+        transaction.typeGroup = read_bit32(self.serialized, offset=3)
+        transaction.type = read_bit16(self.serialized, offset=4)
+        transaction.nonce = read_bit64(self.serialized, offset=5)
         transaction.senderPublicKey = hexlify(self.serialized)[16:66+16].decode()
+        print(transaction.senderPublicKey)
         transaction.fee = read_bit64(self.serialized, offset=41)
+
+        print(transaction.to_dict())
 
         vendor_field_length = read_bit8(self.serialized, offset=49)
         if vendor_field_length > 0:
@@ -49,9 +53,11 @@ class Deserializer(object):
 
         asset_offset = (49 + 1) * 2 + vendor_field_length * 2
 
-        handled_tranasction = self._handle_transaction_type(asset_offset, transaction)
-        transaction.amount = handled_tranasction.amount
-        transaction.version = handled_tranasction.version
+        print(asset_offset)
+
+        handled_transaction = self._handle_transaction_type(asset_offset, transaction)
+        transaction.amount = handled_transaction.amount
+        transaction.version = handled_transaction.version
         if transaction.version == 1:
             transaction = self._handle_version_one(transaction)
         elif transaction.version == 2:

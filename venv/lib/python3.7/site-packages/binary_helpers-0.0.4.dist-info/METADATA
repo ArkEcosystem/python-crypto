@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: binary-helpers
+Version: 0.0.4
+Summary: A developer-experience focused wrapper around pack and unpack.
+Home-page: https://github.com/deadlock-delegate/python-binary
+Author: roks0n
+Author-email: haluzan.rok@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Provides-Extra: test
+Provides-Extra: dev
+Provides-Extra: dev
+Requires-Dist: flake8 (>=3.5.0); extra == 'dev'
+Requires-Dist: flake8-import-order (>=0.17.1); extra == 'dev'
+Requires-Dist: flake8-print (>=3.1.0); extra == 'dev'
+Requires-Dist: flake8-quotes (>=1.0.0); extra == 'dev'
+Requires-Dist: pytest (>=3.6.1); extra == 'dev'
+Requires-Dist: pytest-mock (>=1.10.0); extra == 'dev'
+Provides-Extra: test
+Requires-Dist: flake8 (>=3.5.0); extra == 'test'
+Requires-Dist: flake8-import-order (>=0.17.1); extra == 'test'
+Requires-Dist: flake8-print (>=3.1.0); extra == 'test'
+Requires-Dist: flake8-quotes (>=1.0.0); extra == 'test'
+Requires-Dist: pytest (>=3.6.1); extra == 'test'
+Requires-Dist: pytest-mock (>=1.10.0); extra == 'test'
+
+UNKNOWN
+
+
