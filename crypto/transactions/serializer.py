@@ -32,7 +32,7 @@ class Serializer(object):
         bytes_data += write_bit8(0xff)
         bytes_data += write_bit8(self.transaction.get('version') or 0x01)
         bytes_data += write_bit8(self.transaction.get('network') or network_config['version'])
-        bytes_data += write_bit32(self.transaction.get('typeGroup') or 0x01)
+        bytes_data += write_bit32(self.transaction.get('typeGroup') or 0x0001)
         bytes_data += write_bit16(self.transaction.get('type'))
         bytes_data += write_bit64(self.transaction.get('nonce') or 0x00000001)
 

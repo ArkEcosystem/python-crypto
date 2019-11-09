@@ -10,7 +10,7 @@ def transaction_type_0():
         'network': 23,
         'typeGroup': 1,
         'type': 0,
-        'nonce': 0,
+        'nonce': 69,
         'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
         'fee': 10000000,
         'amount': 200000000,
