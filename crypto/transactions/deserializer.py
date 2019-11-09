@@ -42,28 +42,27 @@ class Deserializer(object):
         print(transaction.type)
         transaction.nonce = read_bit64(self.serialized, offset=9)
         print(transaction.nonce)
-        transaction.senderPublicKey = hexlify(self.serialized)[17:66+17].decode()
-        print("DIFFERENT OFFSET")
+        transaction.senderPublicKey = hexlify(self.serialized)[34:66+34].decode()
         print(transaction.senderPublicKey)
-        transaction.fee = read_bit64(self.serialized, offset=41)
+        transaction.fee = read_bit64(self.serialized, offset=50)
 
-        print(transaction.to_dict())
-
-        vendor_field_length = read_bit8(self.serialized, offset=49)
+        vendor_field_length = read_bit8(self.serialized, offset=58)
         if vendor_field_length > 0:
-            vendor_field_offset = (49 + 8) * 2
+            vendor_field_offset = (58 + 8) * 2
             vendorField_take = vendor_field_length * 2
             transaction.vendorFieldHex = hexlify(
                 self.serialized
             )[vendor_field_offset:vendorField_take]
 
-        asset_offset = (49 + 1) * 2 + vendor_field_length * 2
+        asset_offset = (58 + 1) * 2 + vendor_field_length * 2
 
-        print(asset_offset)
+        print(transaction.to_dict())
 
         handled_transaction = self._handle_transaction_type(asset_offset, transaction)
         transaction.amount = handled_transaction.amount
         transaction.version = handled_transaction.version
+        print(transaction.to_dict())
+        print('before version check')
         if transaction.version == 1:
             transaction = self._handle_version_one(transaction)
         elif transaction.version == 2:
@@ -71,6 +70,8 @@ class Deserializer(object):
         else:
             raise Exception('should this ever happen?')  # todo: do we need this?
 
+        print('after version check')
+        print(transaction)
         return transaction
 
     def _handle_transaction_type(self, asset_offset, transaction):
@@ -147,4 +148,5 @@ class Deserializer(object):
         Returns:
             object: Transaction resource object of currently deserialized data
         """
-        transaction.id = sha256(transaction)  # todo serialize
+        transaction.id = sha256(unhexlify(transaction.serialize(False, True))).hexdigest()  # todo serialize
+        return transaction
