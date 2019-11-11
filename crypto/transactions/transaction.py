@@ -153,9 +153,14 @@ class Transaction(object):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
         will happen.
         """
-        # print("INSIDE TRANSACTION VERIFY")
+        print("INSIDE TRANSACTION VERIFY")
         transaction = self.to_bytes()
+        print(transaction)
+        print(self.signature)
+        print(self.senderPublicKey)
         message = Message(transaction, self.signature, self.senderPublicKey)
+        print(message.__dict__)
+        print("END TRANSACTION VERIFY")
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
