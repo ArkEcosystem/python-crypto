@@ -3,7 +3,7 @@ from crypto.transactions.transaction import Transaction
 
 def test_transaction_serialize(transaction_type_0):
     transaction = Transaction(**transaction_type_0)
-    serialized = transaction.serialize()
+    serialized = transaction.serialize(False, True)
     assert serialized == transaction_type_0['serialized']
 
 

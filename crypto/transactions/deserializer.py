@@ -33,17 +33,11 @@ class Deserializer(object):
 
         transaction = Transaction()
         transaction.version = read_bit8(self.serialized, offset=1)
-        print(transaction.version)
         transaction.network = read_bit8(self.serialized, offset=2)
-        print(transaction.network)
         transaction.typeGroup = read_bit32(self.serialized, offset=3)
-        print(transaction.typeGroup)
         transaction.type = read_bit16(self.serialized, offset=7)
-        print(transaction.type)
         transaction.nonce = read_bit64(self.serialized, offset=9)
-        print(transaction.nonce)
         transaction.senderPublicKey = hexlify(self.serialized)[34:66+34].decode()
-        print(transaction.senderPublicKey)
         transaction.fee = read_bit64(self.serialized, offset=50)
 
         vendor_field_length = read_bit8(self.serialized, offset=58)
@@ -56,13 +50,9 @@ class Deserializer(object):
 
         asset_offset = (58 + 1) * 2 + vendor_field_length * 2
 
-        print(transaction.to_dict())
-
         handled_transaction = self._handle_transaction_type(asset_offset, transaction)
         transaction.amount = handled_transaction.amount
         transaction.version = handled_transaction.version
-        print(transaction.to_dict())
-        print('before version check')
         if transaction.version == 1:
             transaction = self._handle_version_one(transaction)
         elif transaction.version == 2:
@@ -70,8 +60,6 @@ class Deserializer(object):
         else:
             raise Exception('should this ever happen?')  # todo: do we need this?
 
-        print('after version check')
-        print(transaction)
         return transaction
 
     def _handle_transaction_type(self, asset_offset, transaction):
@@ -117,8 +105,8 @@ class Deserializer(object):
             )
 
         if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            transaction.asset['multisignature']['keysgroup'] = [
-                '+{}'.format(key) for key in transaction.asset['multisignature']['keysgroup']
+            transaction.asset['multiSignature']['publicKeys'] = [
+                '+{}'.format(key) for key in transaction.asset['multiSignature']['publicKeys']
             ]
 
         if transaction.vendorFieldHex:

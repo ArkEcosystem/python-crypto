@@ -153,6 +153,7 @@ class Transaction(object):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
         will happen.
         """
+        # print("INSIDE TRANSACTION VERIFY")
         transaction = self.to_bytes()
         message = Message(transaction, self.signature, self.senderPublicKey)
         is_valid = message.verify()
@@ -189,9 +190,9 @@ class Transaction(object):
         elif self.type == TRANSACTION_VOTE:
             bytes_data += ''.join(self.asset['votes']).encode()
         elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            bytes_data += write_bit8(self.asset['multisignature']['min'])
-            bytes_data += write_bit8(self.asset['multisignature']['lifetime'])
-            bytes_data += ''.join(self.asset['multisignature']['keysgroup']).encode()
+            bytes_data += write_bit8(self.asset['multiSignature']['min'])
+            bytes_data += write_bit8(self.asset['multiSignature']['lifetime'])
+            bytes_data += ''.join(self.asset['multiSignature']['publicKeys']).encode()
         return bytes_data
 
     def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
