@@ -1,6 +1,7 @@
+from base58 import b58encode_check
 from binascii import hexlify, unhexlify
 
-from binary.unsigned_integer.reader import read_bit8
+from binary.unsigned_integer.reader import read_bit16, read_bit64
 
 from crypto.transactions.deserializers.base import BaseDeserializer
 
@@ -10,16 +11,24 @@ class MultiPaymentDeserializer(BaseDeserializer):
     def deserialize(self):
         starting_position = int(self.asset_offset / 2)
 
-        username_length = read_bit8(self.serialized, starting_position) & 0xff
-        start_index = self.asset_offset + 2
-        end_index = start_index + (username_length * 2)
-        username = hexlify(self.serialized)[start_index:end_index]
-        username = unhexlify(username)
+        payment_length = read_bit16(self.serialized, starting_position) & 0xff
 
-        self.transaction.asset['delegate'] = {'username': username.decode()}
+        self.transaction.asset['payments'] = []
+
+        for index, payment in enumerate(range(payment_length), 0):
+            amount = read_bit64(self.serialized, offset=starting_position + 2 + index)
+
+            recipient_start_index = (starting_position + 10 + index) * 2
+            recipientId = hexlify(self.serialized)[recipient_start_index:recipient_start_index + 42]
+            recipientId = b58encode_check(unhexlify(recipientId)).decode()
+
+            self.transaction.asset['payments'].append({'amount': amount, 'recipientId': recipientId})
+
+            index += 21 + 8
 
         self.transaction.parse_signatures(
             hexlify(self.serialized),
-            self.asset_offset + (username_length + 1) * 2
+            self.asset_offset + ((4 + payment_length * 8 + payment_length * 21) * 2)
         )
+
         return self.transaction
