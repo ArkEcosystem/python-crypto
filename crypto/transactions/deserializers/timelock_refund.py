@@ -8,9 +8,9 @@ from crypto.transactions.deserializers.base import BaseDeserializer
 class TimelockRefundDeserializer(BaseDeserializer):
 
     def deserialize(self):
-        starting_position = int(self.asset_offset / 2)
+        starting_position = int(self.asset_offset)
 
-        lock_transaction_id = hexlify(self.serialized)[starting_position*2:starting_position*2+64]
+        lock_transaction_id = hexlify(self.serialized)[starting_position:starting_position+64]
 
         self.transaction.asset['refund'] = {
             'lockTransactionId': lock_transaction_id.decode()
