@@ -1,6 +1,5 @@
-from binascii import hexlify, unhexlify
-
-from base58 import b58decode_check, b58encode_check
+from base58 import b58decode_check
+from binascii import hexlify
 
 from binary.hex.writer import write_high
 from binary.unsigned_integer.writer import write_bit16, write_bit64

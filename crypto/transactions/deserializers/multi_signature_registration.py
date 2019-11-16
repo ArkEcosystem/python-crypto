@@ -30,4 +30,5 @@ class MultiSignatureRegistrationDeserializer(BaseDeserializer):
             hexlify(self.serialized),
             self.asset_offset + 6 + (count * 66)
         )
+
         return self.transaction

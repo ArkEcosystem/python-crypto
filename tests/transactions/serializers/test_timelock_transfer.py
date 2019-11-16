@@ -1,5 +1,3 @@
-import pytest
-
 from crypto.transactions.serializer import Serializer
 
 

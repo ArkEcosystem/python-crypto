@@ -1,9 +1,8 @@
+from base58 import b58encode
 from binascii import hexlify, unhexlify
 
 from binary.unsigned_integer.reader import read_bit8
 from binary.unsigned_integer.writer import write_bit8
-
-from base58 import b58encode
 
 from crypto.transactions.deserializers.base import BaseDeserializer
 

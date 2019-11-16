@@ -11,11 +11,14 @@ class VoteSerializer(BaseSerializer):
 
     def serialize(self):
         vote_bytes = []
+
         for vote in self.transaction['asset']['votes']:
             if vote.startswith('+'):
                 vote_bytes.append('01{}'.format(vote[1::]))
             else:
                 vote_bytes.append('00{}'.format(vote[1::]))
+
         self.bytes_data += write_bit8(len(self.transaction['asset']['votes']))
         self.bytes_data += unhexlify(''.join(vote_bytes))
+
         return self.bytes_data

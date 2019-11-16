@@ -29,4 +29,5 @@ class VoteDeserializer(BaseDeserializer):
             hexlify(self.serialized),
             self.asset_offset + 2 + (vote_length * 34 * 2)
         )
+
         return self.transaction

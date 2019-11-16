@@ -1,6 +1,5 @@
-from binascii import hexlify, unhexlify
-
 from base58 import b58encode_check
+from binascii import hexlify, unhexlify
 
 from binary.unsigned_integer.reader import read_bit32, read_bit64
 
@@ -23,4 +22,5 @@ class TransferDeserializer(BaseDeserializer):
             hexlify(self.serialized),
             self.asset_offset + (8 + 4 + 21) * 2
         )
+
         return self.transaction

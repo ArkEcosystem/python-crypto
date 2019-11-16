@@ -10,4 +10,5 @@ class DelegateResignationDeserializer(BaseDeserializer):
             hexlify(self.serialized),
             self.asset_offset
         )
+
         return self.transaction

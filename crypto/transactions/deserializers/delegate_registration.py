@@ -22,4 +22,5 @@ class DelegateRegistrationDeserializer(BaseDeserializer):
             hexlify(self.serialized),
             self.asset_offset + (username_length + 1) * 2
         )
+
         return self.transaction
