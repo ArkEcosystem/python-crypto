@@ -1,6 +1,7 @@
 from binascii import hexlify, unhexlify
 
-from binary.unsigned_integer.reader import read_bit8
+from binary.unsigned_integer.reader import read_bit8, read_bit16, read_bit64, read_bit32
+from base58 import b58encode_check
 
 from crypto.transactions.deserializers.base import BaseDeserializer
 
@@ -10,16 +11,30 @@ class TimelockTransferDeserializer(BaseDeserializer):
     def deserialize(self):
         starting_position = int(self.asset_offset / 2)
 
-        username_length = read_bit8(self.serialized, starting_position) & 0xff
-        start_index = self.asset_offset + 2
-        end_index = start_index + (username_length * 2)
-        username = hexlify(self.serialized)[start_index:end_index]
-        username = unhexlify(username)
+        self.transaction.amount = read_bit64(self.serialized, offset=starting_position)
 
-        self.transaction.asset['delegate'] = {'username': username.decode()}
+        secret_hash = hexlify(self.serialized)[(starting_position + 8) * 2:(starting_position + 8 + 32) * 2]
+
+        expiration_type = read_bit8(self.serialized, offset=99)
+
+        expiration_value = read_bit32(self.serialized, offset=100)
+
+        recipient_start_index = (starting_position + 45) * 2
+        recipientId = hexlify(self.serialized)[recipient_start_index:recipient_start_index + 42]
+        self.transaction.recipientId = b58encode_check(unhexlify(recipientId)).decode()
+
+        self.transaction.asset['lock'] = {
+            'secretHash': secret_hash.decode()
+        }
+
+        self.transaction.asset['lock']['expiration'] = {
+            'type': expiration_type,
+            'value': expiration_value
+        }
 
         self.transaction.parse_signatures(
             hexlify(self.serialized),
-            self.asset_offset + (username_length + 1) * 2
+            self.asset_offset + (8 + 32 + 1 + 4 + 21) * 2
         )
+
         return self.transaction
