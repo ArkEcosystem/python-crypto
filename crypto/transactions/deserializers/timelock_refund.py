@@ -10,16 +10,15 @@ class TimelockRefundDeserializer(BaseDeserializer):
     def deserialize(self):
         starting_position = int(self.asset_offset / 2)
 
-        username_length = read_bit8(self.serialized, starting_position) & 0xff
-        start_index = self.asset_offset + 2
-        end_index = start_index + (username_length * 2)
-        username = hexlify(self.serialized)[start_index:end_index]
-        username = unhexlify(username)
+        lock_transaction_id = hexlify(self.serialized)[starting_position*2:starting_position*2+64]
 
-        self.transaction.asset['delegate'] = {'username': username.decode()}
+        self.transaction.asset['refund'] = {
+            'lockTransactionId': lock_transaction_id.decode()
+        }
 
         self.transaction.parse_signatures(
             hexlify(self.serialized),
-            self.asset_offset + (username_length + 1) * 2
+            self.asset_offset + 64
         )
+
         return self.transaction
