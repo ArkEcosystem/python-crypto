@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_TIMELOCK_REFUND
+from crypto.constants import TRANSACTION_TIMELOCK_REFUND, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -6,12 +6,22 @@ class TimelockRefund(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_TIMELOCK_REFUND
 
-    def __init__(self, fee=None):
+    def __init__(self, lock_transaction_id, fee=None):
         """Create a timelock transaction
 
         Args:
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
+
+        self.transaction.typeGroup = self.get_type_group()
+
+        self.transaction.asset['refund'] = {
+            'lockTransactionId': lock_transaction_id,
+        }
+
         if fee:
             self.transaction.fee = fee
+
+    def get_type_group(self):
+        return TRANSACTION_TYPE_GROUP.CORE.value
