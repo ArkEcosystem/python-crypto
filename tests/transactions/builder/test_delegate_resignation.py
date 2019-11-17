@@ -6,8 +6,8 @@ def test_delegate_resignation_transaction():
     """Test if delegate resignation transaction gets built
     """
     transaction = DelegateResignation()
-    transaction.sign('testing')
     transaction.set_nonce(123)
+    transaction.sign('testing')
     transaction_dict = transaction.to_dict()
     assert transaction_dict['nonce'] == 123
     assert transaction_dict['signature']

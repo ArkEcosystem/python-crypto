@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_IPFS
+from crypto.constants import TRANSACTION_IPFS, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -6,7 +6,7 @@ class IPFS(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_IPFS
 
-    def __init__(self, fee=None):
+    def __init__(self, ipfs_id, fee=None):
         """Create an ipfs transaction
 
         Args:
@@ -15,3 +15,8 @@ class IPFS(BaseTransactionBuilder):
         super().__init__()
         if fee:
             self.transaction.fee = fee
+        self.transaction.asset['ipfs'] = ipfs_id
+        self.transaction.typeGroup = self.get_type_group()
+
+    def get_type_group(self):
+        return TRANSACTION_TYPE_GROUP.CORE.value
