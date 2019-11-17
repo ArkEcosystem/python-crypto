@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION
+from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.multi_signature_registration import MultiSignatureRegistration
 
 
@@ -11,9 +11,14 @@ def test_multi_signature_registration_transaction():
         '03860d76b1df09659ac282cea3da5bd84fc45729f348a4a8e5f802186be72dc17f',
     ]
     transaction = MultiSignatureRegistration(2, 255, publicKeys)
+    transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
+    transaction.set_nonce(123)
     transaction.sign('secret')
     transaction.second_sign('second secret')
     transaction_dict = transaction.to_dict()
+    assert transaction_dict['nonce'] == 123
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_MULTI_SIGNATURE_REGISTRATION
+    assert transaction_dict['typeGroup'] == 1
+    assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     transaction.verify()  # if no exception is raised, it means the transaction is valid
