@@ -2,6 +2,7 @@ from crypto.configuration.fee import get_fee
 from crypto.identity.public_key import PublicKey
 from crypto.transactions.transaction import Transaction
 from crypto.utils.message import Message
+from crypto.constants import TRANSACTION_TYPE_GROUP
 
 
 class BaseTransactionBuilder(object):
@@ -11,7 +12,7 @@ class BaseTransactionBuilder(object):
         self.transaction.type = getattr(self, 'transaction_type', None)
         self.transaction.fee = get_fee(getattr(self, 'transaction_type', None))
         self.transaction.nonce = getattr(self, 'nonce', None)
-        self.transaction.typeGroup = getattr(self, 'typeGroup', None)
+        self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
 
     def to_dict(self):
         return self.transaction.to_dict()
@@ -48,3 +49,10 @@ class BaseTransactionBuilder(object):
 
     def set_nonce(self, nonce):
         self.transaction.nonce = nonce
+
+    def set_type_group(self, type_group):
+        if type(type_group) == int:
+            self.transaction.typeGroup = type_group
+        else:
+            types = {TRANSACTION_TYPE_GROUP.TEST: 0, TRANSACTION_TYPE_GROUP.CORE: 1, TRANSACTION_TYPE_GROUP.RESERVED: 1000}
+            self.transaction.typeGroup = types[type_group]
