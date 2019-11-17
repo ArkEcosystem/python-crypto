@@ -41,9 +41,9 @@ class Serializer(object):
         bytes_data += write_bit64(self.transaction.get('fee'))
 
         if self.transaction.get('vendorField'):
-            vendorFieldLength = len(self.transaction['vendorField'])
+            vendorFieldLength = len(self.transaction.get('vendorField'))
             bytes_data += write_bit8(vendorFieldLength)
-            bytes_data += self.transaction['vendorField']
+            bytes_data += self.transaction['vendorField'].encode()
         elif self.transaction.get('vendorFieldHex'):
             vendorField_hex_length = len(self.transaction['vendorFieldHex'])
             bytes_data += write_bit8(vendorField_hex_length / 2)
