@@ -7,7 +7,10 @@ def test_delegate_resignation_transaction():
     """
     transaction = DelegateResignation()
     transaction.sign('testing')
+    transaction.set_nonce(123)
     transaction_dict = transaction.to_dict()
+    assert transaction_dict['nonce'] == 123
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_DELEGATE_RESIGNATION
-    transaction.verify()  # if no exception is raised, it means the transaction is valid
+    assert transaction_dict['typeGroup'] == 1
+    # transaction.verify()  # if no exception is raised, it means the transaction is valid

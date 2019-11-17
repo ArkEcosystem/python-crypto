@@ -10,7 +10,7 @@ from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
 
 from crypto.constants import (
     TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION,
-    TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
+    TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE, TRANSACTION_MULTI_PAYMENT
 )
 from crypto.exceptions import ArkInvalidTransaction
 from crypto.transactions.deserializer import Deserializer
@@ -36,6 +36,8 @@ TRANSACTION_ATTRIBUTES = {
     'vendorField': None,
     'vendorFieldHex': None,
     'version': None, # set it properly
+    'lockTransactionId': None,
+    'lockSecret': None
 }
 
 
@@ -153,14 +155,8 @@ class Transaction(object):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
         will happen.
         """
-        print("INSIDE TRANSACTION VERIFY")
         transaction = self.to_bytes()
-        print(transaction)
-        print(self.signature)
-        print(self.senderPublicKey)
         message = Message(transaction, self.signature, self.senderPublicKey)
-        print(message.__dict__)
-        print("END TRANSACTION VERIFY")
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
@@ -198,6 +194,8 @@ class Transaction(object):
             bytes_data += write_bit8(self.asset['multiSignature']['min'])
             bytes_data += write_bit8(self.asset['multiSignature']['lifetime'])
             bytes_data += ''.join(self.asset['multiSignature']['publicKeys']).encode()
+        #elif self.type == TRANSACTION_MULTI_PAYMENT: # Not really sure here
+        #    bytes_data += self.asset['payments'].encode()
         return bytes_data
 
     def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):

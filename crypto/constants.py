@@ -42,8 +42,8 @@ TRANSACTION_FEES = {
 
 
 class TRANSACTION_TYPE_GROUP(Enum):
-    def __str__(self):
-        return str(self.value)
+    def __int__(self):
+        return int(self.value)
 
     TEST = 0
     CORE = 1
@@ -51,7 +51,7 @@ class TRANSACTION_TYPE_GROUP(Enum):
 
 class HTLC_LOCK_EXPIRATION_TYPE(Enum):
     def __str__(self):
-        return str(self.value)
+        return int(self.value)
 
     EPOCH_TIMESTAMP = 1
     BLOCK_HEIGHT = 2

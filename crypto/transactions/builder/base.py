@@ -10,6 +10,8 @@ class BaseTransactionBuilder(object):
         self.transaction = Transaction()
         self.transaction.type = getattr(self, 'transaction_type', None)
         self.transaction.fee = get_fee(getattr(self, 'transaction_type', None))
+        self.transaction.nonce = getattr(self, 'nonce', None)
+        self.transaction.typeGroup = getattr(self, 'typeGroup', None)
 
     def to_dict(self):
         return self.transaction.to_dict()
@@ -43,3 +45,6 @@ class BaseTransactionBuilder(object):
 
     def second_verify(self):
         self.transaction.second_verify()
+
+    def set_nonce(self, nonce):
+        self.transaction.nonce = nonce
