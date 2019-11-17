@@ -14,11 +14,14 @@ class BaseTransactionBuilder(object):
         self.transaction.nonce = getattr(self, 'nonce', None)
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
 
+
     def to_dict(self):
         return self.transaction.to_dict()
 
+
     def to_json(self):
         return self.transaction.to_json()
+
 
     def sign(self, passphrase):
         """Sign the transaction using the given passphrase
@@ -31,6 +34,7 @@ class BaseTransactionBuilder(object):
         self.transaction.signature = message.signature
         self.transaction.id = self.transaction.get_id()
 
+
     def second_sign(self, passphrase):
         """Sign the transaction using the given second passphrase
 
@@ -41,14 +45,18 @@ class BaseTransactionBuilder(object):
         self.transaction.signSignature = message.signature
         self.transaction.id = self.transaction.get_id()
 
+
     def verify(self):
         self.transaction.verify()
+
 
     def second_verify(self):
         self.transaction.second_verify()
 
+
     def set_nonce(self, nonce):
         self.transaction.nonce = nonce
+
 
     def set_type_group(self, type_group):
         if type(type_group) == int:

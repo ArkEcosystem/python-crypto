@@ -16,6 +16,7 @@ class MultiSignatureRegistration(BaseTransactionBuilder):
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
+
         self.transaction.asset = {
             'multiSignature': {
                 'min': min_signatures,
@@ -23,6 +24,7 @@ class MultiSignatureRegistration(BaseTransactionBuilder):
                 'publicKeys': publickeys,
             },
         }
+
         # default transaction fee for this type i set in the base builder
         transaction_fee = fee or self.transaction.fee
         self.transaction.fee = (len(publickeys) + 1) * transaction_fee

@@ -20,6 +20,7 @@ class Serializer(object):
             raise ArkSerializerException('No transaction data provided')
         self.transaction = transaction
 
+
     def serialize(self, skip_signature=True, skip_second_signature=True, raw=False):
         """Perform AIP11 compliant serialization
 
@@ -55,6 +56,7 @@ class Serializer(object):
         # TODO: raw was added as I didn't bother to check when the data needs to be binary and when it needs to be in hex, so that's for you to figure out
         return bytes_data if raw else hexlify(bytes_data).decode()
 
+
     def _handle_transaction_type(self, bytes_data):
         """Serialize transaction specific data (eg. delegate registration)
 
@@ -79,6 +81,7 @@ class Serializer(object):
                 serializer = attribute
                 break
         return serializer(self.transaction, bytes_data).serialize()
+
 
     def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
         """Serialize signature data of the transaction

@@ -6,7 +6,7 @@ from binary.unsigned_integer.reader import read_bit8, read_bit32, read_bit64
 from crypto.transactions.deserializers.base import BaseDeserializer
 
 
-class TimelockTransferDeserializer(BaseDeserializer):
+class HtlcLockDeserializer(BaseDeserializer):
 
     def deserialize(self):
         starting_position = int(self.asset_offset / 2)

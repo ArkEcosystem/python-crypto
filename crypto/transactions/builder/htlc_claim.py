@@ -1,12 +1,12 @@
-from crypto.constants import TRANSACTION_TIMELOCK_REFUND, TRANSACTION_TYPE_GROUP
+from crypto.constants import TRANSACTION_HTLC_CLAIM, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class TimelockRefund(BaseTransactionBuilder):
+class HtlcClaim(BaseTransactionBuilder):
 
-    transaction_type = TRANSACTION_TIMELOCK_REFUND
+    transaction_type = TRANSACTION_HTLC_CLAIM
 
-    def __init__(self, lock_transaction_id, fee=None):
+    def __init__(self, lock_transaction_id, unlock_secret, fee=None):
         """Create a timelock transaction
 
         Args:
@@ -16,12 +16,14 @@ class TimelockRefund(BaseTransactionBuilder):
 
         self.transaction.typeGroup = self.get_type_group()
 
-        self.transaction.asset['refund'] = {
+        self.transaction.asset['claim'] = {
             'lockTransactionId': lock_transaction_id,
+            'unlockSecret': unlock_secret
         }
 
         if fee:
             self.transaction.fee = fee
+
 
     def get_type_group(self):
         return TRANSACTION_TYPE_GROUP.CORE.value

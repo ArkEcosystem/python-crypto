@@ -3,7 +3,7 @@ from binascii import unhexlify
 from crypto.transactions.serializers.base import BaseSerializer
 
 
-class TimelockRefundSerializer(BaseSerializer):
+class HtlcRefundSerializer(BaseSerializer):
     """Serializer handling timelock claim data
     """
 

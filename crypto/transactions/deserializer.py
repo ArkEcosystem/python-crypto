@@ -20,6 +20,7 @@ class Deserializer(object):
     def __init__(self, serialized):
         self.serialized = unhexlify(serialized)
 
+
     def deserialize(self):
         """Deserialize transaction
 
@@ -62,6 +63,7 @@ class Deserializer(object):
 
         return transaction
 
+
     def _handle_transaction_type(self, asset_offset, transaction):
         """Handle deserialization for a given transaction type
 
@@ -86,6 +88,7 @@ class Deserializer(object):
                 deserializer = attribute
                 break
         return deserializer(self.serialized, asset_offset, transaction).deserialize()
+
 
     def _handle_version_one(self, transaction):
         """Handle deserialization for version one
@@ -126,6 +129,7 @@ class Deserializer(object):
             )
 
         return transaction
+
 
     def _handle_version_two(self, transaction):
         """Handle deserialization for version two

@@ -51,6 +51,7 @@ class Transaction(object):
                 attribute_value = kwargs[attribute]
             setattr(self, attribute, attribute_value)
 
+
     def get_id(self):
         """Convert the byte representation to a unique identifier
 
@@ -58,6 +59,7 @@ class Transaction(object):
             str:
         """
         return sha256(self.to_bytes(skip_signature=False, skip_second_signature=False)).hexdigest()
+
 
     def to_dict(self):
         """Convert the transaction into a dictionary representation
@@ -74,9 +76,11 @@ class Transaction(object):
             data[key] = attribute.decode() if isinstance(attribute, bytes) else attribute
         return data
 
+
     def to_json(self):
         data = self.to_dict()
         return json.dumps(data)
+
 
     def to_bytes(self, skip_signature=True, skip_second_signature=True):
         """Convert the transaction to its byte representation
@@ -89,6 +93,7 @@ class Transaction(object):
             bytes: bytes representation of the transaction
         """
         return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, raw=True)
+
 
     def parse_signatures(self, serialized, start_offset):
         """Parse the signature, second signature and multi signatures
@@ -144,12 +149,15 @@ class Transaction(object):
             if not signatures:
                 break
 
+
     def serialize(self, skip_signature=True, skip_second_signature=True):
         data = self.to_dict()
         return Serializer(data).serialize(skip_signature, skip_second_signature)
 
+
     def deserialize(self, serialized):
         return Deserializer(serialized).deserialize()
+
 
     def verify(self):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
@@ -160,6 +168,7 @@ class Transaction(object):
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
+
 
     def second_verify(self, passphrase):
         """Verify the transaction using the 2nd passphrase
@@ -172,6 +181,7 @@ class Transaction(object):
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
+
 
     def _handle_transaction_type(self, bytes_data):
         """Handled each transaction type differently
@@ -197,6 +207,7 @@ class Transaction(object):
         #elif self.type == TRANSACTION_MULTI_PAYMENT: # Not really sure here
         #    bytes_data += self.asset['payments'].encode()
         return bytes_data
+
 
     def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
         """Internal method, used to handle the signature

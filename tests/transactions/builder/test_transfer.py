@@ -14,6 +14,7 @@ def test_transfer_transaction():
     transaction.set_nonce(123)
     transaction.sign('This is a top secret passphrase')
     transaction_dict = transaction.to_dict()
+
     assert transaction_dict['nonce'] == 123
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_TRANSFER

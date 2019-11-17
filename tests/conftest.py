@@ -208,7 +208,7 @@ def transaction_type_7():
 
 @pytest.fixture
 def transaction_type_8():
-    """Transaction of type "timelock transfer"
+    """Transaction of type "HTLC lock"
     """
     data = {
         'version': 2,
@@ -238,7 +238,7 @@ def transaction_type_8():
 
 @pytest.fixture
 def transaction_type_9():
-    """Transaction of type "timelock claim"
+    """Transaction of type "HTLC claim"
     """
     data = {
         'version': 2,
@@ -264,7 +264,7 @@ def transaction_type_9():
 
 @pytest.fixture
 def transaction_type_10():
-    """Transaction of type "timelock refund"
+    """Transaction of type "HTLC refund"
     """
     data = {
         'version': 2,

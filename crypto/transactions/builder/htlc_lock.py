@@ -1,10 +1,10 @@
-from crypto.constants import TRANSACTION_TIMELOCK_TRANSFER, TRANSACTION_TYPE_GROUP
+from crypto.constants import TRANSACTION_HTLC_LOCK, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
-class TimelockTransfer(BaseTransactionBuilder):
+class HtlcLock(BaseTransactionBuilder):
 
-    transaction_type = TRANSACTION_TIMELOCK_TRANSFER
+    transaction_type = TRANSACTION_HTLC_LOCK
 
     def __init__(self, recipient_id, secret_hash, expiration_type, expiration_value, fee=None):
         """Create a timelock transaction
@@ -29,8 +29,10 @@ class TimelockTransfer(BaseTransactionBuilder):
         if fee:
             self.transaction.fee = fee
 
+
     def get_type_group(self):
         return TRANSACTION_TYPE_GROUP.CORE.value
+
 
     # @TODO: Not sure of that one, need to verify
     def vendor_field(self, vendor_field):

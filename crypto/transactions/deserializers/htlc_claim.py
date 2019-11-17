@@ -2,7 +2,7 @@ from binascii import hexlify
 
 from crypto.transactions.deserializers.base import BaseDeserializer
 
-class TimelockClaimDeserializer(BaseDeserializer):
+class HtlcClaimDeserializer(BaseDeserializer):
 
     def deserialize(self):
         starting_position = int(self.asset_offset)

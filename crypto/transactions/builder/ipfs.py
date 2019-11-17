@@ -13,10 +13,13 @@ class IPFS(BaseTransactionBuilder):
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
-        if fee:
-            self.transaction.fee = fee
+
         self.transaction.asset['ipfs'] = ipfs_id
         self.transaction.typeGroup = self.get_type_group()
+
+        if fee:
+            self.transaction.fee = fee
+
 
     def get_type_group(self):
         return TRANSACTION_TYPE_GROUP.CORE.value

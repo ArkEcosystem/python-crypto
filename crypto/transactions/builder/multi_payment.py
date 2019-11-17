@@ -16,13 +16,15 @@ class MultiPayment(BaseTransactionBuilder):
 
         self.transaction.typeGroup = self.get_type_group()
 
+        self.transaction.asset['payments'] = []
+
         if fee:
             self.transaction.fee = fee
 
-        self.transaction.asset['payments'] = []
 
     def get_type_group(self):
         return TRANSACTION_TYPE_GROUP.CORE.value
+
 
     def add_payment(self, amount, recipient_id):
         self.transaction.asset['payments'].append({'amount': amount, 'recipientId': recipient_id})

@@ -10,6 +10,7 @@ def test_delegate_resignation_transaction():
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.sign('testing')
     transaction_dict = transaction.to_dict()
+
     assert transaction_dict['nonce'] == 123
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_DELEGATE_RESIGNATION
