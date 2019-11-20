@@ -54,8 +54,24 @@ class BaseTransactionBuilder(object):
         self.transaction.second_verify()
 
 
+    def set_version(self, version=2):
+        self.transaction.version = version
+
+
     def set_nonce(self, nonce):
         self.transaction.nonce = nonce
+
+
+    def set_amount(self, amount):
+        self.transaction.amount = amount
+
+
+    def set_expiration(self, expiration):
+        if type(expiration) == int:
+            self.transaction.expiration = expiration
+        else:
+            types = {EPOCH_TIMESTAMP: 1, BLOCK_HEIGHT: 2}
+            self.transaction.expiration = types[expiration]
 
 
     def set_type_group(self, type_group):
