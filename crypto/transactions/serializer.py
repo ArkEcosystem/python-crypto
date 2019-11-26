@@ -31,6 +31,7 @@ class Serializer(object):
         bytes_data = bytes()
 
         bytes_data += write_bit8(0xff)
+
         bytes_data += write_bit8(self.transaction.get('version') or 0x01)
         bytes_data += write_bit8(self.transaction.get('network') or network_config['version'])
         bytes_data += write_bit32(self.transaction.get('typeGroup') or 0x01)
@@ -101,7 +102,6 @@ class Serializer(object):
             bytes_data += unhexlify(self.transaction['signSignature'])
 
         if self.transaction.get('signatures'):
-            bytes_data += write_bit8(0xff)
             bytes_data += unhexlify(''.join(self.transaction['signatures']))
 
         return bytes_data

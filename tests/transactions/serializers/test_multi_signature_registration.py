@@ -2,5 +2,5 @@ from crypto.transactions.serializer import Serializer
 
 
 def test_serializer(transaction_type_4):
-    result = Serializer(transaction_type_4).serialize(False, False)
+    result = Serializer(transaction_type_4).serialize(False, True)
     assert result == transaction_type_4['serialized']
