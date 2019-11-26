@@ -1,8 +1,13 @@
 from crypto.configuration.fee import get_fee
 from crypto.identity.public_key import PublicKey
+from crypto.identity.private_key import PrivateKey
 from crypto.transactions.transaction import Transaction
 from crypto.utils.message import Message
 from crypto.constants import TRANSACTION_TYPE_GROUP
+
+import hashlib
+from binascii import unhexlify, hexlify
+from crypto.schnorr import schnorr
 
 
 class BaseTransactionBuilder(object):
@@ -22,6 +27,19 @@ class BaseTransactionBuilder(object):
     def to_json(self):
         return self.transaction.to_json()
 
+    def schnorr_sign(self, passphrase):  # transaction = self for base.py
+        #print(self.transaction)
+        #transaction = Transaction(*)
+        #msg = hashlib.sha256(unhexlify(transaction.serialize())).digest()
+        #print(passphrase)
+        #print(self.transaction.senderPublicKey)
+        self.transaction.senderPublicKey = PublicKey.from_passphrase(passphrase)
+        #print(self.transaction.senderPublicKey)
+        msg = hashlib.sha256(self.transaction.to_bytes()).digest()
+        secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
+        self.transaction.signature = hexlify(schnorr.bcrypto410_sign(msg, secret))
+        self.transaction.id = self.transaction.get_id()
+        #print(self.transaction)
 
     def sign(self, passphrase):
         """Sign the transaction using the given passphrase
@@ -49,6 +67,11 @@ class BaseTransactionBuilder(object):
     def verify(self):
         self.transaction.verify()
 
+    def schnorr_verify(self):
+        self.transaction.schnorr_verify()
+
+    def schnorr_verify_bis(self):
+        self.transaction.test_verify_bis()
 
     def second_verify(self):
         self.transaction.second_verify()

@@ -1,5 +1,5 @@
 import json
-from binascii import unhexlify
+from binascii import unhexlify, hexlify
 from hashlib import sha256
 from struct import pack
 
@@ -16,7 +16,9 @@ from crypto.exceptions import ArkInvalidTransaction
 from crypto.transactions.deserializer import Deserializer
 from crypto.transactions.serializer import Serializer
 from crypto.utils.message import Message
-
+from crypto.schnorr import schnorr
+from crypto.identity.private_key import PrivateKey
+from crypto.identity.public_key import PublicKey
 
 TRANSACTION_ATTRIBUTES = {
     'amount': 0,
@@ -157,6 +159,47 @@ class Transaction(object):
 
     def deserialize(self, serialized):
         return Deserializer(serialized).deserialize()
+    """
+    def schnorr_verify(self):
+        transaction = self.serialize(False, True)
+        print("INSIDE VERIFY")
+        print(transaction)
+        message = sha256(unhexlify(transaction)).digest()
+        print(self.signature)
+        print(len(self.signature))
+        print(type(self.signature))
+        #verification = schnorr.bcrypto410_verify(message, unhexlify(self.senderPublicKey.encode()), self.signature)
+        verification = schnorr.b410_schnorr_verify(message, self.senderPublicK
+        print(verification)
+        if not verification:
+            raise ArkInvalidTransaction('Transaction could not be verified')
+        return True
+
+    def test_verify(self, passphrase):
+        msg = sha256(unhexlify(self.serialize())).digest()
+ #       print(msg)
+        secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
+        sig = schnorr.bcrypto410_sign(msg, secret)
+        public_key = PublicKey.from_passphrase(passphrase)
+        verification = schnorr.bcrypto410_verify(msg, unhexlify(public_key.encode()), sig)
+        print(verification)
+        if not verification:
+            raise ArkInvalidTransaction('Transaction could not be verified')
+        return verification
+    """
+    def test_verify_bis(self):
+        msg = unhexlify(self.serialize())
+        print(msg)
+        print(unhexlify(self.senderPublicKey))
+        print(unhexlify(self.signature))
+        #print(self)
+        #print(msg)
+        #print(self.signature)
+        verification = schnorr.b410_schnorr_verify(msg, self.senderPublicKey, self.signature)
+        if verification == True:
+            print("It's true")
+            return True
+
 
 
     def verify(self):
