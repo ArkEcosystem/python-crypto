@@ -113,12 +113,12 @@ def transaction_type_4():
         'signature': 'f5e9859c955bf8917b308ea21c88daf58661686c2017e476dcf735ad7f00aebf8e6effda3fe99e5f33f6007db7db9c9155796d9b5d31c53bd6156364a6a765d0',  # noqa
         'asset': {
             'multiSignature': {
-                'min': 2,
                 'publicKeys': [
                     '0205d9bbe71c343ac9a6a83a4344fd404c3534fc7349827097d0835d160bc2b896',
                     '03df0a1eb42d99b5de395cead145ba1ec2ea837be308c7ce3a4e8018b7efc7fdb8',
                     '03860d76b1df09659ac282cea3da5bd84fc45729f348a4a8e5f802186be72dc17f'
                 ],
+                'min': 2,
             }
         },
         'signatures': [
