@@ -3,7 +3,7 @@ from crypto.transactions.transaction import Transaction
 
 def test_transaction_serialize(transaction_type_0):
     transaction = Transaction(**transaction_type_0)
-    serialized = transaction.serialize(False, True)
+    serialized = transaction.serialize(False, True, True)
     assert serialized == transaction_type_0['serialized']
 
 
@@ -11,6 +11,7 @@ def test_transaction_deserialize(transaction_type_0):
     transaction = Transaction()
     deserialized = transaction.deserialize(transaction_type_0['serialized'])
     data = deserialized.to_dict()
+    print(data)
     assert data['amount'] == transaction_type_0['amount']
     assert data['senderPublicKey'] == transaction_type_0['senderPublicKey']
     assert data['recipientId'] == transaction_type_0['recipientId']

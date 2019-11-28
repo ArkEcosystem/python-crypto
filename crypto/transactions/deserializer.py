@@ -136,25 +136,7 @@ class Deserializer(object):
         Returns:
             object: Transaction resource object of currently deserialized data
         """
-        if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            transaction.signatures = [] if transaction.signatures is None else transaction.signatures
-            multi_sig_part = hexlify(self.serialized)[448:].decode()
-            index = 0
-            index_size = 2
-            signature_size = 128
-            while index != len(multi_sig_part):
-                signature_index = multi_sig_part[index:index + index_size]
-                #print(signature_index)
-                signature = multi_sig_part[index + index_size:index + index_size + signature_size]
-                #print(signature)
-                #print("Index : ", index + index_size)
-                #print("Indexo : ", index_size + signature_size)
-                index += index_size + signature_size
-                #print(index)
-                signature_formatted = signature_index + signature
-                transaction.signatures.append(signature_formatted)
-        print("HERE")
-        print(transaction.signature)
+
         transaction.id = sha256(unhexlify(transaction.serialize(False, True, False))).hexdigest()
-        transaction.signature = hexlify(self.serialized)[512:640].decode()
+
         return transaction
