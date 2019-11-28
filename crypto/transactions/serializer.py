@@ -21,7 +21,7 @@ class Serializer(object):
         self.transaction = transaction
 
 
-    def serialize(self, skip_signature=True, skip_second_signature=True, raw=False):
+    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True, raw=False):
         """Perform AIP11 compliant serialization
 
         Returns:
@@ -52,13 +52,10 @@ class Serializer(object):
         else:
             bytes_data += write_bit8(0x00)
         bytes_data = self._handle_transaction_type(bytes_data)
-        #print("BYTES DATA")
-        #print(hexlify(bytes_data))
-        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature)
+        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature, skip_multi_signature)
 
 
         # TODO: raw was added as I didn't bother to check when the data needs to be binary and when it needs to be in hex, so that's for you to figure out
-        print(hexlify(bytes_data))
         return bytes_data if raw else hexlify(bytes_data).decode()
 
 
@@ -88,7 +85,7 @@ class Serializer(object):
         return serializer(self.transaction, bytes_data).serialize()
 
 
-    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
+    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature):
         """Serialize signature data of the transaction
 
         Args:
@@ -105,7 +102,7 @@ class Serializer(object):
         elif self.transaction.get('signSignature'):
             bytes_data += unhexlify(self.transaction['signSignature'])
 
-        if self.transaction.get('signatures'):
+        if not skip_multi_signature and self.transaction.get('signatures'):
             bytes_data += unhexlify(''.join(self.transaction['signatures']))
 
         return bytes_data

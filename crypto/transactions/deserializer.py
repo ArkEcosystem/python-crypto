@@ -155,6 +155,6 @@ class Deserializer(object):
                 transaction.signatures.append(signature_formatted)
         print("HERE")
         print(transaction.signature)
-        transaction.id = sha256(unhexlify(transaction.serialize(False, True))).hexdigest()
+        transaction.id = sha256(unhexlify(transaction.serialize(False, True, False))).hexdigest()
         transaction.signature = hexlify(self.serialized)[512:640].decode()
         return transaction

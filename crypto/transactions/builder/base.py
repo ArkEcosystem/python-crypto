@@ -36,11 +36,13 @@ class BaseTransactionBuilder(object):
         #print(self.transaction.senderPublicKey)
         self.transaction.senderPublicKey = PublicKey.from_passphrase(passphrase)
         #print(self.transaction.senderPublicKey)
-        msg = hashlib.sha256(self.transaction.to_bytes()).digest()
+        msg = hashlib.sha256(self.transaction.to_bytes(False, True, False)).digest()
         secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
+        #print("YOYO")
+        #print(hashlib.sha256(unhexlify(self.transaction.to_bytes(False, True, False))).hexdigest())
         self.transaction.signature = hexlify(schnorr.bcrypto410_sign(msg, secret))
         self.transaction.id = self.transaction.get_id()
-        #print(self.transaction)
+
 
     def sign(self, passphrase):
         """Sign the transaction using the given passphrase

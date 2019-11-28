@@ -60,7 +60,7 @@ class Transaction(object):
         Returns:
             str:
         """
-        return sha256(self.to_bytes(skip_signature=False, skip_second_signature=False)).hexdigest()
+        return sha256(self.to_bytes(skip_signature=False, skip_second_signature=False, skip_multi_signature=False)).hexdigest()
 
 
     def to_dict(self):
@@ -84,7 +84,7 @@ class Transaction(object):
         return json.dumps(data)
 
 
-    def to_bytes(self, skip_signature=True, skip_second_signature=True):
+    def to_bytes(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
         """Convert the transaction to its byte representation
 
         Args:
@@ -94,7 +94,7 @@ class Transaction(object):
         Returns:
             bytes: bytes representation of the transaction
         """
-        return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, raw=True)
+        return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)
 
 
     def parse_signatures(self, serialized, start_offset):
@@ -154,9 +154,9 @@ class Transaction(object):
         """
 
 
-    def serialize(self, skip_signature=True, skip_second_signature=True):
+    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
         data = self.to_dict()
-        return Serializer(data).serialize(skip_signature, skip_second_signature)
+        return Serializer(data).serialize(skip_signature, skip_second_signature, skip_multi_signature)
 
 
     def deserialize(self, serialized):
@@ -252,7 +252,7 @@ class Transaction(object):
         return bytes_data
 
 
-    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
+    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature):
         """Internal method, used to handle the signature
 
         Args:
@@ -270,4 +270,6 @@ class Transaction(object):
             bytes_data += write_high(self.signature)
         if not skip_second_signature and self.signSignature:
             bytes_data += write_high(self.signSignature)
+        if not skip_multi_signature and self.signatures:
+            bytes_data += write_high(self.signatures)
         return bytes_data
