@@ -52,9 +52,13 @@ class Serializer(object):
         else:
             bytes_data += write_bit8(0x00)
         bytes_data = self._handle_transaction_type(bytes_data)
+        #print("BYTES DATA")
+        #print(hexlify(bytes_data))
         bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature)
 
+
         # TODO: raw was added as I didn't bother to check when the data needs to be binary and when it needs to be in hex, so that's for you to figure out
+        print(hexlify(bytes_data))
         return bytes_data if raw else hexlify(bytes_data).decode()
 
 

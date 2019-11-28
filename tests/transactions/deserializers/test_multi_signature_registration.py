@@ -8,6 +8,7 @@ def test_multi_signature_registration_deserializer():
     actual = deserializer.deserialize()
     data = actual.to_dict()
     print(hexlify(actual.to_bytes()))
+    print(actual.to_dict())
 
 
     assert data['amount'] == 0

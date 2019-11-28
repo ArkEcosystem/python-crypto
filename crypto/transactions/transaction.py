@@ -129,7 +129,7 @@ class Transaction(object):
             secondSignature_length = int(self.signSignature[2:4], base=16)
             self.signSignature = self.signSignature[:secondSignature_length * 2]
             multi_signature_offset += secondSignature_length * 2
-
+        """
         signatures = serialized[:start_offset + multi_signature_offset]
 
         if not signatures:
@@ -151,6 +151,7 @@ class Transaction(object):
             signatures = signatures[(mlength + 2) * 2:]
             if not signatures:
                 break
+        """
 
 
     def serialize(self, skip_signature=True, skip_second_signature=True):
@@ -247,8 +248,7 @@ class Transaction(object):
         elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
             bytes_data += write_bit8(self.asset['multiSignature']['min'])
             bytes_data += ''.join(self.asset['multiSignature']['publicKeys']).encode()
-        #elif self.type == TRANSACTION_MULTI_PAYMENT: # Not really sure here
-        #    bytes_data += self.asset['payments'].encode()
+
         return bytes_data
 
 
@@ -264,7 +264,9 @@ class Transaction(object):
         Returns:
             bytes: bytes string
         """
+        print("we here")
         if not skip_signature and self.signature:
+            print("OHHH NO YOU DIDNT")
             bytes_data += write_high(self.signature)
         if not skip_second_signature and self.signSignature:
             bytes_data += write_high(self.signSignature)

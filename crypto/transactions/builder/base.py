@@ -28,7 +28,7 @@ class BaseTransactionBuilder(object):
     def to_json(self):
         return self.transaction.to_json()
 
-    def schnorr_sign(self, passphrase):  # transaction = self for base.py
+    def schnorr_sign(self, passphrase):
         #print(self.transaction)
         #transaction = Transaction(*)
         #msg = hashlib.sha256(unhexlify(transaction.serialize())).digest()
@@ -75,11 +75,8 @@ class BaseTransactionBuilder(object):
         secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
         signature = hexlify(schnorr.bcrypto410_sign(msg, secret))
 
-        #print(signature.decode())
-        #print(type(signature))
-
-        #signature_formatted = str(index).encode() + signature
-        self.transaction.signatures.append(signature.decode())
+        index_formatted = hex(index).replace('x', '')
+        self.transaction.signatures.append(index_formatted + signature.decode())
 
 
     def verify(self):

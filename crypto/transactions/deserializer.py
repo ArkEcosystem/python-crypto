@@ -11,7 +11,7 @@ from crypto.constants import (
 )
 from crypto.identity.address import address_from_public_key
 from crypto.transactions.deserializers.base import BaseDeserializer
-
+from crypto.schnorr import schnorr
 
 class Deserializer(object):
 
@@ -144,14 +144,17 @@ class Deserializer(object):
             signature_size = 128
             while index != len(multi_sig_part):
                 signature_index = multi_sig_part[index:index + index_size]
-                print(signature_index)
+                #print(signature_index)
                 signature = multi_sig_part[index + index_size:index + index_size + signature_size]
-                print(signature)
-                print("Index : ", index + index_size)
-                print("Indexo : ", index_size + signature_size)
+                #print(signature)
+                #print("Index : ", index + index_size)
+                #print("Indexo : ", index_size + signature_size)
                 index += index_size + signature_size
-                print(index)
+                #print(index)
                 signature_formatted = signature_index + signature
                 transaction.signatures.append(signature_formatted)
-        transaction.id = sha256(unhexlify(transaction.serialize(False, True))).hexdigest()  # todo serialize
+        print("HERE")
+        print(transaction.signature)
+        transaction.id = sha256(unhexlify(transaction.serialize(False, True))).hexdigest()
+        transaction.signature = hexlify(self.serialized)[512:640].decode()
         return transaction

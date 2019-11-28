@@ -25,7 +25,6 @@ def test_multi_signature_registration_transaction():
     transaction.multi_sign('this is a top secret passphrase 3', 2)
 
     transaction.schnorr_sign('this is a top secret passphrase 1')
-    print(transaction.to_dict())
     #transaction.sign('this is a top secret passphrase')
     #transaction.second_sign('second secret')
     transaction_dict = transaction.to_dict()
