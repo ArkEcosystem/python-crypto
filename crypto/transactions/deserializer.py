@@ -20,7 +20,6 @@ class Deserializer(object):
     def __init__(self, serialized):
         self.serialized = unhexlify(serialized)
 
-
     def deserialize(self):
         """Deserialize transaction
 
@@ -63,7 +62,6 @@ class Deserializer(object):
 
         return transaction
 
-
     def _handle_transaction_type(self, asset_offset, transaction):
         """Handle deserialization for a given transaction type
 
@@ -88,7 +86,6 @@ class Deserializer(object):
                 deserializer = attribute
                 break
         return deserializer(self.serialized, asset_offset, transaction).deserialize()
-
 
     def _handle_version_one(self, transaction):
         """Handle deserialization for version one
@@ -130,7 +127,6 @@ class Deserializer(object):
 
         return transaction
 
-
     def _handle_version_two(self, transaction):
         """Handle deserialization for version two
 
@@ -140,5 +136,22 @@ class Deserializer(object):
         Returns:
             object: Transaction resource object of currently deserialized data
         """
+        if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
+            transaction.signatures = [] if transaction.signatures is None else transaction.signatures
+            multi_sig_part = hexlify(self.serialized)[448:].decode()
+            index = 0
+            index_size = 2
+            signature_size = 128
+            while index != len(multi_sig_part):
+                signature_index = multi_sig_part[index:index + index_size]
+                print(signature_index)
+                signature = multi_sig_part[index + index_size:index + index_size + signature_size]
+                print(signature)
+                print("Index : ", index + index_size)
+                print("Indexo : ", index_size + signature_size)
+                index += index_size + signature_size
+                print(index)
+                signature_formatted = signature_index + signature
+                transaction.signatures.append(signature_formatted)
         transaction.id = sha256(unhexlify(transaction.serialize(False, True))).hexdigest()  # todo serialize
         return transaction

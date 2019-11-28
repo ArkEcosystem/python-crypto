@@ -18,6 +18,7 @@ class BaseTransactionBuilder(object):
         self.transaction.fee = get_fee(getattr(self, 'transaction_type', None))
         self.transaction.nonce = getattr(self, 'nonce', None)
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
+        self.transaction.signatures = getattr(self, 'signatures', [])
 
 
     def to_dict(self):
@@ -63,6 +64,23 @@ class BaseTransactionBuilder(object):
         self.transaction.signSignature = message.signature
         self.transaction.id = self.transaction.get_id()
 
+    def multi_sign(self, passphrase, index):
+        if not self.transaction.signatures:
+            self.transaction.signatures = []
+        self.set_version(2)
+
+        index = len(self.transaction.signatures) if index == -1 else index
+
+        msg = hashlib.sha256(self.transaction.to_bytes()).digest()
+        secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
+        signature = hexlify(schnorr.bcrypto410_sign(msg, secret))
+
+        #print(signature.decode())
+        #print(type(signature))
+
+        #signature_formatted = str(index).encode() + signature
+        self.transaction.signatures.append(signature.decode())
+
 
     def verify(self):
         self.transaction.verify()
@@ -87,6 +105,13 @@ class BaseTransactionBuilder(object):
 
     def set_amount(self, amount):
         self.transaction.amount = amount
+
+
+    def set_network(self, network):
+        self.transaction.network = network
+
+    def set_sender_public_key(self, public_key):
+        self.transaction.senderPublicKey = public_key
 
 
     def set_expiration(self, expiration):

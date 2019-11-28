@@ -7,13 +7,16 @@ def test_transfer_transaction():
     """Test if a transfer transaction gets built
     """
     transaction = Transfer(
-        recipientId='AXoXnFi4z1Z6aFvjEYkDVCtBGW2PaRiM25',
-        amount=1000,
+        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        amount=200000000,
     )
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
+    transaction.set_version(2)
+    transaction.set_network(23)
     transaction.schnorr_sign('this is a top secret passphrase')
     transaction_dict = transaction.to_dict()
+
     print(transaction_dict)
 
     assert transaction_dict['nonce'] == 1

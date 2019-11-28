@@ -43,8 +43,8 @@ class MultiSignatureRegistrationDeserializer(BaseDeserializer):
 
                 if (index > 0):
                     index_start += index * 66
-                signature = hexlify(self.serialized)[index_start:index_start + 66].decode()
-                self.transaction.asset['multiSignature']['publicKeys'].append(signature)
+                public_key = hexlify(self.serialized)[index_start:index_start + 66].decode()
+                self.transaction.asset['multiSignature']['publicKeys'].append(public_key)
 
         self.transaction.parse_signatures(
             hexlify(self.serialized),

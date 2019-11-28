@@ -119,7 +119,8 @@ class Transaction(object):
         self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
         multi_signature_offset += signature_length * 2
         self.signSignature = serialized[start_offset + (signature_length * 2):]
-
+        if self.type == 4:
+            self.signSignature = None
         if not self.signSignature:
             self.signSignature = None
         elif 'ff' == self.signSignature[:2]:
@@ -245,7 +246,6 @@ class Transaction(object):
             bytes_data += ''.join(self.asset['votes']).encode()
         elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
             bytes_data += write_bit8(self.asset['multiSignature']['min'])
-            bytes_data += write_bit8(self.asset['multiSignature']['lifetime'])
             bytes_data += ''.join(self.asset['multiSignature']['publicKeys']).encode()
         #elif self.type == TRANSACTION_MULTI_PAYMENT: # Not really sure here
         #    bytes_data += self.asset['payments'].encode()
