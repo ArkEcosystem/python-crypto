@@ -5,19 +5,28 @@ from crypto.transactions.deserializers.base import BaseDeserializer
 class HtlcClaimDeserializer(BaseDeserializer):
 
     def deserialize(self):
-        starting_position = int(self.asset_offset)
+        print("INSIDE DESERIALIZER")
+        print("FULL SERIALIZED")
+        print(self.serialized)
+        starting_position = int(self.asset_offset / 2)
+        lock_transaction_id = hexlify(self.serialized[starting_position:starting_position + 32])
 
-        lock_transaction_id = hexlify(self.serialized)[starting_position:starting_position + (32 * 2)]
-        unlock_secret = hexlify(self.serialized)[starting_position:starting_position + 64 * 2]
+        unlock_secret = self.serialized[starting_position + 32:starting_position + 64]
+        print(hexlify(self.serialized[starting_position + 32:starting_position + 64]))
+        print(hexlify(self.serialized[starting_position + 64:]))
 
         self.transaction.asset['claim'] = {
             'lockTransactionId': lock_transaction_id.decode(),
             'unlockSecret': unlock_secret.decode()
         }
 
+        print("=====================")
+        print(self.transaction.signature)
         self.transaction.parse_signatures(
             hexlify(self.serialized),
-            self.asset_offset + 64 + 64
+            self.asset_offset + 111 + 16
         )
+        print(self.transaction.signature)
+        print("=====================")
 
         return self.transaction

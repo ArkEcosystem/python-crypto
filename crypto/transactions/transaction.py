@@ -107,8 +107,10 @@ class Transaction(object):
         Returns:
             None: methods returns nothing
         """
-
+        #print("INSIDE PARSE SIGNATURES")
+        #print(serialized)
         self.signature = serialized[start_offset:]
+        #print(self.signature) # Till here all good
         multi_signature_offset = 0
 
         if not len(self.signature):
@@ -116,7 +118,9 @@ class Transaction(object):
             return
 
         signature_length = int(self.signature[2:4], base=16) + 2
+        #print(signature_length)
         self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
+        #print(self.signature)
         multi_signature_offset += signature_length * 2
         self.signSignature = serialized[start_offset + (signature_length * 2):]
         if self.type == 4:
