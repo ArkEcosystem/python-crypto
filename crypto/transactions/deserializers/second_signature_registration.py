@@ -16,6 +16,6 @@ class SecondSignatureRegistrationDeserializer(BaseDeserializer):
             }
         }
 
-        self.transaction.parse_signatures(hexlify(self.serialized), self.asset_offset + 66)
+        self.transaction.parse_signatures(hexlify(self.serialized).decode(), self.asset_offset + 66)
 
         return self.transaction

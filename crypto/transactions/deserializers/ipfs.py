@@ -30,7 +30,7 @@ class IPFSDeserializer(BaseDeserializer):
         }
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + (ipfs_hash_length + 2) * 2
         )
 

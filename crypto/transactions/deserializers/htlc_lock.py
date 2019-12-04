@@ -33,7 +33,7 @@ class HtlcLockDeserializer(BaseDeserializer):
         }
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + (8 + 32 + 1 + 4 + 21) * 2
         )
 

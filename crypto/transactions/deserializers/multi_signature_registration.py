@@ -30,7 +30,7 @@ class MultiSignatureRegistrationDeserializer(BaseDeserializer):
         self.transaction.signatures = [] if self.transaction.signatures is None else self.transaction.signatures
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + 4 + (count * 66)
         )
 

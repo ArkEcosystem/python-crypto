@@ -108,15 +108,15 @@ class Transaction(object):
             None: methods returns nothing
         """
         signature_end_offset = start_offset + (64 * 2)
-        self.signature = serialized[start_offset:signature_end_offset].decode()
+        self.signature = serialized[start_offset:signature_end_offset]
 
         second_signature_end_offset = signature_end_offset + (64 * 2)
         if len(serialized) - signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 64 == 0:
-            self.signSignature = serialized[signature_end_offset:second_signature_end_offset].decode()
+            self.signSignature = serialized[signature_end_offset:second_signature_end_offset]
 
         if len(serialized) - second_signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 65 == 0:
             multi_signatures_offset = second_signature_end_offset + (64 * 2)
-            multi_sig_part = serialized[signature_end_offset:].decode()
+            multi_sig_part = serialized[signature_end_offset:]
             index = 0
             index_size = 2
             signature_size = 128

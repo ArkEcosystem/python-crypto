@@ -27,7 +27,7 @@ class MultiPaymentDeserializer(BaseDeserializer):
             index += 21 + 8
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + ((4 + payment_length * 8 + payment_length * 21) * 2)
         )
 

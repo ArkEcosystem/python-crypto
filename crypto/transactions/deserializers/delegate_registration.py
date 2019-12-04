@@ -19,7 +19,7 @@ class DelegateRegistrationDeserializer(BaseDeserializer):
         self.transaction.asset['delegate'] = {'username': username.decode()}
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + (username_length + 1) * 2
         )
 

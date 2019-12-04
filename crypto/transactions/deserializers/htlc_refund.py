@@ -17,7 +17,7 @@ class HtlcRefundDeserializer(BaseDeserializer):
         }
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + 64
         )
 

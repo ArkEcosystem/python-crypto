@@ -7,7 +7,7 @@ class DelegateResignationDeserializer(BaseDeserializer):
 
     def deserialize(self):
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset
         )
 
