@@ -17,6 +17,8 @@ def test_transfer_transaction():
     transaction.schnorr_sign('this is a top secret passphrase')
     transaction_dict = transaction.to_dict()
 
+    print(transaction_dict['signature'])
+
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_TRANSFER

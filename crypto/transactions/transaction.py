@@ -39,7 +39,8 @@ TRANSACTION_ATTRIBUTES = {
     'vendorFieldHex': None,
     'version': None, # set it properly
     'lockTransactionId': None,
-    'lockSecret': None
+    'lockSecret': None,
+    'expiration': None
 }
 
 
