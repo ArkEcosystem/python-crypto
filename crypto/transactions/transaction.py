@@ -107,13 +107,40 @@ class Transaction(object):
         Returns:
             None: methods returns nothing
         """
-        self.signature = serialized[start_offset:]
-        multi_signature_offset = 0
+        signature_end_offset = start_offset + (64 * 2)
+        self.signature = serialized[start_offset:signature_end_offset]
 
-        if not len(self.signature):
-            self.signature = None
+        second_signature_end_offset = signature_end_offset + (64 * 2)
+        if len(serialized) - signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 64 == 0:
+            self.signSignature = serialized[signature_end_offset:second_signature_end_offset]
+
+        if len(serialized) - second_signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 65 == 0:
+            multi_signatures_offset = second_signature_end_offset + (64 * 2)
+            multi_sig_part = serialized[signature_end_offset:].decode()
+            index = 0
+            index_size = 2
+            signature_size = 128
+
+            while index != len(multi_sig_part):
+                signature_index = multi_sig_part[index:index + index_size]
+                signature = multi_sig_part[index + index_size:index + index_size + signature_size]
+                index += index_size + signature_size
+                signature_formatted = signature_index + signature
+                self.signatures.append(signature_formatted)
+
+            #count = 3
+            #signature_begin = self.asset_offset + (1 + 1 + (33 * count)) * 2
+            #print(signature_begin)
+
+
+
+        """
+        if not len(self.secondSignature):
+            self.secondSignature = None
             return
-
+        """
+        return
+        """
         signature_length = int(self.signature[2:4], base=16) + 2
         self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
         multi_signature_offset += signature_length * 2
@@ -128,6 +155,7 @@ class Transaction(object):
             secondSignature_length = int(self.signSignature[2:4], base=16)
             self.signSignature = self.signSignature[:secondSignature_length * 2]
             multi_signature_offset += secondSignature_length * 2
+        """
         """
         signatures = serialized[:start_offset + multi_signature_offset]
 
