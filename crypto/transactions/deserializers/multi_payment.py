@@ -15,7 +15,9 @@ class MultiPaymentDeserializer(BaseDeserializer):
 
         self.transaction.asset['payments'] = []
 
-        for index, payment in enumerate(range(payment_length), 0):
+        index = 0
+
+        for payment in range(payment_length):
             amount = read_bit64(self.serialized, offset=starting_position + 2 + index)
 
             recipient_start_index = (starting_position + 10 + index) * 2
