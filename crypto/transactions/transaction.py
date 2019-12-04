@@ -96,7 +96,7 @@ class Transaction(object):
         """
         return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)
 
-
+    # @TODO: Might want to redo this method
     def parse_signatures(self, serialized, start_offset):
         """Parse the signature, second signature and multi signatures
 
@@ -107,10 +107,7 @@ class Transaction(object):
         Returns:
             None: methods returns nothing
         """
-        #print("INSIDE PARSE SIGNATURES")
-        #print(serialized)
         self.signature = serialized[start_offset:]
-        #print(self.signature) # Till here all good
         multi_signature_offset = 0
 
         if not len(self.signature):
@@ -118,9 +115,7 @@ class Transaction(object):
             return
 
         signature_length = int(self.signature[2:4], base=16) + 2
-        #print(signature_length)
         self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
-        #print(self.signature)
         multi_signature_offset += signature_length * 2
         self.signSignature = serialized[start_offset + (signature_length * 2):]
         if self.type == 4:
