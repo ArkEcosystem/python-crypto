@@ -14,8 +14,7 @@ def test_ipfs_deserializer():
     assert actual.nonce == 1
     assert actual.senderPublicKey == '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'
     assert actual.fee == 500000000
-    # Not sure here about the b'', is it because of the new way to sign ? Might have to check this
-    assert actual.signature == b'0b6e81b123de99e953d3073a8760d3213ab5f5cf512e65a2dd73aebb410966d8fbc59e775deb4f23c51be0847402b5e1d4ee68732b3e6d8e8914d259d7e373eb'
+    assert actual.signature == '0b6e81b123de99e953d3073a8760d3213ab5f5cf512e65a2dd73aebb410966d8fbc59e775deb4f23c51be0847402b5e1d4ee68732b3e6d8e8914d259d7e373eb'
     assert actual.amount == 0
     assert actual.id == '818228ce634b46c488f3b2df8fd02bd50331ebdedb44df5b9b11b97b01e9fb36'
     assert actual.asset['ipfs'] == 'QmR45FmbVVrixReBwJkhEKde2qwHYaQzGxu4ZoDeswuF9w'  # noqa

@@ -14,8 +14,7 @@ def test_htlc_lock_deserializer():
     assert actual.nonce == 1
     assert actual.senderPublicKey == '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'
     assert actual.fee == 10000000
-    # Not sure here about the b'', is it because of the new way to sign ? Might have to check this
-    assert actual.signature == b'7fe939b22a1da166b6ea58e3964651236fb4e0739f9716dedf92986f37df71ea7993e9a97b4a1686c0ad08028dcae08b7cb4a54b8a4db57e72b839a611e86358'
+    assert actual.signature == '7fe939b22a1da166b6ea58e3964651236fb4e0739f9716dedf92986f37df71ea7993e9a97b4a1686c0ad08028dcae08b7cb4a54b8a4db57e72b839a611e86358'
     assert actual.amount == 200000000
     assert actual.id == 'e1b34afa54bbf34de5c00716b92246c5248c2135221ece169db877ca60a14007'
     assert actual.recipientId == 'AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC'

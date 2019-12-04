@@ -20,11 +20,9 @@ class HtlcClaimDeserializer(BaseDeserializer):
             'unlockSecret': unlock_secret.decode()
         }
 
-        #self.transaction.parse_signatures(
-        #    hexlify(self.serialized),
-        #    self.asset_offset + (64 * 2)
-        #)
-
-        self.transaction.signature = hexlify(self.serialized[starting_position + 64:])
+        self.transaction.parse_signatures(
+            hexlify(self.serialized),
+            self.asset_offset + (64 * 2)
+        )
 
         return self.transaction

@@ -7,8 +7,6 @@ def test_htlc_claim_deserializer():
     deserializer = Deserializer(serialized)
     actual = deserializer.deserialize()
 
-    print(actual.to_dict())
-
     assert actual.version == 2
     assert actual.network == 23
     assert actual.typeGroup == 1
@@ -16,8 +14,7 @@ def test_htlc_claim_deserializer():
     assert actual.nonce == 1
     assert actual.senderPublicKey == '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'
     assert actual.fee == 0
-    # Not sure here about the b'', is it because of the new way to sign ? Might have to check this
-    assert actual.signature == b'381188e6a3c0da8823ab37cf7562724b3920f4fc8a40cb259ae297bd7237b511cbfdbcb46b7afa319ad1c2d8cc3d8cdc33a437c8b17867777b891d03c036dfb9'
+    assert actual.signature == '381188e6a3c0da8823ab37cf7562724b3920f4fc8a40cb259ae297bd7237b511cbfdbcb46b7afa319ad1c2d8cc3d8cdc33a437c8b17867777b891d03c036dfb9'
     assert actual.amount == 0
     assert actual.id == '846c5ee8a328376416735da43056d154d41e264564def42fb28b373c0d895c46'
     assert actual.asset['claim']['lockTransactionId'] == '943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb4'  # noqa

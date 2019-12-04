@@ -14,8 +14,7 @@ def test_multi_payment_deserializer():
     assert actual.nonce == 1
     assert actual.senderPublicKey == '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'
     assert actual.fee == 10000000
-    # Not sure here about the b'', is it because of the new way to sign ? Might have to check this
-    assert actual.signature == b'672e89e66a9c5d7d95c21ccd07a89a111f02823146c06f14689d2cf1efd645fb648258fcf2280486d2cae19f391796d72145d2a8e6f261e887e34cd1998bdb65'
+    assert actual.signature == '672e89e66a9c5d7d95c21ccd07a89a111f02823146c06f14689d2cf1efd645fb648258fcf2280486d2cae19f391796d72145d2a8e6f261e887e34cd1998bdb65'
     assert actual.amount == 0
     assert actual.id == 'e8c7293d428048f8678dc6c88cb8b32bd49c8ae9b02018297c1889d9bd33ba8d'
     assert actual.asset['payments'][0]['amount'] == 1  # noqa
