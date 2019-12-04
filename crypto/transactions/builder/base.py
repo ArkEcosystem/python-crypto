@@ -18,7 +18,7 @@ class BaseTransactionBuilder(object):
         self.transaction.fee = get_fee(getattr(self, 'transaction_type', None))
         self.transaction.nonce = getattr(self, 'nonce', None)
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
-        self.transaction.signatures = getattr(self, 'signatures', [])
+        self.transaction.signatures = getattr(self, 'signatures', None)
         self.transaction.expiration = getattr(self, 'expiration', 0)
 
 
