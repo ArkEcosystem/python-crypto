@@ -17,15 +17,13 @@ def test_transfer_transaction():
     transaction.schnorr_sign('this is a top secret passphrase')
     transaction_dict = transaction.to_dict()
 
-    print(transaction_dict['signature'])
-
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_TRANSFER
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
 
-    #transaction.verify()  # if no exception is raised, it means the transaction is valid
+    transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
 def test_parse_signatures(transaction_type_0):

@@ -12,7 +12,7 @@ def test_ipfs_transaction():
     transaction = IPFS(ipfs_id)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(123)
-    transaction.sign('testing')
+    transaction.schnorr_sign('testing')
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 123
@@ -22,4 +22,4 @@ def test_ipfs_transaction():
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['asset']['ipfs'] == ipfs_id
 
-    # transaction.verify()  # if no exception is raised, it means the transaction is valid
+    transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid

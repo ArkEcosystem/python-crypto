@@ -55,12 +55,6 @@ def point_add(P1, P2):
     return [x3, (lam * (x(P1) - x3) - y(P1)) % p]
 
 def bcrypto410_verify(msg, pubkey, sig):
-    #print("INSIDE METHOD")
-    #print(msg)
-    #print(pubkey)
-    #print(sig)
-    #print(type(sig))
-    #print(len(unhexlify(sig)))
     if len(msg) != 32:
         raise ValueError('The message must be a 32-byte array.')
     if len(sig) != 64:
@@ -78,13 +72,10 @@ def bcrypto410_verify(msg, pubkey, sig):
     return True
 
 def b410_schnorr_verify(message, publicKey, signature):
-   # print("YOOYOYO")
-   # print(unhexlify(signature))
-   # print(len(unhexlify(signature)))
     return bcrypto410_verify(
         hash_sha256(message),
         Point.decode(unhexlify(publicKey)).encode(),
-        unhexlify(signature)#raw
+        unhexlify(signature)
     )
 
 def hash_sha256(b):

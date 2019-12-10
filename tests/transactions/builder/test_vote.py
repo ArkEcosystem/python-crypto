@@ -10,7 +10,7 @@ def test_vote_transaction():
     transaction = Vote(vote)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(123)
-    transaction.sign('testing')
+    transaction.schnorr_sign('testing')
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 123
@@ -20,4 +20,4 @@ def test_vote_transaction():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
 
-    transaction.verify()  # if no exception is raised, it means the transaction is valid
+    transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid

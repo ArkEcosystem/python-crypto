@@ -14,7 +14,7 @@ def test_htlc_lock_transaction():
 
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(123)
-    transaction.sign('testing')
+    transaction.schnorr_sign('testing')
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['recipientId'] == 'AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC'
@@ -27,4 +27,4 @@ def test_htlc_lock_transaction():
     assert transaction_dict['asset']['lock']['expiration']['type'] == 1
     assert transaction_dict['asset']['lock']['expiration']['value'] == 1573455822
 
-    transaction.verify()  # if no exception is raised, it means the transaction is valid
+    transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid

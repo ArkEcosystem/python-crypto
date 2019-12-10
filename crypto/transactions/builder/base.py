@@ -86,26 +86,19 @@ class BaseTransactionBuilder(object):
         self.transaction.verify()
 
     def schnorr_verify(self):
-        self.transaction.schnorr_verify()
-
-    def schnorr_verify_bis(self):
-        self.transaction.test_verify_bis()
+        self.transaction.verify_schnorr()
 
     def second_verify(self):
         self.transaction.second_verify()
 
-
     def set_version(self, version=2):
         self.transaction.version = version
-
 
     def set_nonce(self, nonce):
         self.transaction.nonce = nonce
 
-
     def set_amount(self, amount):
         self.transaction.amount = amount
-
 
     def set_network(self, network):
         self.transaction.network = network
@@ -113,14 +106,12 @@ class BaseTransactionBuilder(object):
     def set_sender_public_key(self, public_key):
         self.transaction.senderPublicKey = public_key
 
-
     def set_expiration(self, expiration):
         if type(expiration) == int:
             self.transaction.expiration = expiration
         else:
             types = {EPOCH_TIMESTAMP: 1, BLOCK_HEIGHT: 2}
             self.transaction.expiration = types[expiration]
-
 
     def set_type_group(self, type_group):
         if type(type_group) == int:

@@ -44,4 +44,4 @@ def test_multi_signature_registration_transaction():
     assert transaction_dict['asset']['multiSignature']['publicKeys'][1] == publicKeys[1]
     assert transaction_dict['asset']['multiSignature']['publicKeys'][2] == '03860d76b1df09659ac282cea3da5bd84fc45729f348a4a8e5f802186be72dc17f'
 
-    #transaction.verify()  # if no exception is raised, it means the transaction is valid
+    transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid

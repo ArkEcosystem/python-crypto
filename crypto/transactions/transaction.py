@@ -54,7 +54,6 @@ class Transaction(object):
                 attribute_value = kwargs[attribute]
             setattr(self, attribute, attribute_value)
 
-
     def get_id(self):
         """Convert the byte representation to a unique identifier
 
@@ -62,7 +61,6 @@ class Transaction(object):
             str:
         """
         return sha256(self.to_bytes(skip_signature=False, skip_second_signature=False, skip_multi_signature=False)).hexdigest()
-
 
     def to_dict(self):
         """Convert the transaction into a dictionary representation
@@ -79,11 +77,9 @@ class Transaction(object):
             data[key] = attribute.decode() if isinstance(attribute, bytes) else attribute
         return data
 
-
     def to_json(self):
         data = self.to_dict()
         return json.dumps(data)
-
 
     def to_bytes(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
         """Convert the transaction to its byte representation
@@ -97,7 +93,6 @@ class Transaction(object):
         """
         return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)
 
-    # @TODO: Might want to redo this method
     def parse_signatures(self, serialized, start_offset):
         """Parse the signature, second signature and multi signatures
 
@@ -129,107 +124,19 @@ class Transaction(object):
                 signature_formatted = signature_index + signature
                 self.signatures.append(signature_formatted)
 
-            #count = 3
-            #signature_begin = self.asset_offset + (1 + 1 + (33 * count)) * 2
-            #print(signature_begin)
-
-
-
-        """
-        if not len(self.secondSignature):
-            self.secondSignature = None
-            return
-        """
         return
-        """
-        signature_length = int(self.signature[2:4], base=16) + 2
-        self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
-        multi_signature_offset += signature_length * 2
-        self.signSignature = serialized[start_offset + (signature_length * 2):]
-        if self.type == 4:
-            self.signSignature = None
-        if not self.signSignature:
-            self.signSignature = None
-        elif 'ff' == self.signSignature[:2]:
-            self.signSignature = None
-        else:
-            secondSignature_length = int(self.signSignature[2:4], base=16)
-            self.signSignature = self.signSignature[:secondSignature_length * 2]
-            multi_signature_offset += secondSignature_length * 2
-        """
-        """
-        signatures = serialized[:start_offset + multi_signature_offset]
-
-        if not signatures:
-            return
-
-        if 'ff' != signatures[:2]:
-            return
-
-        signatures = signatures[2:]
-        self.signatures = []
-
-        while True:
-            mlength = int(signatures[2:4], base=16)
-            if mlength > 0:
-                self.signatures.append(signatures[:(mlength + 2) * 2])
-            else:
-                break
-
-            signatures = signatures[(mlength + 2) * 2:]
-            if not signatures:
-                break
-        """
-
 
     def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
         data = self.to_dict()
         return Serializer(data).serialize(skip_signature, skip_second_signature, skip_multi_signature)
 
-
     def deserialize(self, serialized):
         return Deserializer(serialized).deserialize()
-    """
-    def schnorr_verify(self):
-        transaction = self.serialize(False, True)
-        print("INSIDE VERIFY")
-        print(transaction)
-        message = sha256(unhexlify(transaction)).digest()
-        print(self.signature)
-        print(len(self.signature))
-        print(type(self.signature))
-        #verification = schnorr.bcrypto410_verify(message, unhexlify(self.senderPublicKey.encode()), self.signature)
-        verification = schnorr.b410_schnorr_verify(message, self.senderPublicK
-        print(verification)
-        if not verification:
-            raise ArkInvalidTransaction('Transaction could not be verified')
-        return True
 
-    def test_verify(self, passphrase):
-        msg = sha256(unhexlify(self.serialize())).digest()
- #       print(msg)
-        secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
-        sig = schnorr.bcrypto410_sign(msg, secret)
-        public_key = PublicKey.from_passphrase(passphrase)
-        verification = schnorr.bcrypto410_verify(msg, unhexlify(public_key.encode()), sig)
-        print(verification)
-        if not verification:
+    def verify_schnorr(self):
+        is_valid = schnorr.b410_schnorr_verify(self.to_bytes(), self.senderPublicKey, self.signature)
+        if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
-        return verification
-    """
-    def test_verify_bis(self):
-        msg = unhexlify(self.serialize())
-        print(msg)
-        print(unhexlify(self.senderPublicKey))
-        print(unhexlify(self.signature))
-        #print(self)
-        #print(msg)
-        #print(self.signature)
-        verification = schnorr.b410_schnorr_verify(msg, self.senderPublicKey, self.signature)
-        if verification == True:
-            print("It's true")
-            return True
-
 
 
     def verify(self):
@@ -292,9 +199,7 @@ class Transaction(object):
         Returns:
             bytes: bytes string
         """
-        print("we here")
         if not skip_signature and self.signature:
-            print("OHHH NO YOU DIDNT")
             bytes_data += write_high(self.signature)
         if not skip_second_signature and self.signSignature:
             bytes_data += write_high(self.signSignature)
