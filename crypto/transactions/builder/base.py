@@ -1,13 +1,13 @@
+import hashlib
+from binascii import hexlify, unhexlify
+
 from crypto.configuration.fee import get_fee
-from crypto.identity.public_key import PublicKey
+from crypto.constants import TRANSACTION_TYPE_GROUP
 from crypto.identity.private_key import PrivateKey
+from crypto.identity.public_key import PublicKey
+from crypto.schnorr import schnorr
 from crypto.transactions.transaction import Transaction
 from crypto.utils.message import Message
-from crypto.constants import TRANSACTION_TYPE_GROUP
-
-import hashlib
-from binascii import unhexlify, hexlify
-from crypto.schnorr import schnorr
 
 
 class BaseTransactionBuilder(object):
@@ -21,15 +21,18 @@ class BaseTransactionBuilder(object):
         self.transaction.signatures = getattr(self, 'signatures', None)
         self.transaction.expiration = getattr(self, 'expiration', 0)
 
-
     def to_dict(self):
         return self.transaction.to_dict()
-
 
     def to_json(self):
         return self.transaction.to_json()
 
     def schnorr_sign(self, passphrase):
+        """Sign the transaction using the given passphrase
+
+        Args:
+            passphrase (str): passphrase associated with the account sending this transaction
+        """
         self.transaction.senderPublicKey = PublicKey.from_passphrase(passphrase)
         msg = hashlib.sha256(self.transaction.to_bytes(False, True, False)).digest()
         secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
@@ -82,9 +85,6 @@ class BaseTransactionBuilder(object):
 
     def schnorr_verify_second_signature(self):
         self.verify_schnorr_second_signature()
-
-    def second_verify(self):
-        self.transaction.second_verify()
 
     def set_version(self, version=2):
         self.transaction.version = version
