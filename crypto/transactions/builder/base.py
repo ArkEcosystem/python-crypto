@@ -20,6 +20,7 @@ class BaseTransactionBuilder(object):
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
         self.transaction.signatures = getattr(self, 'signatures', None)
         self.transaction.expiration = getattr(self, 'expiration', 0)
+        self.transaction.version = getattr(self, 'version', 2)
 
     def to_dict(self):
         return self.transaction.to_dict()
@@ -37,17 +38,6 @@ class BaseTransactionBuilder(object):
         msg = hashlib.sha256(self.transaction.to_bytes(False, True, False)).digest()
         secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
         self.transaction.signature = hexlify(schnorr.bcrypto410_sign(msg, secret))
-        self.transaction.id = self.transaction.get_id()
-
-    def sign(self, passphrase):
-        """Sign the transaction using the given passphrase
-
-        Args:
-            passphrase (str): passphrase associated with the account sending this transaction
-        """
-        self.transaction.senderPublicKey = PublicKey.from_passphrase(passphrase)
-        message = Message.sign(self.transaction.to_bytes(), passphrase)
-        self.transaction.signature = message.signature
         self.transaction.id = self.transaction.get_id()
 
     def second_sign(self, passphrase):
@@ -74,17 +64,11 @@ class BaseTransactionBuilder(object):
         index_formatted = hex(index).replace('x', '')
         self.transaction.signatures.append(index_formatted + signature.decode())
 
-    def verify(self):
-        self.transaction.verify()
-
     def schnorr_verify(self):
         self.transaction.verify_schnorr()
 
     def schnorr_verify_multisig(self):
         self.transaction.verify_schnorr_multisig()
-
-    def schnorr_verify_second_signature(self):
-        self.verify_schnorr_second_signature()
 
     def set_version(self, version=2):
         self.transaction.version = version

@@ -11,6 +11,8 @@ def test_second_signature_registration_transaction():
     transaction.schnorr_sign('testing')
     transaction_dict = transaction.to_dict()
 
+    print(transaction_dict)
+
     assert transaction_dict['nonce'] == 123
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_SECOND_SIGNATURE_REGISTRATION

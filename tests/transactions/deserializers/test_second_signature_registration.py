@@ -7,8 +7,6 @@ def test_second_signature_registration_deserializer():
     deserializer = Deserializer(serialized)
     actual = deserializer.deserialize()
 
-    print(actual.to_dict())
-
     assert actual.version == 2
     assert actual.network == 23
     assert actual.typeGroup == 1

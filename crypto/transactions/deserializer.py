@@ -3,7 +3,7 @@ from binascii import hexlify, unhexlify
 from hashlib import sha256
 from importlib import import_module
 
-from binary.unsigned_integer.reader import read_bit32, read_bit64, read_bit8, read_bit16
+from binary.unsigned_integer.reader import read_bit8, read_bit16, read_bit32, read_bit64
 
 from crypto.constants import (
     TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
@@ -11,7 +11,7 @@ from crypto.constants import (
 )
 from crypto.identity.address import address_from_public_key
 from crypto.transactions.deserializers.base import BaseDeserializer
-from crypto.schnorr import schnorr
+
 
 class Deserializer(object):
 

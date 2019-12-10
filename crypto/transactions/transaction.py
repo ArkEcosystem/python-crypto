@@ -13,7 +13,6 @@ from crypto.exceptions import ArkInvalidTransaction
 from crypto.schnorr import schnorr
 from crypto.transactions.deserializer import Deserializer
 from crypto.transactions.serializer import Serializer
-from crypto.utils.message import Message
 
 TRANSACTION_ATTRIBUTES = {
     'amount': 0,
@@ -154,29 +153,11 @@ class Transaction(object):
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
 
-    def verify_schnorr_second_signature(self):
-        """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
-        will happen.
-        """
-        is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, False, True), self.senderPublicKey, self.signature)
-        if not is_valid:
-            raise ArkInvalidTransaction('Transaction could not be verified')
-
     def verify_schnorr_multisig(self):
         """Verify the multisignatures transaction. Method will raise an exception if invalid, if it's
         valid nothing will happen.
         """
         is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, True, False), self.senderPublicKey, self.signature)
-        if not is_valid:
-            raise ArkInvalidTransaction('Transaction could not be verified')
-
-    def verify(self):
-        """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
-        will happen.
-        """
-        transaction = self.to_bytes()
-        message = Message(transaction, self.signature, self.senderPublicKey)
-        is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
 

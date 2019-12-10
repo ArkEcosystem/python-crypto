@@ -2,8 +2,8 @@ import inspect
 from binascii import hexlify, unhexlify
 from importlib import import_module
 
-from binary.hex.writer import write_high, write_low
-from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8, write_bit16
+from binary.hex.writer import write_high
+from binary.unsigned_integer.writer import write_bit8, write_bit16, write_bit32, write_bit64
 
 from crypto.configuration.network import get_network
 from crypto.constants import TRANSACTION_TYPES
@@ -20,7 +20,6 @@ class Serializer(object):
             raise ArkSerializerException('No transaction data provided')
         self.transaction = transaction
 
-
     def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True, raw=False):
         """Perform AIP11 compliant serialization
 
@@ -32,11 +31,11 @@ class Serializer(object):
 
         bytes_data += write_bit8(0xff)
 
-        bytes_data += write_bit8(self.transaction.get('version') or 0x01)
+        bytes_data += write_bit8(self.transaction.get('version') or 0x02)
         bytes_data += write_bit8(self.transaction.get('network') or network_config['version'])
         bytes_data += write_bit32(self.transaction.get('typeGroup') or 0x01)
         bytes_data += write_bit16(self.transaction.get('type'))
-        bytes_data += write_bit64(self.transaction.get('nonce') or 0x00) # @TODO: default 0x01 ?
+        bytes_data += write_bit64(self.transaction.get('nonce') or 0x01)
 
         bytes_data += write_high(self.transaction.get('senderPublicKey'))
         bytes_data += write_bit64(self.transaction.get('fee'))
@@ -54,10 +53,7 @@ class Serializer(object):
         bytes_data = self._handle_transaction_type(bytes_data)
         bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature, skip_multi_signature)
 
-
-        # TODO: raw was added as I didn't bother to check when the data needs to be binary and when it needs to be in hex, so that's for you to figure out
         return bytes_data if raw else hexlify(bytes_data).decode()
-
 
     def _handle_transaction_type(self, bytes_data):
         """Serialize transaction specific data (eg. delegate registration)
@@ -83,7 +79,6 @@ class Serializer(object):
                 serializer = attribute
                 break
         return serializer(self.transaction, bytes_data).serialize()
-
 
     def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature):
         """Serialize signature data of the transaction
