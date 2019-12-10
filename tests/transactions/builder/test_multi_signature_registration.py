@@ -1,6 +1,5 @@
 from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.multi_signature_registration import MultiSignatureRegistration
-from crypto.schnorr import schnorr
 
 
 def test_multi_signature_registration_transaction():
@@ -25,8 +24,7 @@ def test_multi_signature_registration_transaction():
     transaction.multi_sign('this is a top secret passphrase 3', 2)
 
     transaction.schnorr_sign('this is a top secret passphrase 1')
-    #transaction.sign('this is a top secret passphrase')
-    #transaction.second_sign('second secret')
+
     transaction_dict = transaction.to_dict()
 
     print(transaction_dict)

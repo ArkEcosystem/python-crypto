@@ -1,6 +1,5 @@
 from crypto.constants import TRANSACTION_TRANSFER, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.transfer import Transfer
-from crypto.schnorr import schnorr
 
 
 def test_transfer_transaction():

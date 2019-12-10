@@ -1,6 +1,7 @@
 from crypto.constants import TRANSACTION_HTLC_CLAIM, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.htlc_claim import HtlcClaim
 
+
 def test_htlc_claim_transaction():
     """Test if timelock transaction gets built
     """
