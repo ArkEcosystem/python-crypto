@@ -1,5 +1,5 @@
 import json
-from binascii import unhexlify
+from binascii import unhexlify, hexlify
 from hashlib import sha256
 
 from binary.hex.writer import write_high
@@ -82,10 +82,12 @@ class Transaction(object):
         Args:
             skip_signature (bool, optional): do you want to skip the signature
             skip_second_signature (bool, optional): do you want to skip the 2nd signature
+            skip_multi_signature (bool, optional): do you want to skip multi signature
 
         Returns:
             bytes: bytes representation of the transaction
         """
+        print(hexlify(Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)))
         return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)
 
     def parse_signatures(self, serialized, start_offset):
@@ -132,6 +134,16 @@ class Transaction(object):
         will happen.
         """
         is_valid = schnorr.b410_schnorr_verify(self.to_bytes(), self.senderPublicKey, self.signature)
+        if not is_valid:
+            raise ArkInvalidTransaction('Transaction could not be verified')
+
+    def verify_schnorr_second_signature(self):
+        """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
+        will happen.
+        """
+        print(self.signature)
+        print(self.signSignature)
+        is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, False, True), self.senderPublicKey, self.signature)
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
 

@@ -19,4 +19,4 @@ def test_htlc_refund_deserializer():
     assert actual.id == '9356aa730990a2ea8e9871ffa65800f34ef1a4bec3215d89c950e72d82a34e91'
     assert actual.asset['refund']['lockTransactionId'] == '943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb4'  # noqa
 
-    # actual.verify()
+    actual.verify_schnorr()

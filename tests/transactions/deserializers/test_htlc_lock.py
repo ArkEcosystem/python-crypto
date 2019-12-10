@@ -22,4 +22,4 @@ def test_htlc_lock_deserializer():
     assert actual.asset['lock']['expiration']['type'] == 1  # noqa
     assert actual.asset['lock']['expiration']['value'] == 1573455822  # noqa
 
-    # actual.verify()
+    actual.verify_schnorr()

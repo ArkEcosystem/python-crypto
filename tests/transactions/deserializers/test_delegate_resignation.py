@@ -18,5 +18,4 @@ def test_delegate_resignation_deserializer():
     assert actual.amount == 0
     assert actual.id == '707b4deb339e717dfef44c40db0692015ce9bbab015c007b016b8a46b341e859'
 
-
-    # actual.verify()
+    actual.verify_schnorr()

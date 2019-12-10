@@ -20,4 +20,4 @@ def test_htlc_claim_deserializer():
     assert actual.asset['claim']['lockTransactionId'] == '943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb4'  # noqa
     assert actual.asset['claim']['unlockSecret'] == 'my secret that should be 32bytes'  # noqa
 
-    # actual.verify()
+    actual.verify_schnorr()

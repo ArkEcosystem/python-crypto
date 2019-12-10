@@ -19,4 +19,4 @@ def test_ipfs_deserializer():
     assert actual.id == '818228ce634b46c488f3b2df8fd02bd50331ebdedb44df5b9b11b97b01e9fb36'
     assert actual.asset['ipfs'] == 'QmR45FmbVVrixReBwJkhEKde2qwHYaQzGxu4ZoDeswuF9w'  # noqa
 
-    # actual.verify()
+    actual.verify_schnorr()

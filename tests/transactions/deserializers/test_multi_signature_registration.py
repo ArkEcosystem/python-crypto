@@ -34,4 +34,4 @@ def test_multi_signature_registration_deserializer():
         '02d0012f035dc3fd54173c83d40217914653488fe9ce592dca34234163181d255281f2be7033725cfc4a6786509e7fabbaf0be8cf50882fc7b66fe94f259fd004e'  # noqa
     ]
 
-    # actual.verify()
+    actual.verify_schnorr_multisig()

@@ -19,4 +19,4 @@ def test_delegate_registration_deserializer():
     assert actual.amount == 0
     assert actual.id == 'cfd113d8cd9fd46b07030c14fac38c1d3fc0eca991e999eab9d0152ea96ab0dc'
 
-    # actual.verify()
+    actual.verify_schnorr()
