@@ -1,24 +1,19 @@
 import json
-from binascii import unhexlify, hexlify
+from binascii import unhexlify
 from hashlib import sha256
-from struct import pack
-
-from base58 import b58decode_check
 
 from binary.hex.writer import write_high
-from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
+from binary.unsigned_integer.writer import write_bit8
 
 from crypto.constants import (
     TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION,
-    TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE, TRANSACTION_MULTI_PAYMENT
+    TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 )
 from crypto.exceptions import ArkInvalidTransaction
+from crypto.schnorr import schnorr
 from crypto.transactions.deserializer import Deserializer
 from crypto.transactions.serializer import Serializer
 from crypto.utils.message import Message
-from crypto.schnorr import schnorr
-from crypto.identity.private_key import PrivateKey
-from crypto.identity.public_key import PublicKey
 
 TRANSACTION_ATTRIBUTES = {
     'amount': 0,
@@ -32,12 +27,12 @@ TRANSACTION_ATTRIBUTES = {
     'signature': None,
     'signatures': None,
     'signSignature': None,
-    'nonce': None, # set it properly
+    'nonce': None,
     'type': None,
-    'typeGroup': None, # set it properly
+    'typeGroup': None,
     'vendorField': None,
     'vendorFieldHex': None,
-    'version': None, # set it properly
+    'version': None,
     'lockTransactionId': None,
     'lockSecret': None,
     'expiration': None
@@ -111,7 +106,6 @@ class Transaction(object):
             self.signSignature = serialized[signature_end_offset:second_signature_end_offset]
 
         if len(serialized) - second_signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 65 == 0:
-            multi_signatures_offset = second_signature_end_offset + (64 * 2)
             multi_sig_part = serialized[signature_end_offset:]
             index = 0
             index_size = 2
@@ -134,10 +128,20 @@ class Transaction(object):
         return Deserializer(serialized).deserialize()
 
     def verify_schnorr(self):
+        """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
+        will happen.
+        """
         is_valid = schnorr.b410_schnorr_verify(self.to_bytes(), self.senderPublicKey, self.signature)
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
 
+    def verify_schnorr_multisig(self):
+        """Verify the multisignatures transaction. Method will raise an exception if invalid, if it's
+        valid nothing will happen.
+        """
+        is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, True, False), self.senderPublicKey, self.signature)
+        if not is_valid:
+            raise ArkInvalidTransaction('Transaction could not be verified')
 
     def verify(self):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
@@ -148,7 +152,6 @@ class Transaction(object):
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
-
 
     def second_verify(self, passphrase):
         """Verify the transaction using the 2nd passphrase
@@ -161,7 +164,6 @@ class Transaction(object):
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
-
 
     def _handle_transaction_type(self, bytes_data):
         """Handled each transaction type differently
@@ -185,7 +187,6 @@ class Transaction(object):
             bytes_data += ''.join(self.asset['multiSignature']['publicKeys']).encode()
 
         return bytes_data
-
 
     def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature):
         """Internal method, used to handle the signature

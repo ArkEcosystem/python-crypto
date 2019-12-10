@@ -88,6 +88,9 @@ class BaseTransactionBuilder(object):
     def schnorr_verify(self):
         self.transaction.verify_schnorr()
 
+    def schnorr_verify_multisig(self):
+        self.transaction.verify_schnorr_multisig()
+
     def second_verify(self):
         self.transaction.second_verify()
 
