@@ -1,5 +1,5 @@
 import json
-from binascii import unhexlify, hexlify
+from binascii import unhexlify
 
 from crypto.identity.private_key import PrivateKey
 from crypto.identity.public_key import PublicKey

@@ -21,7 +21,7 @@ class DelegateRegistration(BaseTransactionBuilder):
         if fee:
             self.transaction.fee = fee
 
-
+    # @TODO: Remove ?
     def sign(self, passphrase):
         public_key = PublicKey.from_passphrase(passphrase)
         self.transaction.asset['delegate']['publicKey'] = public_key

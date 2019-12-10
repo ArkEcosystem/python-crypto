@@ -1,4 +1,4 @@
-from binascii import unhexlify, hexlify
+from binascii import unhexlify
 
 from binary.unsigned_integer.writer import write_bit8
 
@@ -25,7 +25,5 @@ class MultiSignatureSerializer(BaseSerializer):
             self.bytes_data += write_bit8(public_keys_length)
             for key in self.transaction['asset']['multiSignature']['publicKeys']:
                 self.bytes_data += unhexlify(key.encode())
-            #for signature in self.transaction.get('signatures'):
-            #    self.bytes_data += unhexlify(signature.encode())
 
         return self.bytes_data

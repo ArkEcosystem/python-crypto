@@ -1,5 +1,6 @@
-from base58 import b58encode
 from binascii import hexlify, unhexlify
+
+from base58 import b58encode
 
 from binary.unsigned_integer.reader import read_bit8
 from binary.unsigned_integer.writer import write_bit8

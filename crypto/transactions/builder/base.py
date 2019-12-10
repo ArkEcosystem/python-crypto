@@ -89,6 +89,7 @@ class BaseTransactionBuilder(object):
         if type(expiration) == int:
             self.transaction.expiration = expiration
         else:
+            # @TODO: Undefined ?
             types = {EPOCH_TIMESTAMP: 1, BLOCK_HEIGHT: 2}
             self.transaction.expiration = types[expiration]
 

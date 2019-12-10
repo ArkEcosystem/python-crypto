@@ -9,6 +9,5 @@ class BaseDeserializer(object):
         self.asset_offset = asset_offset
         self.transaction = transaction
 
-
     def deserialize(self):
         raise NotImplementedError

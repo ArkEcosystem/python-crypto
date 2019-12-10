@@ -7,6 +7,5 @@ class BaseSerializer(object):
         self.transaction = transaction
         self.bytes_data = bytes_data
 
-
     def serialize(self):
         raise NotImplementedError

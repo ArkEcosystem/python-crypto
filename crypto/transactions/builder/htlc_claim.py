@@ -24,6 +24,5 @@ class HtlcClaim(BaseTransactionBuilder):
         if fee:
             self.transaction.fee = fee
 
-
     def get_type_group(self):
         return TRANSACTION_TYPE_GROUP.CORE.value

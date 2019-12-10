@@ -1,5 +1,6 @@
-from base58 import b58decode
 from binascii import hexlify
+
+from base58 import b58decode
 
 from binary.hex.writer import write_high
 

@@ -40,13 +40,15 @@ TRANSACTION_FEES = {
     TRANSACTION_HTLC_REFUND: 0,
 }
 
+
 class TRANSACTION_TYPE_GROUP(Enum):
     def __int__(self):
         return int(self.value)
 
     TEST = 0
     CORE = 1
-    RESERVED = 1000 # Everything above is available to anyone
+    RESERVED = 1000  # Everything above is available to anyone
+
 
 class HTLC_LOCK_EXPIRATION_TYPE(Enum):
     def __str__(self):
