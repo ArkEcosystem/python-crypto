@@ -1,5 +1,5 @@
 import json
-from binascii import unhexlify, hexlify
+from binascii import unhexlify
 from hashlib import sha256
 
 from binary.hex.writer import write_high
@@ -87,7 +87,6 @@ class Transaction(object):
         Returns:
             bytes: bytes representation of the transaction
         """
-        print(hexlify(Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)))
         return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)
 
     def parse_signatures(self, serialized, start_offset):
@@ -123,10 +122,28 @@ class Transaction(object):
         return
 
     def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
+        """Perform AIP11 compliant serialization.
+
+        Args:
+            skip_signature (bool, optional): do you want to skip the signature
+            skip_second_signature (bool, optional): do you want to skip the 2nd signature
+            skip_multi_signature (bool, optional): do you want to skip multi signature
+
+        Returns:
+            str: Serialized string
+        """
         data = self.to_dict()
         return Serializer(data).serialize(skip_signature, skip_second_signature, skip_multi_signature)
 
     def deserialize(self, serialized):
+        """Perform AIP11 compliant deserialization.
+
+        Args:
+            serialized (str): parses a given serialized string
+
+        Returns:
+            crypto.transactions.transaction.Transaction: Transaction
+        """
         return Deserializer(serialized).deserialize()
 
     def verify_schnorr(self):
@@ -141,8 +158,6 @@ class Transaction(object):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
         will happen.
         """
-        print(self.signature)
-        print(self.signSignature)
         is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, False, True), self.senderPublicKey, self.signature)
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
@@ -161,18 +176,6 @@ class Transaction(object):
         """
         transaction = self.to_bytes()
         message = Message(transaction, self.signature, self.senderPublicKey)
-        is_valid = message.verify()
-        if not is_valid:
-            raise ArkInvalidTransaction('Transaction could not be verified')
-
-    def second_verify(self, passphrase):
-        """Verify the transaction using the 2nd passphrase
-
-        Args:
-            passphrase (str): 2nd passphrase associated with the account sending this transaction
-        """
-        transaction = sha256(self.to_bytes()).digest()
-        message = Message(transaction, self.signSignature, self.senderPublicKey)
         is_valid = message.verify()
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
