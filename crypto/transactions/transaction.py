@@ -146,20 +146,26 @@ class Transaction(object):
         return Deserializer(serialized).deserialize()
 
     def verify_schnorr(self):
-        """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
-        will happen.
+        """Verify the transaction. Method will raise an exception if invalid, if it's valid it will
+        returns True
         """
         is_valid = schnorr.b410_schnorr_verify(self.to_bytes(), self.senderPublicKey, self.signature)
+
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
 
+        return is_valid
+
     def verify_schnorr_multisig(self):
-        """Verify the multisignatures transaction. Method will raise an exception if invalid, if it's
-        valid nothing will happen.
+        """Verify the multisignatures transaction. Method will raise an exception if invalid, if  will
+        returns True
         """
         is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, True, False), self.senderPublicKey, self.signature)
+
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
+
+        return is_valid
 
     def _handle_transaction_type(self, bytes_data):
         """Handled each transaction type differently

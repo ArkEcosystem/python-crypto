@@ -1,31 +1,100 @@
-# -*- encoding:utf-8 -*-
+# From Toons implementation, see here https://github.com/Moustikitos/dpos/blob/master/dposlib/ark/secp256k1/schnorr.py
 
-# From https://github.com/Moustikitos/dpos/blob/master/dposlib/ark/secp256k1/schnorr.py
 import hashlib
 from binascii import unhexlify
 from builtins import int
 
-from .point import Point
-
-G = Point(0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798)
 p = int(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F)
 n = int(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141)
 
-raw = property(
-    lambda cls: cls._raw_getter(),
-    lambda cls, v: setattr(cls, "_raw", v),
-    None, ""
-)
+
+def point_from_encoded(pubkey):
+    """
+    Decode and decompress a ``secp256k1`` point.
+    Args:
+        pubkey (:class:`bytes`): compressed and encoded point
+    Returns:
+        :class:`list`: ``secp256k1`` point
+    """
+    pubkey = bytearray(pubkey)
+    x = int_from_bytes(pubkey[1:])
+    y = y_from_x(x)
+    if y is None:
+        raise ValueError("Point not on ``secp256k1`` curve")
+    elif y % 2 != pubkey[0] - 2:
+        y = -y % p
+    return [x, y]
 
 
-def _raw_getter(cls):
-    if not hasattr(cls, "_raw"):
-        setattr(
-            cls, "_raw",
-            bytes_from_int(cls[0]) +
-            bytes_from_int(cls[1])
-        )
-    return getattr(cls, "_raw")
+def y_from_x(x):
+    """
+    Compute :class:`P.y` from :class:`P.x` according to ``y²=x³+7``.
+    """
+    y_sq = (pow(x, 3, p) + 7) % p
+    y = pow(y_sq, (p + 1) // 4, p)
+    if pow(y, 2, p) != y_sq:
+        return None
+    return y
+
+
+class Point(list):
+    """
+    ``secp256k1`` point . Initialization can be done with sole ``x`` value.
+    :class:`Point` overrides ``*`` and ``+`` operators which accepts
+    :class:`list` as argument and returns :class:`Point`. It extends
+    :class:`list` and allows item access using ``__getattr__``/``__setattr__``
+    operators.
+    """
+
+    x = property(
+        lambda cls: list.__getitem__(cls, 0),
+        lambda cls, v: [
+            list.__setitem__(cls, 0, int(v)),
+            list.__setitem__(cls, 1, y_from_x(int(v)))
+        ],
+        None, ""
+    )
+    y = property(
+        lambda cls: list.__getitem__(cls, 1),
+        None, None, ""
+    )
+
+    def __init__(self, *xy):
+        if len(xy) == 0:
+            xy = (0, None)
+        elif len(xy) == 1:
+            xy += (y_from_x(int(xy[0])), )
+        list.__init__(self, [int(e) if e is not None else e for e in xy[:2]])
+
+    def __mul__(self, k):
+        if isinstance(k, int):
+            return Point(*point_mul(self, k))
+        else:
+            raise TypeError("'%s' should be an int" % k)
+    __rmul__ = __mul__
+
+    def __add__(self, P):
+        if isinstance(P, list):
+            return Point(*point_add(self, P))
+        else:
+            raise TypeError("'%s' should be a 2-int-length list" % P)
+    __radd__ = __add__
+
+    @staticmethod
+    def decode(pubkey):
+        """
+        See :func:`dposlib.ark.secp256k1.point_from_encoded`.
+        """
+        return Point(*point_from_encoded(pubkey))
+
+    def encode(self):
+        """
+        See :func:`dposlib.ark.secp256k1.encoded_from_point`.
+        """
+        return encoded_from_point(self)
+
+
+G = Point(0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798)
 
 
 def point_add(P1, P2):

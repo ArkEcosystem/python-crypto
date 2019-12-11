@@ -19,7 +19,7 @@ class BaseTransactionBuilder(object):
         self.transaction.nonce = getattr(self, 'nonce', None)
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
         self.transaction.signatures = getattr(self, 'signatures', None)
-        self.transaction.expiration = getattr(self, 'expiration', 0)
+        #self.transaction.expiration = getattr(self, 'expiration', 0)
         self.transaction.version = getattr(self, 'version', 2)
 
     def to_dict(self):
@@ -65,10 +65,10 @@ class BaseTransactionBuilder(object):
         self.transaction.signatures.append(index_formatted + signature.decode())
 
     def schnorr_verify(self):
-        self.transaction.verify_schnorr()
+        return self.transaction.verify_schnorr()
 
     def schnorr_verify_multisig(self):
-        self.transaction.verify_schnorr_multisig()
+        return self.transaction.verify_schnorr_multisig()
 
     def set_version(self, version=2):
         self.transaction.version = version
