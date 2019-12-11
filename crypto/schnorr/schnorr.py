@@ -2,14 +2,8 @@
 
 # From https://github.com/Moustikitos/dpos/blob/master/dposlib/ark/secp256k1/schnorr.py
 import hashlib
-from binascii import unhexlify, hexlify
+from binascii import unhexlify
 from builtins import int
-
-# Python crypto
-# from crypto.identity.private_key import PrivateKey
-# from crypto.transactions.transaction import Transaction
-# from crypto.identity.public_key import PublicKey as ArkPublicKey
-# Toons
 
 from .point import Point
 
@@ -23,6 +17,7 @@ raw = property(
     None, ""
 )
 
+
 def _raw_getter(cls):
     if not hasattr(cls, "_raw"):
         setattr(
@@ -31,6 +26,7 @@ def _raw_getter(cls):
             bytes_from_int(cls[1])
         )
     return getattr(cls, "_raw")
+
 
 def point_add(P1, P2):
     """
@@ -54,6 +50,7 @@ def point_add(P1, P2):
     x3 = (lam * lam - x(P1) - x(P2)) % p
     return [x3, (lam * (x(P1) - x3) - y(P1)) % p]
 
+
 def bcrypto410_verify(msg, pubkey, sig):
     if len(msg) != 32:
         raise ValueError('The message must be a 32-byte array.')
@@ -71,6 +68,7 @@ def bcrypto410_verify(msg, pubkey, sig):
         return False
     return True
 
+
 def b410_schnorr_verify(message, publicKey, signature):
     return bcrypto410_verify(
         hash_sha256(message),
@@ -78,16 +76,6 @@ def b410_schnorr_verify(message, publicKey, signature):
         unhexlify(signature)
     )
 
-def hash_sha256(b):
-    """
-    Args:
-        b (:class:`bytes` or :class:`str`): sequence to be hashed
-    Returns:
-        :class:`bytes`: sha256 hash
-    """
-    return hashlib.sha256(
-        b if isinstance(b, bytes) else b.encode("utf-8")
-    ).digest()
 
 def x(P):
     """
@@ -99,17 +87,22 @@ def x(P):
     """
     return P[0]
 
+
 def bytes_from_int(x):
     return int(x).to_bytes(32, byteorder="big")
+
 
 def int_from_bytes(b):
     return int.from_bytes(b, byteorder="big")
 
+
 def jacobi(x):
     return pow(x, (p - 1) // 2, p)
 
+
 def is_quad(x):
     return jacobi(x) == 1
+
 
 def hash_sha256(b):
     """
@@ -122,27 +115,6 @@ def hash_sha256(b):
         b if isinstance(b, bytes) else b.encode("utf-8")
     ).digest()
 
-def tagged_hash(tag, msg):
-    """
-    Return ``sha256(sha256(tag) || sha256(tag) || msg)``. Tagged hash
-    are registered to speed up code execution.
-    Args:
-        tag (:class:`str`): tag to use
-        msg (:class:`bytes`): sha256 hash of message to sign
-    Returns:
-        :class:`bytes`: tagged hash
-    """
-    HASHED_TAGS = {
-    "BIPSchnorrDerive": hash_sha256("BIPSchnorrDerive"),
-    "BIPSchnorr": hash_sha256("BIPSchnorr"),
-
-    }
-    tag_hash = HASHED_TAGS.get(tag, False)
-
-    if not tag_hash:
-        tag_hash = hash_sha256(tag)
-        HASHED_TAGS[tag] = tag_hash
-    return hash_sha256(tag_hash + tag_hash + msg)
 
 def point_mul(P, n):
     """
@@ -160,6 +132,7 @@ def point_mul(P, n):
         P = point_add(P, P)
     return R
 
+
 def y(P):
     """
     Return :class:`P.y` or :class:`P[1]`.
@@ -170,6 +143,7 @@ def y(P):
         :class:`int`: y
     """
     return P[1]
+
 
 def encoded_from_point(P):
     """
@@ -184,8 +158,6 @@ def encoded_from_point(P):
     """
     return (b"\x03" if y(P) & 1 else b"\x02") + bytes_from_int(x(P))
 
-def bytes_from_int(x):
-    return int(x).to_bytes(32, byteorder="big")
 
 # https://github.com/bcoin-org/bcrypto/blob/v4.1.0/lib/js/schnorr.js
 def bcrypto410_sign(msg, seckey0):
@@ -218,97 +190,3 @@ def bcrypto410_sign(msg, seckey0):
     s %= n
 
     return Rraw + bytes_from_int(s)
-
-
-# Note that bip schnorr uses a very different public key format (32 bytes) than
-# the ones used by existing systems (which typically use elliptic curve points
-# as public keys, 33-byte or 65-byte encodings of them). A side effect is that
-# ``PubKey(sk) = PubKey(bytes(n-int(sk))``, so every public key has two
-# corresponding private keys.
-
-
-def bytes_from_point(P):
-    """
-    Encode a public key as defined in bip schnorr spec.
-
-    Args:
-        P (:class:`PublicKey`):
-    Returns:
-        pubkeyB (:class:`bytes`): encoded public key
-    """
-    return bytes_from_int(x(P))
-
-def y_from_x(x):
-    """
-    Compute :class:`P.y` from :class:`P.x` according to ``y²=x³+7``.
-    """
-    y_sq = (pow(x, 3, p) + 7) % p
-    y = pow(y_sq, (p + 1) // 4, p)
-    if pow(y, 2, p) != y_sq:
-        return None
-    return y
-
-def point_from_bytes(pubkeyB):
-    """
-    Decode a public key as defined in bip schnorr spec.
-    """
-    x = int_from_bytes(pubkeyB)
-    y = y_from_x(x)
-    if not y:
-        return None
-    return [x, y]
-
-
-def sign(msg, seckey0):
-    if len(msg) != 32:
-       raise ValueError('The message must be a 32-byte array.')
-
-    seckey0 = int_from_bytes(seckey0)
-    if not (1 <= seckey0 <= n - 1):
-        raise ValueError(
-            'The secret key must be an integer in the range 1..n-1.'
-        )
-
-    P = G*seckey0
-    seckey = seckey0 if is_quad(P.y) else n - seckey0
-
-    k0 = int_from_bytes(
-        tagged_hash("BIPSchnorrDerive", bytes_from_int(seckey) + msg)
-    ) % n
-    if k0 == 0:
-        raise RuntimeError(
-            'Failure. This happens only with negligible probability.'
-        )
-
-    R = G*k0
-    k = n - k0 if not is_quad(R.y) else k0
-    r = bytes_from_point(R)
-    e = int_from_bytes(
-        tagged_hash("BIPSchnorr", r + bytes_from_point(P) + msg)
-    ) % n
-
-    return r + bytes_from_int((k + e * seckey) % n)
-
-
-def verify(msg, pubkey, sig):
-    if len(msg) != 32:
-        raise ValueError('The message must be a 32-byte array.')
-    if len(pubkey) != 32:
-        raise ValueError('The public key must be a 32-byte array.')
-    if len(sig) != 64:
-        raise ValueError('The signature must be a 64-byte array.')
-
-    P = point_from_bytes(pubkey)
-    if (P is None):
-        return False
-
-    r, s = int_from_bytes(sig[:32]), int_from_bytes(sig[32:])
-    if (r >= p or s >= n):
-        return False
-
-    e = int_from_bytes(tagged_hash("BIPSchnorr", sig[0:32] + pubkey + msg)) % n
-    R = Point(*(G*s + point_mul(P, n-e)))  # P*(n-e) does not work...
-    if R is None or not is_quad(R.y) or R.x != r:
-        return False
-
-    return True

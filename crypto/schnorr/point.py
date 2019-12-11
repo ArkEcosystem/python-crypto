@@ -2,6 +2,7 @@ from .secp256k1 import encoded_from_point, point_from_encoded
 
 p = int(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F)
 
+
 def x(P):
     """
     Return :class:`P.x` or :class:`P[0]`.
@@ -11,6 +12,7 @@ def x(P):
         :class:`int`: x
     """
     return P[0]
+
 
 def y(P):
     """
@@ -22,6 +24,7 @@ def y(P):
     """
     return P[1]
 
+
 def y_from_x(x):
     """
     Compute :class:`P.y` from :class:`P.x` according to ``y²=x³+7``.
@@ -31,6 +34,7 @@ def y_from_x(x):
     if pow(y, 2, p) != y_sq:
         return None
     return y
+
 
 def point_add(P1, P2):
     """
@@ -54,6 +58,7 @@ def point_add(P1, P2):
     x3 = (lam * lam - x(P1) - x(P2)) % p
     return [x3, (lam * (x(P1) - x3) - y(P1)) % p]
 
+
 def point_mul(P, n):
     """
     Multiply ``secp256k1`` point with scalar.
@@ -69,6 +74,7 @@ def point_mul(P, n):
             R = point_add(R, P)
         P = point_add(P, P)
     return R
+
 
 class Point(list):
     """
