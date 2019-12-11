@@ -7,12 +7,12 @@ def test_multi_payment_transaction():
     """
     transaction = MultiPayment()
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
-    transaction.set_nonce(123)
+    transaction.set_nonce(1)
     transaction.add_payment(1, 'AHXtmB84sTZ9Zd35h9Y1vfFvPE2Xzqj8ri')
     transaction.schnorr_sign('testing')
     transaction_dict = transaction.to_dict()
 
-    assert transaction_dict['nonce'] == 123
+    assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_MULTI_PAYMENT
     assert transaction_dict['typeGroup'] == 1

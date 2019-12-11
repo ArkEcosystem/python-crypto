@@ -58,7 +58,6 @@ class Deserializer(object):
         elif transaction.version == 2:
             transaction = self._handle_version_two(transaction)
         else:
-            # @TODO: Remove ?
             raise Exception('should this ever happen?')
 
         return transaction

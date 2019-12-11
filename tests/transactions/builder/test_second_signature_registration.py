@@ -7,13 +7,11 @@ def test_second_signature_registration_transaction():
     """
     transaction = SecondSignatureRegistration('this is the second passphrase')
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
-    transaction.set_nonce(123)
+    transaction.set_nonce(1)
     transaction.schnorr_sign('testing')
     transaction_dict = transaction.to_dict()
 
-    print(transaction_dict)
-
-    assert transaction_dict['nonce'] == 123
+    assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_SECOND_SIGNATURE_REGISTRATION
     assert transaction_dict['typeGroup'] == 1

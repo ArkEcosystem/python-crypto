@@ -31,7 +31,3 @@ class HtlcLock(BaseTransactionBuilder):
 
     def get_type_group(self):
         return TRANSACTION_TYPE_GROUP.CORE.value
-
-    # @TODO: Not sure of that one, need to verify
-    def vendor_field(self, vendor_field):
-        self.transaction.vendorField = vendor_field.encode() if vendor_field else None

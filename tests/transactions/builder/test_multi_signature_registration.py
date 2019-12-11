@@ -27,8 +27,6 @@ def test_multi_signature_registration_transaction():
 
     transaction_dict = transaction.to_dict()
 
-    print(transaction_dict)
-
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['version'] == 2
     assert transaction_dict['fee'] == 2000000000

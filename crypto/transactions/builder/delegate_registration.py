@@ -1,5 +1,4 @@
 from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION
-from crypto.identity.public_key import PublicKey
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -20,9 +19,3 @@ class DelegateRegistration(BaseTransactionBuilder):
 
         if fee:
             self.transaction.fee = fee
-
-    # @TODO: Remove ?
-    def sign(self, passphrase):
-        public_key = PublicKey.from_passphrase(passphrase)
-        self.transaction.asset['delegate']['publicKey'] = public_key
-        super().sign(passphrase)

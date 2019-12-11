@@ -11,11 +11,11 @@ def test_ipfs_transaction():
 
     transaction = IPFS(ipfs_id)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
-    transaction.set_nonce(123)
+    transaction.set_nonce(1)
     transaction.schnorr_sign('testing')
     transaction_dict = transaction.to_dict()
 
-    assert transaction_dict['nonce'] == 123
+    assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_IPFS
     assert transaction_dict['typeGroup'] == 1

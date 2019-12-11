@@ -11,7 +11,6 @@ def test_transaction_deserialize(transaction_type_0):
     transaction = Transaction()
     deserialized = transaction.deserialize(transaction_type_0['serialized'])
     data = deserialized.to_dict()
-    print(data)
     assert data['amount'] == transaction_type_0['amount']
     assert data['senderPublicKey'] == transaction_type_0['senderPublicKey']
     assert data['recipientId'] == transaction_type_0['recipientId']
