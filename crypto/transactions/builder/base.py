@@ -20,6 +20,8 @@ class BaseTransactionBuilder(object):
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
         self.transaction.signatures = getattr(self, 'signatures', None)
         self.transaction.version = getattr(self, 'version', 2)
+        if self.transaction.type != 0:
+            self.transaction.amount = getattr(self, 'amount', 0)
 
     def to_dict(self):
         return self.transaction.to_dict()
