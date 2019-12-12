@@ -1,4 +1,5 @@
 from crypto.constants import TRANSACTION_VOTE
+from crypto.identity.address import address_from_passphrase
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -19,3 +20,7 @@ class Vote(BaseTransactionBuilder):
 
         if fee:
             self.transaction.fee = fee
+
+    def sign(self, passphrase):
+        self.transaction.recipientId = address_from_passphrase(passphrase)
+        super().sign(passphrase)

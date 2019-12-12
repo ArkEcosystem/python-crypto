@@ -1,4 +1,5 @@
-# From Toons implementation, see here https://github.com/Moustikitos/dpos/blob/master/dposlib/ark/secp256k1/schnorr.py
+# From Toons implementation
+# see here https://github.com/Moustikitos/dpos/blob/master/dposlib/ark/secp256k1/schnorr.py
 
 import hashlib
 from binascii import unhexlify
@@ -20,7 +21,7 @@ def point_from_encoded(pubkey):
     x = int_from_bytes(pubkey[1:])
     y = y_from_x(x)
     if y is None:
-        raise ValueError("Point not on ``secp256k1`` curve")
+        raise ValueError('Point not on ``secp256k1`` curve')
     elif y % 2 != pubkey[0] - 2:
         y = -y % p
     return [x, y]
@@ -52,11 +53,11 @@ class Point(list):
             list.__setitem__(cls, 0, int(v)),
             list.__setitem__(cls, 1, y_from_x(int(v)))
         ],
-        None, ""
+        None, ''
     )
     y = property(
         lambda cls: list.__getitem__(cls, 1),
-        None, None, ""
+        None, None, ''
     )
 
     def __init__(self, *xy):
@@ -83,13 +84,13 @@ class Point(list):
     @staticmethod
     def decode(pubkey):
         """
-        See :func:`dposlib.ark.secp256k1.point_from_encoded`.
+        Decode and decompress a ``secp256k1`` point.
         """
         return Point(*point_from_encoded(pubkey))
 
     def encode(self):
         """
-        See :func:`dposlib.ark.secp256k1.encoded_from_point`.
+        Decode and decompress a ``secp256k1`` point.
         """
         return encoded_from_point(self)
 
@@ -111,7 +112,7 @@ def point_add(P1, P2):
     if (P2 is None):
         return P1
     if (x(P1) == x(P2) and y(P1) != y(P2)):
-        raise ValueError("One of the point is not on the curve")
+        raise ValueError('One of the point is not on the curve')
     if (P1 == P2):
         lam = (3 * x(P1) * x(P1) * pow(2 * y(P1), p - 2, p)) % p
     else:
@@ -158,11 +159,11 @@ def x(P):
 
 
 def bytes_from_int(x):
-    return int(x).to_bytes(32, byteorder="big")
+    return int(x).to_bytes(32, byteorder='big')
 
 
 def int_from_bytes(b):
-    return int.from_bytes(b, byteorder="big")
+    return int.from_bytes(b, byteorder='big')
 
 
 def jacobi(x):
@@ -181,7 +182,7 @@ def hash_sha256(b):
         :class:`bytes`: sha256 hash
     """
     return hashlib.sha256(
-        b if isinstance(b, bytes) else b.encode("utf-8")
+        b if isinstance(b, bytes) else b.encode('utf-8')
     ).digest()
 
 
@@ -225,7 +226,7 @@ def encoded_from_point(P):
     Returns:
         :class:`bytes`: compressed and encoded point
     """
-    return (b"\x03" if y(P) & 1 else b"\x02") + bytes_from_int(x(P))
+    return (b'\x03' if y(P) & 1 else b'\x02') + bytes_from_int(x(P))
 
 
 # https://github.com/bcoin-org/bcrypto/blob/v4.1.0/lib/js/schnorr.js

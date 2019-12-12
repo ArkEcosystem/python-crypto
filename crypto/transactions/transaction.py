@@ -86,7 +86,10 @@ class Transaction(object):
         Returns:
             bytes: bytes representation of the transaction
         """
-        return Serializer(self.to_dict()).serialize(skip_signature=skip_signature, skip_second_signature=skip_second_signature, skip_multi_signature=skip_multi_signature, raw=True)
+        return Serializer(self.to_dict()).serialize(skip_signature=skip_signature,
+                                                    skip_second_signature=skip_second_signature,
+                                                    skip_multi_signature=skip_multi_signature,
+                                                    raw=True)
 
     def parse_signatures(self, serialized, start_offset):
         """Parse the signature, second signature and multi signatures

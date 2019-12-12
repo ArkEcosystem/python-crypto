@@ -1,5 +1,3 @@
-from binascii import hexlify
-
 from crypto.transactions.deserializer import Deserializer
 
 
@@ -9,9 +7,6 @@ def test_multi_signature_registration_deserializer():
     deserializer = Deserializer(serialized)
     actual = deserializer.deserialize()
     data = actual.to_dict()
-    print(hexlify(actual.to_bytes()))
-    print(actual.to_dict())
-
 
     assert data['amount'] == 0
     assert data['nonce'] == 1

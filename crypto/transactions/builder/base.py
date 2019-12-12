@@ -19,8 +19,6 @@ class BaseTransactionBuilder(object):
         self.transaction.nonce = getattr(self, 'nonce', None)
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
         self.transaction.signatures = getattr(self, 'signatures', None)
-        # @TODO: Remove ?
-        #self.transaction.expiration = getattr(self, 'expiration', 0)
         self.transaction.version = getattr(self, 'version', 2)
 
     def to_dict(self):
