@@ -24,9 +24,9 @@ def test_to_dict(message):
 
 
 def test_to_json(message):
-    result = Message(**message['data'])
+    result = Message(**message['camelCase_pk'])
     json_data = result.to_json()
     data = json.loads(json_data)
-    assert data['signature'] == message['data']['signature']
-    assert data['public_key'] == message['data']['public_key']
-    assert data['message'] == message['data']['message']
+    assert data['signature'] == message['camelCase_pk']['signature']
+    assert data['publicKey'] == message['camelCase_pk']['publicKey']
+    assert data['message'] == message['camelCase_pk']['message']
