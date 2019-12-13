@@ -12,6 +12,7 @@ def test_verify(message):
     result = Message(**message['data'])
     assert result.verify() is True
 
+
 def test_to_dict(message):
     result = Message(**message['data'])
     assert result.to_dict() == message['data']
