@@ -1,5 +1,9 @@
+from crypto.configuration.network import set_network
 from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION, TRANSACTION_TYPE_GROUP
+from crypto.networks.devnet import Devnet
 from crypto.transactions.builder.delegate_resignation import DelegateResignation
+
+set_network(Devnet)
 
 
 def test_delegate_resignation_transaction():

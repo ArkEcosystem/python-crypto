@@ -101,8 +101,11 @@ class Transaction(object):
         Returns:
             None: methods returns nothing
         """
+
         signature_end_offset = start_offset + (64 * 2)
-        self.signature = serialized[start_offset:signature_end_offset]
+
+        if len(serialized) - signature_end_offset % 65 != 0:
+            self.signature = serialized[start_offset:signature_end_offset]
 
         second_signature_end_offset = signature_end_offset + (64 * 2)
         if len(serialized) - signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 64 == 0:
@@ -160,7 +163,7 @@ class Transaction(object):
         return is_valid
 
     def verify_schnorr_multisig(self):
-        """Verify the multisignatures transaction. Method will raise an exception if invalid, if  will
+        """Verify the multisignatures transaction. Method will raise an exception if invalid, it will
         returns True
         """
         is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, True, False), self.senderPublicKey, self.signature)

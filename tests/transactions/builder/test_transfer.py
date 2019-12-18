@@ -1,5 +1,9 @@
+from crypto.configuration.network import set_network
 from crypto.constants import TRANSACTION_TRANSFER, TRANSACTION_TYPE_GROUP
+from crypto.networks.devnet import Devnet
 from crypto.transactions.builder.transfer import Transfer
+
+set_network(Devnet)
 
 
 def test_transfer_transaction():
@@ -11,8 +15,6 @@ def test_transfer_transaction():
     )
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.set_version(2)
-    transaction.set_network(23)
     transaction.schnorr_sign('this is a top secret passphrase')
     transaction_dict = transaction.to_dict()
 

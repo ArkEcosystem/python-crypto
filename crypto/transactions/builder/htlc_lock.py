@@ -10,6 +10,10 @@ class HtlcLock(BaseTransactionBuilder):
         """Create a timelock transaction
 
         Args:
+            recipient_id (str): recipient identifier
+            secret_hash (str): a hash of the secret. The SAME hash must be used in the corresponding “claim” transaction
+            expiration_type (int): type of the expiration. Either block height or network epoch timestamp based
+            expiration_value (int): Expiration of transaction in seconds or height depending on expiration_type
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()

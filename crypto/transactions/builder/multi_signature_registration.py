@@ -10,8 +10,6 @@ class MultiSignatureRegistration(BaseTransactionBuilder):
         """Create a new multi signature transaction
 
         Args:
-            min_signatures (int): minimum required signatures
-            publickeys (list): list of signatures required
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()

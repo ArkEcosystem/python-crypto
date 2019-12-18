@@ -1,7 +1,11 @@
 from base58 import b58encode
 
+from crypto.configuration.network import set_network
 from crypto.constants import TRANSACTION_IPFS, TRANSACTION_TYPE_GROUP
+from crypto.networks.devnet import Devnet
 from crypto.transactions.builder.ipfs import IPFS
+
+set_network(Devnet)
 
 
 def test_ipfs_transaction():

@@ -1,5 +1,9 @@
+from crypto.configuration.network import set_network
 from crypto.constants import TRANSACTION_HTLC_REFUND, TRANSACTION_TYPE_GROUP
+from crypto.networks.devnet import Devnet
 from crypto.transactions.builder.htlc_refund import HtlcRefund
+
+set_network(Devnet)
 
 
 def test_timelock_refund_transaction():

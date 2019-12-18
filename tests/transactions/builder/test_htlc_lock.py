@@ -1,5 +1,9 @@
+from crypto.configuration.network import set_network
 from crypto.constants import TRANSACTION_HTLC_LOCK, TRANSACTION_TYPE_GROUP
+from crypto.networks.devnet import Devnet
 from crypto.transactions.builder.htlc_lock import HtlcLock
+
+set_network(Devnet)
 
 
 def test_htlc_lock_transaction():

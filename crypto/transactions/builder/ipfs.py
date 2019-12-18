@@ -10,6 +10,7 @@ class IPFS(BaseTransactionBuilder):
         """Create an ipfs transaction
 
         Args:
+            ipfs_id (str): ipfs transaction identifier
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()

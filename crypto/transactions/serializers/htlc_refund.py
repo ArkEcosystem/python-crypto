@@ -4,7 +4,7 @@ from crypto.transactions.serializers.base import BaseSerializer
 
 
 class HtlcRefundSerializer(BaseSerializer):
-    """Serializer handling timelock claim data
+    """Serializer handling timelock refund data
     """
 
     def serialize(self):

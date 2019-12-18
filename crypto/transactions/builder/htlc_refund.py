@@ -10,6 +10,7 @@ class HtlcRefund(BaseTransactionBuilder):
         """Create a timelock transaction
 
         Args:
+            lock_transaction_id (str) : HTLC lock transaction ID we wish to claim
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()

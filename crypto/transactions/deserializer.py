@@ -5,11 +5,7 @@ from importlib import import_module
 
 from binary.unsigned_integer.reader import read_bit8, read_bit16, read_bit32, read_bit64
 
-from crypto.constants import (
-    TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
-    TRANSACTION_TYPES, TRANSACTION_VOTE
-)
-from crypto.identity.address import address_from_public_key
+from crypto.constants import TRANSACTION_TYPES
 from crypto.transactions.deserializers.base import BaseDeserializer
 
 
@@ -53,9 +49,7 @@ class Deserializer(object):
         handled_transaction = self._handle_transaction_type(asset_offset, transaction)
         transaction.amount = handled_transaction.amount
         transaction.version = handled_transaction.version
-        if transaction.version == 1:
-            transaction = self._handle_version_one(transaction)
-        elif transaction.version == 2:
+        if transaction.version == 2:
             transaction = self._handle_version_two(transaction)
         else:
             raise Exception('should this ever happen?')
@@ -86,46 +80,6 @@ class Deserializer(object):
                 deserializer = attribute
                 break
         return deserializer(self.serialized, asset_offset, transaction).deserialize()
-
-    def _handle_version_one(self, transaction):
-        """Handle deserialization for version one
-
-        Args:
-            transaction (object): Transaction resource object
-
-        Returns:
-            object: Transaction resource object of currently deserialized data
-        """
-        if transaction.secondSignature:
-            transaction.secondSignature = transaction.secondSignature
-
-        if transaction.type is TRANSACTION_VOTE:
-            transaction.recipientId = address_from_public_key(
-                transaction.senderPublicKey, transaction.network
-            )
-
-        if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            transaction.asset['multiSignature']['publicKeys'] = [
-                '+{}'.format(key) for key in transaction.asset['multiSignature']['publicKeys']
-            ]
-
-        if transaction.vendorFieldHex:
-            transaction.vendorField = unhexlify(transaction.vendorFieldHex)
-
-        if not transaction.id:
-            transaction.id = transaction.get_id()
-
-        if transaction.type is TRANSACTION_SECOND_SIGNATURE_REGISTRATION:
-            transaction.recipientId = address_from_public_key(
-                transaction.senderPublicKey, transaction.network
-            )
-
-        if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            transaction.recipientId = address_from_public_key(
-                transaction.senderPublicKey, transaction.network
-            )
-
-        return transaction
 
     def _handle_version_two(self, transaction):
         """Handle deserialization for version two

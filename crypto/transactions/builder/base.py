@@ -54,7 +54,6 @@ class BaseTransactionBuilder(object):
     def multi_sign(self, passphrase, index):
         if not self.transaction.signatures:
             self.transaction.signatures = []
-        self.set_version(2)
 
         index = len(self.transaction.signatures) if index == -1 else index
 
@@ -71,17 +70,11 @@ class BaseTransactionBuilder(object):
     def schnorr_verify_multisig(self):
         return self.transaction.verify_schnorr_multisig()
 
-    def set_version(self, version=2):
-        self.transaction.version = version
-
     def set_nonce(self, nonce):
         self.transaction.nonce = nonce
 
     def set_amount(self, amount):
         self.transaction.amount = amount
-
-    def set_network(self, network):
-        self.transaction.network = network
 
     def set_sender_public_key(self, public_key):
         self.transaction.senderPublicKey = public_key
