@@ -17,4 +17,5 @@ class TransferSerializer(BaseSerializer):
         self.bytes_data += write_bit32(self.transaction.get('expiration', 0))
         recipientId = hexlify(b58decode_check(self.transaction['recipientId']))
         self.bytes_data += write_high(recipientId)
+
         return self.bytes_data

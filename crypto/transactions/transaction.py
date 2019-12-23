@@ -1,23 +1,18 @@
 import json
 from binascii import unhexlify
 from hashlib import sha256
-from struct import pack
-
-from base58 import b58decode_check
 
 from binary.hex.writer import write_high
-from binary.unsigned_integer.writer import write_bit32, write_bit64, write_bit8
+from binary.unsigned_integer.writer import write_bit8
 
 from crypto.constants import (
     TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION,
     TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 )
 from crypto.exceptions import ArkInvalidTransaction
+from crypto.schnorr import schnorr
 from crypto.transactions.deserializer import Deserializer
 from crypto.transactions.serializer import Serializer
-from crypto.utils.message import Message
-from crypto.utils.slot import get_time
-
 
 TRANSACTION_ATTRIBUTES = {
     'amount': 0,
@@ -31,11 +26,15 @@ TRANSACTION_ATTRIBUTES = {
     'signature': None,
     'signatures': None,
     'signSignature': None,
-    'timestamp': get_time,
+    'nonce': None,
     'type': None,
+    'typeGroup': None,
     'vendorField': None,
     'vendorFieldHex': None,
     'version': None,
+    'lockTransactionId': None,
+    'lockSecret': None,
+    'expiration': None
 }
 
 
@@ -55,7 +54,7 @@ class Transaction(object):
         Returns:
             str:
         """
-        return sha256(self.to_bytes(False, False)).hexdigest()
+        return sha256(self.to_bytes(skip_signature=False, skip_second_signature=False, skip_multi_signature=False)).hexdigest()
 
     def to_dict(self):
         """Convert the transaction into a dictionary representation
@@ -76,45 +75,21 @@ class Transaction(object):
         data = self.to_dict()
         return json.dumps(data)
 
-    def to_bytes(self, skip_signature=True, skip_second_signature=True):
+    def to_bytes(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
         """Convert the transaction to its byte representation
 
         Args:
             skip_signature (bool, optional): do you want to skip the signature
             skip_second_signature (bool, optional): do you want to skip the 2nd signature
+            skip_multi_signature (bool, optional): do you want to skip multi signature
 
         Returns:
             bytes: bytes representation of the transaction
         """
-        bytes_data = bytes()
-        bytes_data += write_bit8(self.type)
-        bytes_data += write_bit32(self.timestamp)
-        bytes_data += write_high(self.senderPublicKey)
-
-        skip_recipient_id = self.type in [
-            TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
-            TRANSACTION_MULTI_SIGNATURE_REGISTRATION
-        ]
-
-        if self.recipientId and not skip_recipient_id:
-            bytes_data += b58decode_check(self.recipientId)
-        else:
-            bytes_data += pack('21x')
-
-        if self.vendorField and len(self.vendorField) <= 255:
-            bytes_data += self.vendorField
-            if len(self.vendorField) < 64:
-                bytes_data += pack('{}x'.format(64 - len(self.vendorField)))
-        else:
-            bytes_data += pack('64x')
-
-        bytes_data += write_bit64(self.amount)
-        bytes_data += write_bit64(self.fee)
-
-        bytes_data = self._handle_transaction_type(bytes_data)
-        bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature)
-
-        return bytes_data
+        return Serializer(self.to_dict()).serialize(skip_signature=skip_signature,
+                                                    skip_second_signature=skip_second_signature,
+                                                    skip_multi_signature=skip_multi_signature,
+                                                    raw=True)
 
     def parse_signatures(self, serialized, start_offset):
         """Parse the signature, second signature and multi signatures
@@ -127,77 +102,76 @@ class Transaction(object):
             None: methods returns nothing
         """
 
-        self.signature = serialized[start_offset:]
-        multi_signature_offset = 0
+        signature_end_offset = start_offset + (64 * 2)
 
-        if not len(self.signature):
-            self.signature = None
-            return
+        if len(serialized) - signature_end_offset % 65 != 0:
+            self.signature = serialized[start_offset:signature_end_offset]
 
-        signature_length = int(self.signature[2:4], base=16) + 2
-        self.signature = serialized[start_offset: start_offset + (signature_length * 2)]
-        multi_signature_offset += signature_length * 2
-        self.signSignature = serialized[start_offset + (signature_length * 2):]
+        second_signature_end_offset = signature_end_offset + (64 * 2)
+        if len(serialized) - signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 64 == 0:
+            self.signSignature = serialized[signature_end_offset:second_signature_end_offset]
 
-        if not self.signSignature:
-            self.signSignature = None
-        elif 'ff' == self.signSignature[:2]:
-            self.signSignature = None
-        else:
-            secondSignature_length = int(self.signSignature[2:4], base=16)
-            self.signSignature = self.signSignature[:secondSignature_length * 2]
-            multi_signature_offset += secondSignature_length * 2
+        if len(serialized) - second_signature_end_offset > 0 and (len(serialized) - signature_end_offset) % 65 == 0:
+            multi_sig_part = serialized[signature_end_offset:]
+            index = 0
+            index_size = 2
+            signature_size = 128
 
-        signatures = serialized[:start_offset + multi_signature_offset]
+            while index != len(multi_sig_part):
+                signature_index = multi_sig_part[index:index + index_size]
+                signature = multi_sig_part[index + index_size:index + index_size + signature_size]
+                index += index_size + signature_size
+                signature_formatted = signature_index + signature
+                self.signatures.append(signature_formatted)
 
-        if not signatures:
-            return
+        return
 
-        if 'ff' != signatures[:2]:
-            return
-
-        signatures = signatures[2:]
-        self.signatures = []
-
-        while True:
-            mlength = int(signatures[2:4], base=16)
-            if mlength > 0:
-                self.signatures.append(signatures[:(mlength + 2) * 2])
-            else:
-                break
-
-            signatures = signatures[(mlength + 2) * 2:]
-            if not signatures:
-                break
-
-    def serialize(self):
-        data = self.to_dict()
-        return Serializer(data).serialize()
-
-    def deserialize(self, serialized):
-        return Deserializer(serialized).deserialize()
-
-    def verify(self):
-        """Verify the transaction. Method will raise an exception if invalid, if it's valid nothing
-        will happen.
-        """
-        transaction = self.to_bytes()
-        message = Message(message=transaction, signature=self.signature, publickey=self.senderPublicKey)
-        is_valid = message.verify()
-        if not is_valid:
-            raise ArkInvalidTransaction('Transaction could not be verified')
-
-    def second_verify(self, passphrase):
-        """Verify the transaction using the 2nd passphrase
+    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
+        """Perform AIP11 compliant serialization.
 
         Args:
-            passphrase (str): 2nd passphrase associated with the account sending this transaction
+            skip_signature (bool, optional): do you want to skip the signature
+            skip_second_signature (bool, optional): do you want to skip the 2nd signature
+            skip_multi_signature (bool, optional): do you want to skip multi signature
+
+        Returns:
+            str: Serialized string
         """
-        transaction = sha256(self.to_bytes()).digest()
-        message = Message(transaction, self.signSignature, self.senderPublicKey)
-        is_valid = message.verify()
+        data = self.to_dict()
+        return Serializer(data).serialize(skip_signature, skip_second_signature, skip_multi_signature)
+
+    def deserialize(self, serialized):
+        """Perform AIP11 compliant deserialization.
+
+        Args:
+            serialized (str): parses a given serialized string
+
+        Returns:
+            crypto.transactions.transaction.Transaction: Transaction
+        """
+        return Deserializer(serialized).deserialize()
+
+    def verify_schnorr(self):
+        """Verify the transaction. Method will raise an exception if invalid, if it's valid it will
+        returns True
+        """
+        is_valid = schnorr.b410_schnorr_verify(self.to_bytes(), self.senderPublicKey, self.signature)
+
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
+
+        return is_valid
+
+    def verify_schnorr_multisig(self):
+        """Verify the multisignatures transaction. Method will raise an exception if invalid, it will
+        returns True
+        """
+        is_valid = schnorr.b410_schnorr_verify(self.to_bytes(True, True, False), self.senderPublicKey, self.signature)
+
+        if not is_valid:
+            raise ArkInvalidTransaction('Transaction could not be verified')
+
+        return is_valid
 
     def _handle_transaction_type(self, bytes_data):
         """Handled each transaction type differently
@@ -217,12 +191,12 @@ class Transaction(object):
         elif self.type == TRANSACTION_VOTE:
             bytes_data += ''.join(self.asset['votes']).encode()
         elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            bytes_data += write_bit8(self.asset['multisignature']['min'])
-            bytes_data += write_bit8(self.asset['multisignature']['lifetime'])
-            bytes_data += ''.join(self.asset['multisignature']['keysgroup']).encode()
+            bytes_data += write_bit8(self.asset['multiSignature']['min'])
+            bytes_data += ''.join(self.asset['multiSignature']['publicKeys']).encode()
+
         return bytes_data
 
-    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature):
+    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature):
         """Internal method, used to handle the signature
 
         Args:
@@ -238,4 +212,6 @@ class Transaction(object):
             bytes_data += write_high(self.signature)
         if not skip_second_signature and self.signSignature:
             bytes_data += write_high(self.signSignature)
+        if not skip_multi_signature and self.signatures:
+            bytes_data += write_high(self.signatures)
         return bytes_data

@@ -20,7 +20,8 @@ class TransferDeserializer(BaseDeserializer):
         self.transaction.recipientId = b58encode_check(unhexlify(recipientId)).decode()
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + (8 + 4 + 21) * 2
         )
+
         return self.transaction

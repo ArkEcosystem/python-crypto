@@ -26,7 +26,8 @@ class VoteDeserializer(BaseDeserializer):
             self.transaction.asset['votes'].append(vote)
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
+            hexlify(self.serialized).decode(),
             self.asset_offset + 2 + (vote_length * 34 * 2)
         )
+
         return self.transaction

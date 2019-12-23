@@ -11,23 +11,27 @@ class MultiSignatureRegistrationDeserializer(BaseDeserializer):
         starting_position = int(self.asset_offset / 2)
 
         self.transaction.asset = {
-            'multisignature': {
+            'multiSignature': {
                 'min': read_bit8(self.serialized, starting_position) & 0xff,
-                'lifetime': read_bit8(self.serialized, starting_position + 2) & 0xff,
-                'keysgroup': []
+                'publicKeys': []
             }
         }
 
-        count = read_bit8(self.serialized, starting_position + 3) & 0xff
+        count = read_bit8(self.serialized, starting_position + 1) & 0xff
+
         for index in range(count):
-            index_start = int(self.asset_offset) + 6
+            index_start = int(self.asset_offset) + 4
+
             if (index > 0):
                 index_start += index * 66
-            signature = hexlify(self.serialized)[index_start:index_start + 66].decode()
-            self.transaction.asset['multisignature']['keysgroup'].append(signature)
+            public_key = hexlify(self.serialized)[index_start:index_start + 66].decode()
+            self.transaction.asset['multiSignature']['publicKeys'].append(public_key)
+
+        self.transaction.signatures = [] if self.transaction.signatures is None else self.transaction.signatures
 
         self.transaction.parse_signatures(
-            hexlify(self.serialized),
-            self.asset_offset + 6 + (count * 66)
+            hexlify(self.serialized).decode(),
+            self.asset_offset + 4 + (count * 66)
         )
+
         return self.transaction

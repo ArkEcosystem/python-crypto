@@ -3,13 +3,9 @@ from binascii import hexlify, unhexlify
 from hashlib import sha256
 from importlib import import_module
 
-from binary.unsigned_integer.reader import read_bit32, read_bit64, read_bit8
+from binary.unsigned_integer.reader import read_bit8, read_bit16, read_bit32, read_bit64
 
-from crypto.constants import (
-    TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_SECOND_SIGNATURE_REGISTRATION,
-    TRANSACTION_TYPES, TRANSACTION_VOTE
-)
-from crypto.identity.address import address_from_public_key
+from crypto.constants import TRANSACTION_TYPES
 from crypto.transactions.deserializers.base import BaseDeserializer
 
 
@@ -34,30 +30,29 @@ class Deserializer(object):
         transaction = Transaction()
         transaction.version = read_bit8(self.serialized, offset=1)
         transaction.network = read_bit8(self.serialized, offset=2)
-        transaction.type = read_bit8(self.serialized, offset=3)
-        transaction.timestamp = read_bit32(self.serialized, offset=4)
-        transaction.senderPublicKey = hexlify(self.serialized)[16:66+16].decode()
-        transaction.fee = read_bit64(self.serialized, offset=41)
+        transaction.typeGroup = read_bit32(self.serialized, offset=3)
+        transaction.type = read_bit16(self.serialized, offset=7)
+        transaction.nonce = read_bit64(self.serialized, offset=9)
+        transaction.senderPublicKey = hexlify(self.serialized)[34:66+34].decode()
+        transaction.fee = read_bit64(self.serialized, offset=50)
 
-        vendor_field_length = read_bit8(self.serialized, offset=49)
+        vendor_field_length = read_bit8(self.serialized, offset=58)
         if vendor_field_length > 0:
-            vendor_field_offset = (49 + 8) * 2
+            vendor_field_offset = (58 + 8) * 2
             vendorField_take = vendor_field_length * 2
             transaction.vendorFieldHex = hexlify(
                 self.serialized
             )[vendor_field_offset:vendorField_take]
 
-        asset_offset = (49 + 1) * 2 + vendor_field_length * 2
+        asset_offset = (58 + 1) * 2 + vendor_field_length * 2
 
-        handled_tranasction = self._handle_transaction_type(asset_offset, transaction)
-        transaction.amount = handled_tranasction.amount
-        transaction.version = handled_tranasction.version
-        if transaction.version == 1:
-            transaction = self._handle_version_one(transaction)
-        elif transaction.version == 2:
+        handled_transaction = self._handle_transaction_type(asset_offset, transaction)
+        transaction.amount = handled_transaction.amount
+        transaction.version = handled_transaction.version
+        if transaction.version == 2:
             transaction = self._handle_version_two(transaction)
         else:
-            raise Exception('should this ever happen?')  # todo: do we need this?
+            raise Exception('should this ever happen?')
 
         return transaction
 
@@ -86,46 +81,6 @@ class Deserializer(object):
                 break
         return deserializer(self.serialized, asset_offset, transaction).deserialize()
 
-    def _handle_version_one(self, transaction):
-        """Handle deserialization for version one
-
-        Args:
-            transaction (object): Transaction resource object
-
-        Returns:
-            object: Transaction resource object of currently deserialized data
-        """
-        if transaction.secondSignature:
-            transaction.secondSignature = transaction.secondSignature
-
-        if transaction.type is TRANSACTION_VOTE:
-            transaction.recipientId = address_from_public_key(
-                transaction.senderPublicKey, transaction.network
-            )
-
-        if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            transaction.asset['multisignature']['keysgroup'] = [
-                '+{}'.format(key) for key in transaction.asset['multisignature']['keysgroup']
-            ]
-
-        if transaction.vendorFieldHex:
-            transaction.vendorField = unhexlify(transaction.vendorFieldHex)
-
-        if not transaction.id:
-            transaction.id = transaction.get_id()
-
-        if transaction.type is TRANSACTION_SECOND_SIGNATURE_REGISTRATION:
-            transaction.recipientId = address_from_public_key(
-                transaction.senderPublicKey, transaction.network
-            )
-
-        if transaction.type is TRANSACTION_MULTI_SIGNATURE_REGISTRATION:
-            transaction.recipientId = address_from_public_key(
-                transaction.senderPublicKey, transaction.network
-            )
-
-        return transaction
-
     def _handle_version_two(self, transaction):
         """Handle deserialization for version two
 
@@ -135,4 +90,7 @@ class Deserializer(object):
         Returns:
             object: Transaction resource object of currently deserialized data
         """
-        transaction.id = sha256(transaction)  # todo serialize
+
+        transaction.id = sha256(unhexlify(transaction.serialize(False, True, False))).hexdigest()
+
+        return transaction
