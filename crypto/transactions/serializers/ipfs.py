@@ -1,6 +1,8 @@
-from binascii import unhexlify
+from binascii import hexlify
 
-from binary.unsigned_integer.writer import write_bit8
+from base58 import b58decode
+
+from binary.hex.writer import write_high
 
 from crypto.transactions.serializers.base import BaseSerializer
 
@@ -10,7 +12,8 @@ class IPFSSerializer(BaseSerializer):
     """
 
     def serialize(self):
-        dag = self.transaction['asset']['ipfs']['dag']
-        self.bytes_data += write_bit8(len(dag) // 2)
-        self.bytes_data += unhexlify(dag)
+        ipfs = hexlify(b58decode(self.transaction['asset']['ipfs']))
+
+        self.bytes_data += write_high(ipfs)
+
         return self.bytes_data

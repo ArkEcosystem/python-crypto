@@ -15,7 +15,9 @@ class Vote(BaseTransactionBuilder):
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
+
         self.transaction.asset['votes'] = [vote]
+
         if fee:
             self.transaction.fee = fee
 

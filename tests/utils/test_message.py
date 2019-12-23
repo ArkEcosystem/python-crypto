@@ -23,19 +23,10 @@ def test_to_dict(message):
     assert result.to_dict() == message['camelCase_pk']
 
 
-def test_to_json_with_publicKey(message):
+def test_to_json(message):
     result = Message(**message['camelCase_pk'])
     json_data = result.to_json()
     data = json.loads(json_data)
     assert data['signature'] == message['camelCase_pk']['signature']
     assert data['publicKey'] == message['camelCase_pk']['publicKey']
     assert data['message'] == message['camelCase_pk']['message']
-
-
-def test_to_json_with_publickey(message):
-    result = Message(**message['snake_case_pk'])
-    json_data = result.to_json()
-    data = json.loads(json_data)
-    assert data['signature'] == message['snake_case_pk']['signature']
-    assert data['publickey'] == message['snake_case_pk']['publickey']
-    assert data['message'] == message['snake_case_pk']['message']

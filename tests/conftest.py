@@ -6,18 +6,19 @@ def transaction_type_0():
     """Transaction of type "transfer"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
         'type': 0,
-        'timestamp': 0,
-        'senderPublicKey': '03cb7bca143376721d0e9e3f3ccb0dc2e7e8470c06e630c3cef73f03e309b558ad',
-        'fee': 0,
-        'amount': 12500000000000000,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 10000000,
+        'amount': 200000000,
         'expiration': 0,
-        'recipientId': 'DGihocTkwDygiFvmg6aG8jThYTic47GzU9',
-        'signature': '3044022016ecdf3039e69514c7d75861b22fc076496b61c07a1fcf793dc4f5c76fa0532b0220579c4c0c9d13720f9db5d9df29ed8ceab0adc266c6c160d612d4894dc5867eb1',  # noqa
-        'id': 'e40ce11cab82736da1cc91191716f3c1f446ca7b6a9f4f93b7120ef105ba06e8',
-        'serialized': 'ff011e000000000003cb7bca143376721d0e9e3f3ccb0dc2e7e8470c06e630c3cef73f03e309b558ad0000000000000000000040b10baf682c00000000001e7f048c40fd8a0442ffe79e0aa804f27fd5db15943044022016ecdf3039e69514c7d75861b22fc076496b61c07a1fcf793dc4f5c76fa0532b0220579c4c0c9d13720f9db5d9df29ed8ceab0adc266c6c160d612d4894dc5867eb1'  # noqa
+        'recipientId': 'AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        'signature': '136c29d921b58ae3194020b82e9808f9cd54f7178cb34678f570f28226b8e56ba0ad318297a3bacbb37ab22ddaa5dbf1901cda3ec2d2bca5ce98d6407839ab9b',  # noqa
+        'id': '129517023bd895b682bbb38b1d1f99e9222bd487899c843da22d8572b0fb52a8',
+        'serialized': 'ff02170100000000000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19280969800000000000000c2eb0b0000000000000000170995750207ecaf0ccf251c1265b92ad84f553662136c29d921b58ae3194020b82e9808f9cd54f7178cb34678f570f28226b8e56ba0ad318297a3bacbb37ab22ddaa5dbf1901cda3ec2d2bca5ce98d6407839ab9b'  # noqa
     }
     return data
 
@@ -27,22 +28,22 @@ def transaction_type_1():
     """Transaction of type "second signature registration"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
         'type': 1,
-        'timestamp': 4895203,
-        'senderPublicKey': '03a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933',
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
         'fee': 500000000,
         'asset': {
             'signature': {
-                'publicKey': '0292d580f200d041861d78b3de5ff31c6665b7a092ac3890d9132593beb9aa8513'
+                'publicKey': '03699e966b2525f9088a6941d8d94f7869964a000efe65783d78ac82e1199fe609'
             }
         },
-        'signature': '3045022100e4fe1f3fb2845ad5f6ab377f247ffb797661d7516626bdc1d2f0f73eca582b4d02200ada103bdbff439d57c7aaa266f30ce74ff4385f0c77a486070033061b71650c',  # noqa
+        'signature': 'f9a1e2244c8318e8be85482fc02659e5c1775d246d73d5d0699ae4a1d5e3a3e84f9dcf68ee015f943d2a82eb829f35abd7901279761d96f6b43431520e955c67',  # noqa
         'amount': 0,
-        'recipientId': 'D7seWn8JLVwX4nHd9hh2Lf7gvZNiRJ7qLk',
-        'id': '62c36be3e5176771a476d813f64082a8f4e3861c0356438bdf1cc91eebcc9b0d',
-        'serialized': 'ff011e01e3b14a0003a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de9330065cd1d00000000000292d580f200d041861d78b3de5ff31c6665b7a092ac3890d9132593beb9aa85133045022100e4fe1f3fb2845ad5f6ab377f247ffb797661d7516626bdc1d2f0f73eca582b4d02200ada103bdbff439d57c7aaa266f30ce74ff4385f0c77a486070033061b71650c'  # noqa
+        'id': '173a3230159b45d772b2e0348f42af53913bf3e376397f29b8e0bda290badbe4',
+        'serialized': 'ff02170100000001000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed1920065cd1d000000000003699e966b2525f9088a6941d8d94f7869964a000efe65783d78ac82e1199fe609f9a1e2244c8318e8be85482fc02659e5c1775d246d73d5d0699ae4a1d5e3a3e84f9dcf68ee015f943d2a82eb829f35abd7901279761d96f6b43431520e955c67'  # noqa
     }
     return data
 
@@ -52,21 +53,22 @@ def transaction_type_2():
     """Transaction of type "delegate registration"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
         'type': 2,
-        'timestamp': 0,
-        'senderPublicKey': '03e5b39a83e6c7c952c5908089d4524bb8dda93acc2b2b953247e43dc4fe9aa3d1',
-        'fee': 0,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 2500000000,
         'asset': {
             'delegate': {
-                'username': 'genesis_1'
+                'username': 'boldninja'
             }
         },
-        'signature': '3045022100e3e38811778023e6f17fefd447f179d45ab92c398c7cfb1e34e2f6e1b167c95a022070c36439ecec0fc3c43850070f29515910435d389e059579878d61b5ff2ea337',  # noqa
+        'signature': 'eaf4b4dfd7903c32cf6c145ddf0744e86536719f5790b4286b08f1a10f0ad183bc601efc8a49a2a7b41758601a1793693afa1781cf0a63a8f72b08d5a1aaba1e',  # noqa
         'amount': 0,
-        'id': 'eb0146ac79afc228f0474a5ae1c4771970ae7880450b998c401029f522cd8a21',
-        'serialized': 'ff011e020000000003e5b39a83e6c7c952c5908089d4524bb8dda93acc2b2b953247e43dc4fe9aa3d10000000000000000000967656e657369735f313045022100e3e38811778023e6f17fefd447f179d45ab92c398c7cfb1e34e2f6e1b167c95a022070c36439ecec0fc3c43850070f29515910435d389e059579878d61b5ff2ea337'  # noqa
+        'id': 'cfd113d8cd9fd46b07030c14fac38c1d3fc0eca991e999eab9d0152ea96ab0dc',
+        'serialized': 'ff02170100000002000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19200f90295000000000009626f6c646e696e6a61eaf4b4dfd7903c32cf6c145ddf0744e86536719f5790b4286b08f1a10f0ad183bc601efc8a49a2a7b41758601a1793693afa1781cf0a63a8f72b08d5a1aaba1e'  # noqa
     }
     return data
 
@@ -76,20 +78,20 @@ def transaction_type_3():
     """Transaction of type "vote"
     """
     data = {
-        'version': 1,
-        'network': 30,
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
         'type': 3,
-        'timestamp': 4349399,
-        'senderPublicKey': '0374e9a97611540a9ce4812b0980e62d3c5141ea964c2cab051f14a78284570dcd',
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
         'fee': 100000000,
         'asset': {
-            'votes': ['+02dcb94d73fb54e775f734762d26975d57f18980314f3b67bc52beb393893bc706']
+            'votes': ['+022cca9529ec97a772156c152a00aad155ee6708243e65c9d211a589cb5d43234d']
         },
-        'signature': '3045022100af1e5d6f3c9eff8699192ad1b827e7cf7c60040bd2f704360a1f1fbadf6bc1cf022048238b7175369861436d895adaeeeb31ceb453e543dbf20218a4a5b688650482',  # noqa
+        'signature': '86007f8e6a982bc271ec063c20f158734f0bc1e23e0e1abf9edeaa208b4810fa1d466171bba79a5c00b0a4c698728f68aa0748d98613cac247c014ee84a6fc41',  # noqa
         'amount': 0,
-        'recipientId': 'DRac35wghMcmUSe5jDMLBDLWkVVjyKZFxK',
-        'id': 'a430dbe34172d205ec251875b14438e58e4bd6cf4efc1ebb3da4c206b002115b',
-        'serialized': 'ff011e03d75d42000374e9a97611540a9ce4812b0980e62d3c5141ea964c2cab051f14a78284570dcd00e1f5050000000000010102dcb94d73fb54e775f734762d26975d57f18980314f3b67bc52beb393893bc7063045022100af1e5d6f3c9eff8699192ad1b827e7cf7c60040bd2f704360a1f1fbadf6bc1cf022048238b7175369861436d895adaeeeb31ceb453e543dbf20218a4a5b688650482'  # noqa
+        'id': '2c5d71028607674411c8e37e316a015eccbeb9ba486fddfbd393dc421540a90a',
+        'serialized': 'ff02170100000003000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19200e1f50500000000000101022cca9529ec97a772156c152a00aad155ee6708243e65c9d211a589cb5d43234d86007f8e6a982bc271ec063c20f158734f0bc1e23e0e1abf9edeaa208b4810fa1d466171bba79a5c00b0a4c698728f68aa0748d98613cac247c014ee84a6fc41'  # noqa
     }
     return data
 
@@ -99,35 +101,32 @@ def transaction_type_4():
     """Transaction of type "multi signature registration"
     """
     data = {
-        'version': 1,
+        'version': 2,
         'network': 23,
-        'id': 'cbd6862966bb1b03ba742397b7e5a88d6eefb393a362ead0d605723b840db2af',
-        'blockid': '1844069042066945391',
+        'typeGroup': 1,
         'type': 4,
-        'timestamp': 10112114,
+        'nonce': 1,
+        'senderPublicKey': '0205d9bbe71c343ac9a6a83a4344fd404c3534fc7349827097d0835d160bc2b896',
+        'id': 'c868aad20165a336c35e324378f0c12008d18af4c1025291efcb7539c7c917f0',
         'amount': 0,
         'fee': 2000000000,
-        'senderId': 'AMw3TiLrmVmwmFVwRzn96kkUsUpFTqsAEX',
-        'senderPublicKey': '036928c98ee53a1f52ed01dd87db10ffe1980eb47cd7c0a7d688321f47b5d7d760',
-        'signature': '30440220324d89c5792e4a54ae70b4f1e27e2f87a8b7169cc6f2f7b2c83dba894960f987022053b8d0ae23ff9d1769364db7b6fd03216d93753c82a711c3558045e787bc01a5',  # noqa
-        'signSignature': '304402201fcd54a9ac9c0269b8cec213566ddf43207798e2cf9ca1ce3c5d315d66321c6902201aa94c4ed3e5e479a12220aa886b259e488eb89b697c711f91e8c03b9620e0b1',  # noqa
-        'signatures': [
-            '304502210097f17c8eecf36f86a967cc52a83fa661e4ffc70cc4ea08df58673669406d424c0220798f5710897b75dda42f6548f841afbe4ed1fa262097112cf5a1b3f7dade60e4',  # noqa
-            '304402201a4a4c718bfdc699bbb891b2e89be018027d2dcd10640b5ddf07802424dab78e02204ec7c7d505d2158c3b51fdd3843d16aecd2eaaa4c6c7a555ef123c5e59fd41fb',  # noqa
-            '304402207e660489bced5ce80c33d45c86781b63898775ab4a231bb48780f97b40073a63022026f0cefd0d83022d822522ab4366a82e3b89085c328817919939f2efeabd913d'  # noqa
-        ],
+        'signature': 'f5e9859c955bf8917b308ea21c88daf58661686c2017e476dcf735ad7f00aebf8e6effda3fe99e5f33f6007db7db9c9155796d9b5d31c53bd6156364a6a765d0',  # noqa
         'asset': {
-            'multisignature': {
-                'min': 2,
-                'keysgroup': [
-                    '+03543c6cc3545be6bac09c82721973a052c690658283472e88f24d14739f75acc8',
-                    '+0276dc5b8706a85ca9fdc46e571ac84e52fbb48e13ec7a165a80731b44ae89f1fc',
-                    '+02e8d5d17eb17bbc8d7bf1001d29a2d25d1249b7bb7a5b7ad8b7422063091f4b31'
+            'multiSignature': {
+                'publicKeys': [
+                    '0205d9bbe71c343ac9a6a83a4344fd404c3534fc7349827097d0835d160bc2b896',
+                    '03df0a1eb42d99b5de395cead145ba1ec2ea837be308c7ce3a4e8018b7efc7fdb8',
+                    '03860d76b1df09659ac282cea3da5bd84fc45729f348a4a8e5f802186be72dc17f'
                 ],
-                'lifetime': 24
+                'min': 2,
             }
         },
-        'serialized': 'ff011704724c9a00036928c98ee53a1f52ed01dd87db10ffe1980eb47cd7c0a7d688321f47b5d7d76000943577000000000002031803543c6cc3545be6bac09c82721973a052c690658283472e88f24d14739f75acc80276dc5b8706a85ca9fdc46e571ac84e52fbb48e13ec7a165a80731b44ae89f1fc02e8d5d17eb17bbc8d7bf1001d29a2d25d1249b7bb7a5b7ad8b7422063091f4b3130440220324d89c5792e4a54ae70b4f1e27e2f87a8b7169cc6f2f7b2c83dba894960f987022053b8d0ae23ff9d1769364db7b6fd03216d93753c82a711c3558045e787bc01a5304402201fcd54a9ac9c0269b8cec213566ddf43207798e2cf9ca1ce3c5d315d66321c6902201aa94c4ed3e5e479a12220aa886b259e488eb89b697c711f91e8c03b9620e0b1ff304502210097f17c8eecf36f86a967cc52a83fa661e4ffc70cc4ea08df58673669406d424c0220798f5710897b75dda42f6548f841afbe4ed1fa262097112cf5a1b3f7dade60e4304402201a4a4c718bfdc699bbb891b2e89be018027d2dcd10640b5ddf07802424dab78e02204ec7c7d505d2158c3b51fdd3843d16aecd2eaaa4c6c7a555ef123c5e59fd41fb304402207e660489bced5ce80c33d45c86781b63898775ab4a231bb48780f97b40073a63022026f0cefd0d83022d822522ab4366a82e3b89085c328817919939f2efeabd913d'  # noqa
+        'signatures': [
+            '0064900cb2cc3db6ca9c7e3bd363b322cdc4a39e051f655e9867935e1bb856b6dcce52845c031c690808f40340bc827bbaacd7b04bceff866cb0d386ab84715174',  # noqa
+            '01dd363ccc101a958bded1a5db1c08f13283fc7cee53da93dfe00785eb406512467ff8e445f8ad843744ac4179f30f942645dfd5bdf5f2bfc344ad02393053880a',  # noqa
+            '02d0012f035dc3fd54173c83d40217914653488fe9ce592dca34234163181d255281f2be7033725cfc4a6786509e7fabbaf0be8cf50882fc7b66fe94f259fd004e'  # noqa
+        ],
+        'serialized': 'ff021701000000040001000000000000000205d9bbe71c343ac9a6a83a4344fd404c3534fc7349827097d0835d160bc2b89600943577000000000002030205d9bbe71c343ac9a6a83a4344fd404c3534fc7349827097d0835d160bc2b89603df0a1eb42d99b5de395cead145ba1ec2ea837be308c7ce3a4e8018b7efc7fdb803860d76b1df09659ac282cea3da5bd84fc45729f348a4a8e5f802186be72dc17ff5e9859c955bf8917b308ea21c88daf58661686c2017e476dcf735ad7f00aebf8e6effda3fe99e5f33f6007db7db9c9155796d9b5d31c53bd6156364a6a765d00064900cb2cc3db6ca9c7e3bd363b322cdc4a39e051f655e9867935e1bb856b6dcce52845c031c690808f40340bc827bbaacd7b04bceff866cb0d386ab8471517401dd363ccc101a958bded1a5db1c08f13283fc7cee53da93dfe00785eb406512467ff8e445f8ad843744ac4179f30f942645dfd5bdf5f2bfc344ad02393053880a02d0012f035dc3fd54173c83d40217914653488fe9ce592dca34234163181d255281f2be7033725cfc4a6786509e7fabbaf0be8cf50882fc7b66fe94f259fd004e'  # noqa
     }
     return data
 
@@ -137,41 +136,154 @@ def transaction_type_5():
     """Transaction of type "ipfs"
     """
     data = {
-        'data': {},
-        'serialised': ''
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
+        'type': 5,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 500000000,
+        'amount': 0,
+        'asset': {
+            'ipfs': 'QmR45FmbVVrixReBwJkhEKde2qwHYaQzGxu4ZoDeswuF9w'
+        },
+        'signature': '0b6e81b123de99e953d3073a8760d3213ab5f5cf512e65a2dd73aebb410966d8fbc59e775deb4f23c51be0847402b5e1d4ee68732b3e6d8e8914d259d7e373eb',
+        'id': '818228ce634b46c488f3b2df8fd02bd50331ebdedb44df5b9b11b97b01e9fb36',
+        'serialized': 'ff02170100000005000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed1920065cd1d000000000012202853f0f11ab91d73b73a2a86606103f45dd469ad2e89ec6f9a25febe8758d3fe0b6e81b123de99e953d3073a8760d3213ab5f5cf512e65a2dd73aebb410966d8fbc59e775deb4f23c51be0847402b5e1d4ee68732b3e6d8e8914d259d7e373eb'
     }
     return data
 
 
 @pytest.fixture
 def transaction_type_6():
-    """Transaction of type "timelock transfer"
+    """Transaction of type "multi payment"
     """
     data = {
-        'data': {},
-        'serialised': ''
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
+        'type': 6,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 10000000,
+        'amount': 0,
+        'asset': {
+            'payments': [
+                {
+                    'amount': 1,
+                    'recipientId': 'AHXtmB84sTZ9Zd35h9Y1vfFvPE2Xzqj8ri'
+                },
+                {
+                    'amount': 2,
+                    'recipientId': 'AZFEPTWnn2Sn8wDZgCRF8ohwKkrmk2AZi1'
+                },
+            ],
+        },
+        'signature': '672e89e66a9c5d7d95c21ccd07a89a111f02823146c06f14689d2cf1efd645fb648258fcf2280486d2cae19f391796d72145d2a8e6f261e887e34cd1998bdb65',
+        'id': 'e8c7293d428048f8678dc6c88cb8b32bd49c8ae9b02018297c1889d9bd33ba8d',
+        'serialized': 'ff02170100000006000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed1928096980000000000000200010000000000000017134b5be4b327ddf9c2bb47fec8a1a44189e90f74020000000000000017bfa6aec83cf1bd03a0cab9f35c85ff51a3e9f041672e89e66a9c5d7d95c21ccd07a89a111f02823146c06f14689d2cf1efd645fb648258fcf2280486d2cae19f391796d72145d2a8e6f261e887e34cd1998bdb65'
     }
     return data
 
 
 @pytest.fixture
 def transaction_type_7():
-    """Transaction of type "multi payment"
+    """Transaction of type "delegate resignation"
     """
     data = {
-        'data': {},
-        'serialised': ''
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
+        'type': 7,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 2500000000,
+        'amount': 0,
+        'signature': 'bdc048ca7eb5688cc01921aecf5914118cfc78eacc23825efa6d75094a683127cc02512dc59e1e0631fa8956f482eabc54933d23011a8337ea9cab99abed504d',
+        'id': '707b4deb339e717dfef44c40db0692015ce9bbab015c007b016b8a46b341e859',
+        'serialized': 'ff02170100000007000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19200f902950000000000bdc048ca7eb5688cc01921aecf5914118cfc78eacc23825efa6d75094a683127cc02512dc59e1e0631fa8956f482eabc54933d23011a8337ea9cab99abed504d'
     }
     return data
 
 
 @pytest.fixture
 def transaction_type_8():
-    """Transaction of type "delegate resignation"
+    """Transaction of type "HTLC lock"
     """
     data = {
-        'data': {},
-        'serialised': ''
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
+        'type': 8,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 10000000,
+        'amount': 200000000,
+        'recipientId': 'AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        'asset': {
+            'lock': {
+                'secretHash': '0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454',
+                'expiration': {
+                    'type': 1,
+                    'value': 1573455822
+                }
+            },
+        },
+        'signature': '7fe939b22a1da166b6ea58e3964651236fb4e0739f9716dedf92986f37df71ea7993e9a97b4a1686c0ad08028dcae08b7cb4a54b8a4db57e72b839a611e86358',
+        'id': 'e1b34afa54bbf34de5c00716b92246c5248c2135221ece169db877ca60a14007',
+        'serialized': 'ff02170100000008000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed19280969800000000000000c2eb0b000000000f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c545401ce07c95d170995750207ecaf0ccf251c1265b92ad84f5536627fe939b22a1da166b6ea58e3964651236fb4e0739f9716dedf92986f37df71ea7993e9a97b4a1686c0ad08028dcae08b7cb4a54b8a4db57e72b839a611e86358'
+
+    }
+    return data
+
+@pytest.fixture
+def transaction_type_9():
+    """Transaction of type "HTLC claim"
+    """
+    data = {
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
+        'type': 9,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 0,
+        'amount': 0,
+        'asset': {
+            'claim': {
+                'lockTransactionId': '943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb4',
+                'unlockSecret': 'my secret that should be 32bytes'
+            },
+        },
+        'signature': '381188e6a3c0da8823ab37cf7562724b3920f4fc8a40cb259ae297bd7237b511cbfdbcb46b7afa319ad1c2d8cc3d8cdc33a437c8b17867777b891d03c036dfb9',
+        'id': '846c5ee8a328376416735da43056d154d41e264564def42fb28b373c0d895c46',
+        'serialized': 'ff02170100000009000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192000000000000000000943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb46d792073656372657420746861742073686f756c642062652033326279746573381188e6a3c0da8823ab37cf7562724b3920f4fc8a40cb259ae297bd7237b511cbfdbcb46b7afa319ad1c2d8cc3d8cdc33a437c8b17867777b891d03c036dfb9'
+
+    }
+    return data
+
+@pytest.fixture
+def transaction_type_10():
+    """Transaction of type "HTLC refund"
+    """
+    data = {
+        'version': 2,
+        'network': 23,
+        'typeGroup': 1,
+        'type': 10,
+        'nonce': 1,
+        'senderPublicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'fee': 0,
+        'amount': 0,
+        'asset': {
+            'refund': {
+                'lockTransactionId': '943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb4',
+            },
+        },
+        'signature': '16d9ef1dceb0cbb105a45af6bdde9439055f07197643f9e2837312463330fd02ec7b13d1242becfe333c1b8ab2ea91c0c8240390d86f0fb0f6cdc22ec6ac64f1',
+        'id': '9356aa730990a2ea8e9871ffa65800f34ef1a4bec3215d89c950e72d82a34e91',
+        'serialized': 'ff0217010000000a000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192000000000000000000943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb416d9ef1dceb0cbb105a45af6bdde9439055f07197643f9e2837312463330fd02ec7b13d1242becfe333c1b8ab2ea91c0c8240390d86f0fb0f6cdc22ec6ac64f1'
+
     }
     return data
 

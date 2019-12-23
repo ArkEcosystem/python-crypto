@@ -3,7 +3,7 @@ from crypto.transactions.transaction import Transaction
 
 def test_transaction_serialize(transaction_type_0):
     transaction = Transaction(**transaction_type_0)
-    serialized = transaction.serialize()
+    serialized = transaction.serialize(False, True, False)
     assert serialized == transaction_type_0['serialized']
 
 
@@ -20,4 +20,5 @@ def test_transaction_deserialize(transaction_type_0):
     assert data['version'] == transaction_type_0['version']
     assert data['network'] == transaction_type_0['network']
     assert data['type'] == transaction_type_0['type']
-    assert data['timestamp'] == transaction_type_0['timestamp']
+    assert data['typeGroup'] == transaction_type_0['typeGroup']
+    assert data['nonce'] == transaction_type_0['nonce']

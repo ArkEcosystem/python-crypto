@@ -1,4 +1,4 @@
-from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION
+from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
@@ -13,5 +13,11 @@ class DelegateResignation(BaseTransactionBuilder):
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
+
+        self.transaction.typeGroup = self.get_type_group()
+
         if fee:
             self.transaction.fee = fee
+
+    def get_type_group(self):
+        return TRANSACTION_TYPE_GROUP.CORE.value
