@@ -47,8 +47,9 @@ class BaseTransactionBuilder(object):
         Args:
             passphrase (str): 2nd passphrase associated with the account sending this transaction
         """
-        message = Message.sign(self.transaction.to_bytes(skip_signature=False), passphrase)
-        self.transaction.signSignature = message.signature
+        msg = hashlib.sha256(self.transaction.to_bytes(False, True, False)).digest()
+        secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
+        self.transaction.signSignature = hexlify(schnorr.bcrypto410_sign(msg, secret))   
         self.transaction.id = self.transaction.get_id()
 
     def multi_sign(self, passphrase, index):
