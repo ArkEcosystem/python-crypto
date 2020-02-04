@@ -94,9 +94,8 @@ class Serializer(object):
 
         if not skip_second_signature and self.transaction.get('secondSignature'):
             bytes_data += unhexlify(self.transaction['secondSignature'])
-        elif self.transaction.get('signSignature'):
+        if not skip_second_signature and self.transaction.get('signSignature'):
             bytes_data += unhexlify(self.transaction['signSignature'])
-
         if not skip_multi_signature and self.transaction.get('signatures'):
             bytes_data += unhexlify(''.join(self.transaction['signatures']))
 
