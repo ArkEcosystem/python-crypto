@@ -162,6 +162,15 @@ class Transaction(object):
 
         return is_valid
 
+    def verify_schnorr_secondsig(self, secondPublicKey):
+        """Verify the transaction. Method will raise an exception if invalid, if it's valid it will
+        returns True
+        """
+        is_valid = schnorr.b410_schnorr_verify(self.to_bytes(False, True), secondPublicKey, self.signSignature)
+        
+        if not is_valid:
+            raise ArkInvalidTransaction('Transaction could not be verified')
+    
     def verify_schnorr_multisig(self):
         """Verify the multisignatures transaction. Method will raise an exception if invalid, it will
         returns True
