@@ -1,5 +1,6 @@
 from crypto.configuration.network import set_network
 from crypto.constants import TRANSACTION_TRANSFER, TRANSACTION_TYPE_GROUP
+from crypto.identity.public_key import PublicKey
 from crypto.networks.devnet import Devnet
 from crypto.transactions.builder.transfer import Transfer
 
@@ -47,7 +48,8 @@ def test_transfer_secondsig_transaction():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
 
-    transaction.schnorr_verify_second('second top secret passphrase') # if no exception is raised, it means the transaction is valid
+    transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
+    transaction.schnorr_verify_second(PublicKey.from_passphrase('second top secret passphrase')) # if no exception is raised, it means the transaction is valid
     
     
 def test_parse_signatures(transaction_type_0):
