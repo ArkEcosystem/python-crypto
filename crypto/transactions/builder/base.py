@@ -68,8 +68,7 @@ class BaseTransactionBuilder(object):
     def schnorr_verify(self):
         return self.transaction.verify_schnorr()
     
-    def schnorr_verify_second(self, passphrase):
-        secondPublicKey = PublicKey.from_passphrase(passphrase)
+    def schnorr_verify_second(self, secondPublicKey):
         return self.transaction.verify_schnorr_secondsig(secondPublicKey)
 
     def schnorr_verify_multisig(self):
