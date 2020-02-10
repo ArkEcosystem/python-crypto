@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.0.0 - 2019-02-11
+
+### Added
+
+- Implement AIP11
+- Implement AIP18
+
 ## 0.1.1 - 2018-08-29
 
 ### Fixed
