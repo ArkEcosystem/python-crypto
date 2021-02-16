@@ -6,11 +6,12 @@ class HtlcLock(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_HTLC_LOCK
 
-    def __init__(self, recipient_id, secret_hash, expiration_type, expiration_value, vendorField=None, fee=None):
+    def __init__(self, recipient_id, amount, secret_hash, expiration_type, expiration_value, vendorField=None, fee=None):
         """Create a timelock transaction
 
         Args:
             recipient_id (str): recipient identifier
+            amount (int): amount of coins you want to transfer
             secret_hash (str): a hash of the secret. The SAME hash must be used in the corresponding “claim” transaction
             expiration_type (int): type of the expiration. Either block height or network epoch timestamp based
             expiration_value (int): Expiration of transaction in seconds or height depending on expiration_type
@@ -20,6 +21,11 @@ class HtlcLock(BaseTransactionBuilder):
         super().__init__()
 
         self.transaction.recipientId = recipient_id
+        
+        if type(amount) == int and amount > 0:
+            self.transaction.amount = amount
+        else:
+            raise ValueError('Amount is not valid')
 
         self.transaction.typeGroup = self.get_type_group()
 
