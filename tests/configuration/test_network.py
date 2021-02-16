@@ -3,6 +3,7 @@ from datetime import datetime
 from crypto.configuration.network import get_network, set_custom_network, set_network
 from crypto.networks.devnet import Devnet
 from crypto.networks.mainnet import Mainnet
+from crypto.networks.testnet import Testnet
 
 
 def test_get_network():
@@ -11,9 +12,16 @@ def test_get_network():
 
 
 def test_set_network():
+    # test main net
     set_network(Mainnet)
     result = get_network()
     assert result['version'] == 23
+    assert result['wif'] == 170
+    # test test net
+    set_network(Testnet)
+    result = get_network()
+    assert result['version'] == 23
+    assert result['wif'] == 186
     set_network(Devnet)  # set back to devnet so other tests don't fail
 
 
