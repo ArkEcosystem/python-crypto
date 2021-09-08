@@ -24,11 +24,11 @@ Before you start contributing please take some time and check our official [Pyth
 5. Run the entire test suite again, confirming that all tests pass including the ones you just added.
 6. Send a GitHub Pull Request. GitHub Pull Requests are the expected method of code collaboration on this project.
 
-If you have any questions, requests or ideas open an issue or ask us in #python on the [ArkEcosystem Slack](https://ark.io/slack).
+If you have any questions, requests or ideas open an issue or ask us in #developers channel on the [ArkEcosystem Discord](https://discord.ark.io/).
 
 ## Documentation
 
-You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://docs.ark.io/sdk/cryptography/python.html).
+You can find installation instructions and detailed instructions on how to use this package at the [dedicated documentation site](https://ark.dev/docs/sdk/python/crypto/intro).
 
 ## Security
 
