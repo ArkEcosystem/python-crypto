@@ -28,7 +28,7 @@ setup_requires = ['pytest-runner'] if {'pytest', 'test', 'ptr'}.intersection(sys
 setuptools.setup(
     name='arkecosystem-crypto',
     description='A simple Cryptography Implementation in Python for the Ark Blockchain.',
-    version='1.0.0',
+    version='2.0.0',
     author='Ark Ecosystem',
     author_email='info@ark.io',
     url='https://github.com/ArkEcosystem/python-crypto',
