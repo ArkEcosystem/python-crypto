@@ -1,4 +1,4 @@
-from binascii import hexlify, unhexlify
+from binascii import unhexlify
 
 from crypto.transactions.serializers.base import BaseSerializer
 from crypto.exceptions import ArkSerializerException
@@ -13,7 +13,6 @@ class HtlcClaimSerializer(BaseSerializer):
         unlock_secret_bytes = unhexlify(self.transaction['asset']['claim']['unlockSecret'].encode())
         if len(unlock_secret_bytes) != 32:
             raise ArkSerializerException("Unlock secret must be 32 bytes long")
-        self.bytes_data += unhexlify(self.transaction['asset']['claim']['unlockSecret'].encode())
 
-
+        self.bytes_data += unlock_secret_bytes
         return self.bytes_data
