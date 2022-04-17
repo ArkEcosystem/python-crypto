@@ -9,7 +9,7 @@ class HtlcClaimDeserializer(BaseDeserializer):
         starting_position = int(self.asset_offset / 2)
         lock_transaction_id = hexlify(self.serialized[starting_position:starting_position + 32])
 
-        unlock_secret = self.serialized[starting_position + 32:starting_position + 64]
+        unlock_secret = hexlify(self.serialized[starting_position + 32:starting_position + 64])
 
         self.transaction.asset['claim'] = {
             'lockTransactionId': lock_transaction_id.decode(),
