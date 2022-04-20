@@ -1,3 +1,4 @@
+from hashlib import sha256
 import pytest
 
 from crypto.configuration.network import set_network
@@ -12,10 +13,11 @@ def test_htlc_lock_transation_amount_not_int():
     with pytest.raises(ValueError):
         """Test error handling in constructor for non-integer amount
         """
+        secret_hash = _generate_secret_hash()
         HtlcLock(
           recipient_id='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
           amount='bad amount number',
-          secret_hash='0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454',
+          secret_hash=secret_hash,
           expiration_type=1,
           expiration_value=1573455822
         )
@@ -25,10 +27,11 @@ def test_htlc_lock_transation_amount_zero():
     with pytest.raises(ValueError):
         """Test error handling in constructor for non-integer amount
         """
+        secret_hash = _generate_secret_hash()
         HtlcLock(
           recipient_id='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
           amount=0,
-          secret_hash='0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454',
+          secret_hash=secret_hash,
           expiration_type=1,
           expiration_value=1573455822
         )
@@ -38,10 +41,11 @@ def test_htlc_lock_transation_amount_negative():
     with pytest.raises(ValueError):
         """Test error handling in constructor for non-integer amount
         """
+        secret_hash = _generate_secret_hash()
         HtlcLock(
           recipient_id='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
           amount=-5,
-          secret_hash='0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454',
+          secret_hash=secret_hash,
           expiration_type=1,
           expiration_value=1573455822
         )
@@ -50,10 +54,11 @@ def test_htlc_lock_transation_amount_negative():
 def test_htlc_lock_transaction():
     """Test if timelock transaction gets built
     """
+    secret_hash = _generate_secret_hash()
     transaction = HtlcLock(
       recipient_id='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
       amount=200000000,
-      secret_hash='0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454',
+      secret_hash=secret_hash,
       expiration_type=1,
       expiration_value=1573455822
     )
@@ -71,7 +76,7 @@ def test_htlc_lock_transaction():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 10000000
-    assert transaction_dict['asset']['lock']['secretHash'] == '0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454'
+    assert transaction_dict['asset']['lock']['secretHash'] == secret_hash
     assert transaction_dict['asset']['lock']['expiration']['type'] == 1
     assert transaction_dict['asset']['lock']['expiration']['value'] == 1573455822
 
@@ -81,10 +86,11 @@ def test_htlc_lock_transaction():
 def test_htlc_lock_transaction_custom_fee():
     """Test if timelock transaction gets built with a custom fee
     """
+    secret_hash = _generate_secret_hash()
     transaction = HtlcLock(
       recipient_id='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
       amount=200000000,
-      secret_hash='0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454',
+      secret_hash=secret_hash,
       expiration_type=1,
       expiration_value=1573455822,
       fee=5
@@ -103,8 +109,20 @@ def test_htlc_lock_transaction_custom_fee():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5
-    assert transaction_dict['asset']['lock']['secretHash'] == '0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454'
+    assert transaction_dict['asset']['lock']['secretHash'] == secret_hash
     assert transaction_dict['asset']['lock']['expiration']['type'] == 1
     assert transaction_dict['asset']['lock']['expiration']['value'] == 1573455822
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
+
+
+def _generate_secret_hash():
+  secret = "super secret code that must be unique and entirely random"
+
+  # secret code is a key ingredient used to unlock the htlc lock. To generate an unlock code one
+  # must "hexify" it: `unlock_secret = hexlify(secret_h.encode()).decode()``
+  secret_code = sha256(secret.encode()).hexdigest()[:32]
+
+  # secret_hash is the hashed secret code
+  secret_hash = sha256(secret_code.encode()).hexdigest()
+  return secret_hash
