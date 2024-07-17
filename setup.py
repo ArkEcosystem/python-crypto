@@ -6,7 +6,8 @@ import setuptools
 requires = [
     'base58',
     'binary-helpers',
-    'coincurve'
+    'coincurve',
+    'pycryptodomex',
 ]
 
 tests_require = [
