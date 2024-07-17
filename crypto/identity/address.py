@@ -8,6 +8,7 @@ from binary.unsigned_integer.writer import write_bit8
 from crypto.configuration.network import get_network
 from crypto.identity.private_key import PrivateKey
 
+from Cryptodome.Hash import RIPEMD160
 
 def address_from_public_key(public_key, network_version=None):
     """Get an address from a public key
@@ -23,7 +24,7 @@ def address_from_public_key(public_key, network_version=None):
         network = get_network()
         network_version = network['version']
 
-    ripemd160 = hashlib.new('ripemd160', unhexlify(public_key.encode()))
+    ripemd160 = RIPEMD160.new(data=unhexlify(public_key.encode()))
     seed = write_bit8(network_version) + ripemd160.digest()
     return b58encode_check(seed).decode()
 
@@ -43,7 +44,7 @@ def address_from_private_key(private_key, network_version=None):
         network_version = network['version']
 
     private_key = PrivateKey.from_hex(private_key)
-    ripemd160 = hashlib.new('ripemd160', unhexlify(private_key.public_key))
+    ripemd160 = RIPEMD160.new(data=unhexlify(private_key.public_key))
     seed = write_bit8(network_version) + ripemd160.digest()
     return b58encode_check(seed).decode()
 
