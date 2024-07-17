@@ -15,7 +15,7 @@ class VoteDeserializer(BaseDeserializer):
         self.transaction.asset['votes'] = []
 
         for index in range(vote_length):
-            starting_position = self.asset_offset + 2 + (index * 2 * 34)
+            starting_position = self.asset_offset + (index * 2 * 34)
             vote = hexlify(self.serialized)[starting_position:starting_position + 2 * 34].decode()
             if vote[1] == '1':
                 operator = '+'
