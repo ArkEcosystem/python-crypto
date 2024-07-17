@@ -1,17 +1,16 @@
 import pytest
 
-
 @pytest.fixture
 def identity():
     """Identity fixture
     """
     data = {
         'data': {
-            'private_key': 'd8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712',
-            'public_key': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
-            'address': 'D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib',
-            'wif': 'SGq4xLgZKCGxs7bjmwnBrWcT4C1ADFEermj846KC97FSv1WFD1dA'
+            'private_key': 'bef98d4c0e58d0e4695560594f91a349421b7cdc3e63a560470ccb259f99f087',
+            'public_key': '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3',
+            'address': 'DBhj9G4xJNHgbBLgsofZUSSQtAfzZz5yEG',
+            'wif': 'UdFWh1JiogHqCye7kv8RoUq9zr2z6gVsMQsZARuF7xF9JTk97NWT'
         },
-        'passphrase': 'this is a top secret passphrase'
+        'passphrase': 'my super secret passphrase'
     }
     return data

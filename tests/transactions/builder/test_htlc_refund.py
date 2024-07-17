@@ -15,7 +15,7 @@ def test_timelock_refund_transaction():
 
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.schnorr_sign('testing')
+    transaction.sign('testing')
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
@@ -39,7 +39,7 @@ def test_timelock_refund_transaction_custom_fee():
 
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.schnorr_sign('testing')
+    transaction.sign('testing')
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1

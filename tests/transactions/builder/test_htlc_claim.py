@@ -20,7 +20,7 @@ def test_htlc_claim_transaction_ok():
 
     transaction = HtlcClaim(lock_transaction_id, unlock_secret)
     transaction.set_nonce(1)
-    transaction.schnorr_sign('testing')
+    transaction.sign('testing')
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
@@ -35,7 +35,7 @@ def test_htlc_claim_transaction_ok():
 
 
 def test_htlc_claim_transaction_unlock_secret_not_hex():
-    """Test if timelock transaction errors if an invalid hex unlock_secret is given 
+    """Test if timelock transaction errors if an invalid hex unlock_secret is given
     """
     lock_transaction_id = '943c220691e711c39c79d437ce185748a0018940e1a4144293af9d05627d2eb4'
 
@@ -46,9 +46,9 @@ def test_htlc_claim_transaction_unlock_secret_not_hex():
     transaction = HtlcClaim(lock_transaction_id, unlock_secret)
     transaction.set_nonce(1)
     with pytest.raises(binascii.Error) as e:
-        transaction.schnorr_sign('testing')
+        transaction.sign('testing')
     assert str(e.value) == 'Non-hexadecimal digit found'
-   
+
 
 def test_htlc_claim_transaction_unlock_secret_bad_length():
     """Test if timelock transaction fails if the unlock_secret is too big
@@ -62,7 +62,7 @@ def test_htlc_claim_transaction_unlock_secret_bad_length():
     transaction = HtlcClaim(lock_transaction_id, unlock_secret)
     transaction.set_nonce(1)
     with pytest.raises(ArkSerializerException) as e:
-        transaction.schnorr_sign('testing')
+        transaction.sign('testing')
     assert str(e.value) == 'Unlock secret must be 32 bytes long'
 
 
@@ -77,7 +77,7 @@ def test_htlc_claim_transaction_custom_fee_ok():
 
     transaction = HtlcClaim(lock_transaction_id, unlock_secret, 5)
     transaction.set_nonce(1)
-    transaction.schnorr_sign('testing')
+    transaction.sign('testing')
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
