@@ -20,6 +20,7 @@ class BaseTransactionBuilder(object):
         self.transaction.typeGroup = getattr(self, 'typeGroup', 1)
         self.transaction.signatures = getattr(self, 'signatures', None)
         self.transaction.version = getattr(self, 'version', 1)
+        self.transaction.expiration = getattr(self, 'expiration', 0)
         if self.transaction.type != 0:
             self.transaction.amount = getattr(self, 'amount', 0)
 
