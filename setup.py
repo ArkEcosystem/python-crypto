@@ -7,7 +7,7 @@ requires = [
     'base58',
     'binary-helpers',
     'coincurve'
-    'Cryptodome',
+    'pycryptodomex',
 ]
 
 tests_require = [
