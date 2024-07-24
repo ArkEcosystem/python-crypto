@@ -289,17 +289,9 @@ def transaction_type_10():
 @pytest.fixture
 def message():
     data = {
-        'camelCase_pk': {
-            'publicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
-            'signature': '304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8',  # noqa
-            'message': 'Hello World'
-        },
-
-        'snake_case_pk': {
-          'publickey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
-          'signature': '304402200fb4adddd1f1d652b544ea6ab62828a0a65b712ed447e2538db0caebfa68929e02205ecb2e1c63b29879c2ecf1255db506d671c8b3fa6017f67cfd1bf07e6edd1cc8',  # noqa
-          'message': 'Hello World'
-        },
-        'passphrase': 'this is a top secret passphrase'
+        'publicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
+        'signature': '22ff2371becb58439efdb95d116215f75bc41a380e1491605cc4874dd0d2c7d7958e4072da22fd307fe419c8864ba313a28bdb6fecbc6407839b6ba472395fe9',  # noqa
+        'message': 'Hello World',
+        'passphrase': 'this is a top secret passphrase',
     }
     return data
