@@ -1,3 +1,4 @@
+from crypto.transactions.builder.transfer import Transfer
 from crypto.transactions.signature import Signature
 
 def test_should_sign_and_verify():
@@ -55,3 +56,21 @@ def test_should_not_sign_and_verify_with_wrong_ecdsa_key():
     )
 
     assert isVerified == False
+
+def test_transfer_transaction():
+    transaction = Transfer(
+        recipientId='0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+        amount=1,
+        fee=10000000
+    )
+    transaction.set_type_group(1)
+    transaction.set_nonce(1)
+    transaction.sign('my super secret passphrase')
+
+    isVerified = Signature.verify(
+        bytes.fromhex('d07662b9a917f158a7ad8431aff8b31a70fe3a7af562db3ead41e7b5e00b7d9a27b3faf26699096baddbb45b2f1c3b0aa180301b001e19b8eaeb4e13055eaa0c'),
+        transaction.transaction.to_bytes(),
+        bytes.fromhex('023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'),
+    )
+
+    assert isVerified == True
