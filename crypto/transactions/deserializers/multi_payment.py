@@ -1,9 +1,8 @@
 from binascii import hexlify, unhexlify
 
-from base58 import b58encode_check
-
 from binary.unsigned_integer.reader import read_bit16, read_bit64
 
+from crypto.identity.address import get_checksum_address
 from crypto.transactions.deserializers.base import BaseDeserializer
 
 
@@ -18,20 +17,19 @@ class MultiPaymentDeserializer(BaseDeserializer):
 
         index = 0
 
-        for payment in range(payment_length):
+        for _ in range(payment_length):
             amount = read_bit64(self.serialized, offset=starting_position + 2 + index)
 
             recipient_start_index = (starting_position + 10 + index) * 2
-            recipientId = hexlify(self.serialized)[recipient_start_index:recipient_start_index + 42]
-            recipientId = b58encode_check(unhexlify(recipientId)).decode()
+            recipientId = hexlify(self.serialized)[recipient_start_index:recipient_start_index + 40]
 
-            self.transaction.asset['payments'].append({'amount': amount, 'recipientId': recipientId})
+            self.transaction.asset['payments'].append({'amount': amount, 'recipientId': get_checksum_address('0x'+ unhexlify(recipientId).hex())})
 
-            index += 21 + 8
+            index += 20 + 8
 
         self.transaction.parse_signatures(
             hexlify(self.serialized).decode(),
-            self.asset_offset + 4 + (payment_length * (21 + 8)) * 2
+            self.asset_offset + 4 + (payment_length * (20 + 8)) * 2
         )
 
         return self.transaction
