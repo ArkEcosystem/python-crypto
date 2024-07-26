@@ -1,5 +1,6 @@
 from crypto.identity.private_key import PrivateKey
 from btclib.ecc import ssa
+from typing import Union
 
 class Signature:
     @staticmethod
@@ -11,7 +12,7 @@ class Signature:
         return ssa.verify(message, publicKey, signature)
 
     @staticmethod
-    def sign(message, privateKey: bytes | PrivateKey):
+    def sign(message, privateKey: Union[bytes, PrivateKey]):
         if isinstance(privateKey, PrivateKey):
             privateKey = bytes.fromhex(privateKey.to_hex())
 

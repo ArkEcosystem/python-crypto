@@ -1,12 +1,13 @@
 from crypto.constants import TRANSACTION_VOTE
 from crypto.identity.address import address_from_passphrase
 from crypto.transactions.builder.base import BaseTransactionBuilder
+from typing import Optional
 
 
 class Vote(BaseTransactionBuilder):
     transaction_type = TRANSACTION_VOTE
 
-    def __init__(self, votes: list[str] | None, unvotes: list[str] | None, fee: int | None = None):
+    def __init__(self, votes: Optional[list[str]] = None, unvotes: Optional[list[str]] = None, fee: Optional[int] = None):
         """Create a vote transaction
 
         Args:
