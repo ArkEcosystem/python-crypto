@@ -1,4 +1,4 @@
-from binascii import hexlify
+from binascii import hexlify, unhexlify
 
 from coincurve import PublicKeyXOnly as PubKey
 
@@ -6,6 +6,7 @@ from crypto.identity.private_key import PrivateKey
 
 class PublicKey(object):
     def __init__(self, public_key):
+        public_key = unhexlify(public_key.encode())
         self.public_key = PubKey(public_key)
 
     def to_hex(self):
