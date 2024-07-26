@@ -12,8 +12,8 @@ def test_multi_payment_transaction(passphrase):
     transaction = MultiPayment()
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.add_payment(1, 'AHXtmB84sTZ9Zd35h9Y1vfFvPE2Xzqj8ri')
-    transaction.add_payment(2, 'ATK14wxyYxbELq2b91bAfBY8Vmh9J6MDej')
+    transaction.add_payment(1, '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22')
+    transaction.add_payment(2, '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A')
     transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
@@ -27,9 +27,9 @@ def test_multi_payment_transaction(passphrase):
     assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     assert transaction_dict['asset']['payments'][0]['amount'] == 1
-    assert transaction_dict['asset']['payments'][0]['recipientId'] == 'AHXtmB84sTZ9Zd35h9Y1vfFvPE2Xzqj8ri'
+    assert transaction_dict['asset']['payments'][0]['recipientId'] == '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22'
     assert transaction_dict['asset']['payments'][1]['amount'] == 2
-    assert transaction_dict['asset']['payments'][1]['recipientId'] == 'ATK14wxyYxbELq2b91bAfBY8Vmh9J6MDej'
+    assert transaction_dict['asset']['payments'][1]['recipientId'] == '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
@@ -40,8 +40,8 @@ def test_multi_payment_transaction_custom_fee(passphrase):
     transaction = MultiPayment(fee=5)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.add_payment(1, 'AHXtmB84sTZ9Zd35h9Y1vfFvPE2Xzqj8ri')
-    transaction.add_payment(2, 'ATK14wxyYxbELq2b91bAfBY8Vmh9J6MDej')
+    transaction.add_payment(1, '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22')
+    transaction.add_payment(2, '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A')
     transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
@@ -55,8 +55,8 @@ def test_multi_payment_transaction_custom_fee(passphrase):
     assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     assert transaction_dict['asset']['payments'][0]['amount'] == 1
-    assert transaction_dict['asset']['payments'][0]['recipientId'] == 'AHXtmB84sTZ9Zd35h9Y1vfFvPE2Xzqj8ri'
+    assert transaction_dict['asset']['payments'][0]['recipientId'] == '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22'
     assert transaction_dict['asset']['payments'][1]['amount'] == 2
-    assert transaction_dict['asset']['payments'][1]['recipientId'] == 'ATK14wxyYxbELq2b91bAfBY8Vmh9J6MDej'
+    assert transaction_dict['asset']['payments'][1]['recipientId'] == '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
