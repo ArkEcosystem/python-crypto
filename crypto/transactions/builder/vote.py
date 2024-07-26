@@ -4,19 +4,20 @@ from crypto.transactions.builder.base import BaseTransactionBuilder
 
 
 class Vote(BaseTransactionBuilder):
-
     transaction_type = TRANSACTION_VOTE
 
-    def __init__(self, vote, fee=None):
-        """Create a second signature registration transaction
+    def __init__(self, votes: list[str] | None, unvotes: list[str] | None, fee: int | None = None):
+        """Create a vote transaction
 
         Args:
-            vote (str): address of a delegate you want to vote
+            vote (str, optional): address of a delegate you want to vote
+            unvote (str, optional): address of a delegate you want to unvote
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
 
-        self.transaction.asset['votes'] = [vote]
+        self.transaction.asset['votes'] = votes
+        self.transaction.asset['unvotes'] = unvotes
 
         if fee:
             self.transaction.fee = fee
