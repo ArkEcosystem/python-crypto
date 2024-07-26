@@ -1,6 +1,6 @@
 from binascii import hexlify, unhexlify
 
-from coincurve import PublicKeyXOnly as PubKey
+from coincurve import PublicKey as PubKey
 
 from crypto.identity.private_key import PrivateKey
 
