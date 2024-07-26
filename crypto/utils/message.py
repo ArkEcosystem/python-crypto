@@ -3,6 +3,7 @@ from binascii import unhexlify
 
 from crypto.identity.private_key import PrivateKey
 from crypto.transactions.signature import Signature
+from typing import Union
 
 class Message(object):
     public_key: bytes
@@ -26,7 +27,7 @@ class Message(object):
             self.signature = signature.encode()
 
     @classmethod
-    def sign(cls, message: bytes | str, passphrase: bytes):
+    def sign(cls, message: Union[bytes, str], passphrase: bytes):
         """Signs a message
 
         Args:
