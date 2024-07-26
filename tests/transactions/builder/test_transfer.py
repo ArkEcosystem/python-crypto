@@ -14,7 +14,7 @@ def test_transfer_transaction(passphrase):
     """Test if a transfer transaction gets built
     """
     transaction = Transfer(
-        recipientId='DBhj9G4xJNHgbBLgsofZUSSQtAfzZz5yEG',
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=1,
         fee=10000000,
         # timestamp=1720707047217,
@@ -44,7 +44,7 @@ def test_transfer_transaction_update_amount(passphrase):
     """Test if a transfer transaction can update an amount
     """
     transaction = Transfer(
-        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=200000000
     )
     transaction.set_amount(10)
@@ -69,7 +69,7 @@ def test_transfer_transaction_custom_fee(passphrase):
     """Test if a transfer transaction gets built with a custom fee
     """
     transaction = Transfer(
-        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=200000000,
         fee=5
     )
@@ -94,7 +94,7 @@ def test_transfer_secondsig_transaction(passphrase):
     """Test if a transfer transaction with second signature gets built
     """
     transaction = Transfer(
-        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=200000000,
     )
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
@@ -133,7 +133,7 @@ def test_transfer_transaction_amount_not_int():
         """Test error handling in constructor for non-integer amount
         """
         Transfer(
-            recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+            recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
             amount='bad amount'
         )
 
@@ -143,6 +143,6 @@ def test_transfer_transaction_amount_zero():
         """Test error handling in constructor for non-integer amount
         """
         Transfer(
-            recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+            recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
             amount=0
         )
