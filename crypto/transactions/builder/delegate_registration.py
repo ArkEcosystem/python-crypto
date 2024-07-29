@@ -7,21 +7,21 @@ class DelegateRegistration(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_DELEGATE_REGISTRATION
 
-    def __init__(self, username, fee=None):
+    def __init__(self, public_key, fee=None):
         """Create a delegate registration transaction
 
         Args:
-            username (str): username of a delegate you want to register
+            public_key (str): BLS public key of a validator you want to register
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()
 
-        self.transaction.asset['delegate'] = {'username': username}
+        self.transaction.asset['validatorPublicKey'] = public_key
 
         if fee:
             self.transaction.fee = fee
 
     def sign(self, passphrase):
         public_key = PublicKey.from_passphrase(passphrase)
-        self.transaction.asset['delegate']['publicKey'] = public_key
+        #self.transaction.asset['delegate']['publicKey'] = public_key
         super().sign(passphrase)

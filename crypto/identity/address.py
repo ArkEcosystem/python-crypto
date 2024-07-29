@@ -6,7 +6,7 @@ from crypto.identity.private_key import PrivateKey
 from Cryptodome.Hash import RIPEMD160, keccak
 from coincurve import PrivateKey, PublicKey
 
-def get_checksum_address(address):
+def get_checksum_address(address: bytes) -> str:
     """Get checksum address
 
     Args:

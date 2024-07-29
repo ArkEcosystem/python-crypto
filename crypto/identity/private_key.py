@@ -5,7 +5,6 @@ from coincurve import PrivateKey as PvtKey
 
 
 class PrivateKey(object):
-
     def __init__(self, private_key):
         self.private_key = PvtKey.from_hex(private_key)
         self.public_key = hexlify(self.private_key.public_key.format()).decode()
@@ -19,8 +18,14 @@ class PrivateKey(object):
         Returns:
             str: signature of the signed message
         """
-        signature = self.private_key.sign(message)
-        return hexlify(signature).decode()
+        from crypto.transactions.signature import Signature
+
+        signature = Signature.sign(
+            hexlify(message),
+            self.private_key.to_hex()
+        )
+
+        return signature.encode()
 
     def to_hex(self):
         """Returns a private key in hex format

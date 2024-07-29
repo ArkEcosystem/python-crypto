@@ -15,7 +15,12 @@ class TransferSerializer(BaseSerializer):
     def serialize(self):
         self.bytes_data += write_bit64(self.transaction['amount'])
         self.bytes_data += write_bit32(self.transaction.get('expiration', 0))
-        recipientId = hexlify(b58decode_check(self.transaction['recipientId']))
-        self.bytes_data += write_high(recipientId)
+
+        recipient = self.transaction['recipientId'][2:]
+
+        if type(recipient) is str:
+            recipient = recipient.encode()
+
+        self.bytes_data += write_high(recipient)
 
         return self.bytes_data

@@ -49,10 +49,7 @@ class Deserializer(object):
         handled_transaction = self._handle_transaction_type(asset_offset, transaction)
         transaction.amount = handled_transaction.amount
         transaction.version = handled_transaction.version
-        if transaction.version == 2:
-            transaction = self._handle_version_two(transaction)
-        else:
-            raise Exception('should this ever happen?')
+        transaction.id = transaction.get_id()
 
         return transaction
 
@@ -79,18 +76,5 @@ class Deserializer(object):
                 # this attribute is actually a specific deserializer that we want to use
                 deserializer = attribute
                 break
+
         return deserializer(self.serialized, asset_offset, transaction).deserialize()
-
-    def _handle_version_two(self, transaction):
-        """Handle deserialization for version two
-
-        Args:
-            transaction (object): Transaction resource object
-
-        Returns:
-            object: Transaction resource object of currently deserialized data
-        """
-
-        transaction.id = sha256(unhexlify(transaction.serialize(False, True, False))).hexdigest()
-
-        return transaction

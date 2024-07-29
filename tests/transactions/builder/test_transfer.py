@@ -10,39 +10,47 @@ from crypto.transactions.builder.transfer import Transfer
 set_network(Devnet)
 
 
-def test_transfer_transaction():
+def test_transfer_transaction(passphrase):
     """Test if a transfer transaction gets built
     """
     transaction = Transfer(
-        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
-        amount=200000000,
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
+        amount=1,
+        fee=10000000,
+        # timestamp=1720707047217,
     )
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
-    transaction.set_nonce(1)
-    transaction.schnorr_sign('this is a top secret passphrase')
+    transaction.set_nonce(8)
+    # transaction.transaction.id = '495afb812cb0ecfe7ac4d383b54d6458b53bb9be5ab37e2207bbd7ce82fdbc94'
+    transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
-    assert transaction_dict['nonce'] == 1
-    assert transaction_dict['signature']
+    print(transaction_dict, transaction)
+
+    assert transaction_dict['version'] == 1
+    assert transaction_dict['nonce'] == 8
     assert transaction_dict['type'] is TRANSACTION_TRANSFER
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 10000000
+    assert transaction_dict['amount'] == 1
+    assert transaction_dict['expiration'] == 0
+    assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
-def test_transfer_transaction_update_amount():
+def test_transfer_transaction_update_amount(passphrase):
     """Test if a transfer transaction can update an amount
     """
     transaction = Transfer(
-        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=200000000
     )
     transaction.set_amount(10)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.schnorr_sign('this is a top secret passphrase')
+    transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
@@ -51,21 +59,23 @@ def test_transfer_transaction_update_amount():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['amount'] == 10
+    assert transaction_dict['expiration'] == 0
+    assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
-def test_transfer_transaction_custom_fee():
+def test_transfer_transaction_custom_fee(passphrase):
     """Test if a transfer transaction gets built with a custom fee
     """
     transaction = Transfer(
-        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=200000000,
         fee=5
     )
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.schnorr_sign('this is a top secret passphrase')
+    transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
@@ -74,20 +84,22 @@ def test_transfer_transaction_custom_fee():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5
+    assert transaction_dict['expiration'] == 0
+    assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
-def test_transfer_secondsig_transaction():
+def test_transfer_secondsig_transaction(passphrase):
     """Test if a transfer transaction with second signature gets built
     """
     transaction = Transfer(
-        recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=200000000,
     )
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(1)
-    transaction.schnorr_sign('this is a top secret passphrase')
+    transaction.sign(passphrase)
     transaction.second_sign('second top secret passphrase')
     transaction_dict = transaction.to_dict()
 
@@ -97,6 +109,8 @@ def test_transfer_secondsig_transaction():
     assert transaction_dict['type'] is TRANSACTION_TRANSFER
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
+    assert transaction_dict['expiration'] == 0
+    assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
     transaction.schnorr_verify_second(PublicKey.from_passphrase('second top secret passphrase'))  # if no exception is raised, it means the transaction is valid
@@ -119,7 +133,7 @@ def test_transfer_transaction_amount_not_int():
         """Test error handling in constructor for non-integer amount
         """
         Transfer(
-            recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+            recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
             amount='bad amount'
         )
 
@@ -129,6 +143,6 @@ def test_transfer_transaction_amount_zero():
         """Test error handling in constructor for non-integer amount
         """
         Transfer(
-            recipientId='AGeYmgbg2LgGxRW2vNNJvQ88PknEJsYizC',
+            recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
             amount=0
         )

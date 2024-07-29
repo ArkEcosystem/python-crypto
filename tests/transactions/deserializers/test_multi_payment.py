@@ -2,24 +2,24 @@ from crypto.transactions.deserializer import Deserializer
 
 
 def test_multi_payment_deserializer():
-    serialized = 'ff02170100000006000100000000000000034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed1928096980000000000000200010000000000000017134b5be4b327ddf9c2bb47fec8a1a44189e90f74020000000000000017bfa6aec83cf1bd03a0cab9f35c85ff51a3e9f041672e89e66a9c5d7d95c21ccd07a89a111f02823146c06f14689d2cf1efd645fb648258fcf2280486d2cae19f391796d72145d2a8e6f261e887e34cd1998bdb65'  # noqa
+    serialized = 'ff011e0100000006000500000000000000023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3809698000000000000020000e1f505000000006f0182a0cc707b055322ccf6d4cb6a5aff1aeb2200c2eb0b00000000b693449adda7efc015d87944eae8b7c37eb1690a6031b2c73de394a12b4988f43f0fe13cd7782469857914b92e6c05561ff6d7634783a89157e487dc38f104bf40fc279c38602dbfba0cc679dfe631ba4c77929c'  # noqa
 
     deserializer = Deserializer(serialized)
     actual = deserializer.deserialize()
 
-    assert actual.version == 2
-    assert actual.network == 23
+    assert actual.version == 1
+    assert actual.network == 30
     assert actual.typeGroup == 1
     assert actual.type == 6
-    assert actual.nonce == 1
-    assert actual.senderPublicKey == '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192'
+    assert actual.nonce == 5
+    assert actual.senderPublicKey == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
     assert actual.fee == 10000000
-    assert actual.signature == '672e89e66a9c5d7d95c21ccd07a89a111f02823146c06f14689d2cf1efd645fb648258fcf2280486d2cae19f391796d72145d2a8e6f261e887e34cd1998bdb65'
     assert actual.amount == 0
-    assert actual.id == 'e8c7293d428048f8678dc6c88cb8b32bd49c8ae9b02018297c1889d9bd33ba8d'
-    assert actual.asset['payments'][0]['amount'] == 1  # noqa
-    assert actual.asset['payments'][0]['recipientId'] == 'AHXtmB84sTZ9Zd35h9Y1vfFvPE2Xzqj8ri'  # noqa
-    assert actual.asset['payments'][1]['amount'] == 2  # noqa
-    assert actual.asset['payments'][1]['recipientId'] == 'AZFEPTWnn2Sn8wDZgCRF8ohwKkrmk2AZi1'  # noqa
+    assert actual.asset['payments'][0]['amount'] == 100000000  # noqa
+    assert actual.asset['payments'][0]['recipientId'] == '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22'  # noqa
+    assert actual.asset['payments'][1]['amount'] == 200000000  # noqa
+    assert actual.asset['payments'][1]['recipientId'] == '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A'  # noqa
+    assert actual.signature == '6031b2c73de394a12b4988f43f0fe13cd7782469857914b92e6c05561ff6d7634783a89157e487dc38f104bf40fc279c38602dbfba0cc679dfe631ba4c77929c'
+    assert actual.id == '46799c223ff8f19d00c3e3bd617c6692f3cab1aed33dbc99ad9706d22f709c5e'
 
     actual.verify_schnorr()

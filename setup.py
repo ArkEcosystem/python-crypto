@@ -8,6 +8,7 @@ requires = [
     'binary-helpers',
     'coincurve',
     'pycryptodomex',
+    'btclib',
 ]
 
 tests_require = [
@@ -16,7 +17,7 @@ tests_require = [
     'flake8-print>=3.1.0',
     'flake8-quotes>=1.0.0',
     'pytest>=3.6.1',
-    'pytest-cov>=2.5.1'
+    'pytest-cov>=2.5.1',
 ]
 
 extras_require = {

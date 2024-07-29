@@ -6,13 +6,13 @@ from crypto.transactions.builder.delegate_resignation import DelegateResignation
 set_network(Devnet)
 
 
-def test_delegate_resignation_transaction():
+def test_delegate_resignation_transaction(passphrase):
     """Test if delegate resignation transaction gets built
     """
     transaction = DelegateResignation()
     transaction.set_nonce(1)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
-    transaction.schnorr_sign('testing')
+    transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
@@ -21,17 +21,19 @@ def test_delegate_resignation_transaction():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 2500000000
+    assert transaction_dict['expiration'] == 0
+    assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
-def test_delegate_resignation_transaction_custom_fee():
+def test_delegate_resignation_transaction_custom_fee(passphrase):
     """Test if delegate resignation transaction gets built with a custom fee
     """
     transaction = DelegateResignation(5)
     transaction.set_nonce(1)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
-    transaction.schnorr_sign('testing')
+    transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
@@ -40,5 +42,7 @@ def test_delegate_resignation_transaction_custom_fee():
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5
+    assert transaction_dict['expiration'] == 0
+    assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
