@@ -17,11 +17,9 @@ def test_transfer_transaction(passphrase):
         recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
         amount=1,
         fee=10000000,
-        # timestamp=1720707047217,
     )
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
     transaction.set_nonce(8)
-    # transaction.transaction.id = '495afb812cb0ecfe7ac4d383b54d6458b53bb9be5ab37e2207bbd7ce82fdbc94'
     transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
