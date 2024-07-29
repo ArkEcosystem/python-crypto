@@ -7,7 +7,7 @@ set_network(Devnet)
 
 
 def test_multi_signature_registration_transaction(passphrase):
-    """Test if a second signature registration transaction gets built
+    """Test if a multi signature registration transaction gets built
     """
     publicKeys = [
         '0205d9bbe71c343ac9a6a83a4344fd404c3534fc7349827097d0835d160bc2b896',
