@@ -6,7 +6,7 @@ from crypto.transactions.builder.multi_signature_registration import MultiSignat
 set_network(Devnet)
 
 
-def test_multi_signature_registration_transaction():
+def test_multi_signature_registration_transaction(passphrase):
     """Test if a second signature registration transaction gets built
     """
     publicKeys = [
@@ -21,22 +21,24 @@ def test_multi_signature_registration_transaction():
     transaction.set_min(2)
     transaction.set_public_keys(publicKeys)
     transaction.add_participant('03860d76b1df09659ac282cea3da5bd84fc45729f348a4a8e5f802186be72dc17f')
-    transaction.multi_sign('this is a top secret passphrase 1', 0)
+    transaction.multi_sign(passphrase, 0)
     transaction.multi_sign('this is a top secret passphrase 2', 1)
     transaction.multi_sign('this is a top secret passphrase 3', 2)
 
-    transaction.schnorr_sign('this is a top secret passphrase 1')
+    transaction.sign(passphrase)
 
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
-    assert transaction_dict['version'] == 2
+    assert transaction_dict['version'] == 1
     assert transaction_dict['fee'] == 2000000000
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_MULTI_SIGNATURE_REGISTRATION
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['asset']['multiSignature']['min'] == 2
+    assert transaction_dict['expiration'] == 0
+    assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     assert transaction_dict['asset']['multiSignature']['publicKeys'][0] == publicKeys[0]
     assert transaction_dict['asset']['multiSignature']['publicKeys'][1] == publicKeys[1]

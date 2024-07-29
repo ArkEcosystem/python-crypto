@@ -6,11 +6,11 @@ def identity():
     """
     data = {
         'data': {
-            'private_key': 'd8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712',
-            'public_key': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
-            'address': '0xb0FF9213f7226bBB72b84dE16af86e56f1f38B01',
-            'wif': 'SGq4xLgZKCGxs7bjmwnBrWcT4C1ADFEermj846KC97FSv1WFD1dA'
+            'private_key': 'bef98d4c0e58d0e4695560594f91a349421b7cdc3e63a560470ccb259f99f087',
+            'public_key': '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3',
+            'address': '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
+            'wif': 'SFyRYRYL1DddchRpuhp94hKN1tpYjzAEkLuUDAMjGJBkoAaz2RQk'
         },
-        'passphrase': 'this is a top secret passphrase'
+        'passphrase': 'my super secret passphrase'
     }
     return data

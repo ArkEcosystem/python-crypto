@@ -2,19 +2,32 @@ import json
 from binascii import unhexlify
 
 from crypto.identity.private_key import PrivateKey
-from crypto.identity.public_key import PublicKey
-
+from crypto.transactions.signature import Signature
+from typing import Union
 
 class Message(object):
-    def __init__(self, **kwargs):
-        for k in kwargs.keys():
-            if k in ['message', 'signature', 'publickey', 'publicKey']:
-                self.__setattr__(k, kwargs[k])
-            else:
-                raise TypeError('Invalid keyword argument %s' % k)
+    public_key: bytes
+    message: bytes
+    signature: bytes
+
+    def __init__(self, public_key: bytes, message: bytes, signature: bytes):
+        if type(public_key) is bytes:
+            self.public_key = public_key
+        else:
+            self.public_key = public_key.encode()
+
+        if type(message) is bytes:
+            self.message = message
+        else:
+            self.message = message.encode()
+
+        if type(signature) is bytes:
+            self.signature = signature
+        else:
+            self.signature = signature.encode()
 
     @classmethod
-    def sign(cls, message, passphrase):
+    def sign(cls, message: Union[bytes, str], passphrase: bytes):
         """Signs a message
 
         Args:
@@ -24,11 +37,20 @@ class Message(object):
         Returns:
             Message: returns a message object
         """
-        message_bytes = message if isinstance(message, bytes) else message.encode()
-        passphrase = passphrase.decode() if isinstance(passphrase, bytes) else passphrase
+
+        if type(message) is str:
+            message = message.encode()
+
+
         private_key = PrivateKey.from_passphrase(passphrase)
-        signature = private_key.sign(message_bytes)
-        return cls(message=message, signature=signature, publicKey=private_key.public_key)
+        public_key = private_key.public_key
+        signature = Signature.sign(message, private_key)
+
+        return cls(
+            message=message,
+            signature=signature,
+            public_key=public_key,
+        )
 
     def verify(self):
         """Verify the Message object
@@ -36,11 +58,11 @@ class Message(object):
         Returns:
             bool: returns a boolean - true if verified, false if not
         """
-        message = self.message if isinstance(self.message, bytes) else self.message.encode()
-        key = PublicKey.from_hex(self.publickey) if hasattr(self, 'publickey') else PublicKey.from_hex(self.publicKey)
+
+        public_key = unhexlify(self.public_key)
         signature = unhexlify(self.signature)
-        is_verified = key.public_key.verify(signature, message)
-        return is_verified
+
+        return Signature.verify(signature, self.message, public_key)
 
     def to_dict(self):
         """Return a dictionary of the message
@@ -49,9 +71,9 @@ class Message(object):
             dict: dictionary consiting of public_key, signature and message
         """
         data = {
-            ('publicKey' if hasattr(self, 'publicKey') else 'publickey'): (self.publicKey if hasattr(self, 'publicKey') else self.publickey),
-            'signature': self.signature,
-            'message': self.message,
+            'public_key': self.public_key.decode(),
+            'signature': self.signature.decode(),
+            'message': self.message.decode(),
         }
         return data
 
@@ -62,4 +84,5 @@ class Message(object):
             str: json string consisting of public_key, signature and message
         """
         data = self.to_dict()
+
         return json.dumps(data)
