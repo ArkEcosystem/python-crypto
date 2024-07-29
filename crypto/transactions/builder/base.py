@@ -65,7 +65,7 @@ class BaseTransactionBuilder(object):
         index_formatted = hex(index).replace('x', '')
         self.transaction.signatures.append(index_formatted + signature.decode())
 
-    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
+    def serialize(self, skip_signature=False, skip_second_signature=False, skip_multi_signature=False):
         """Perform AIP11 compliant serialization.
 
         Args:
