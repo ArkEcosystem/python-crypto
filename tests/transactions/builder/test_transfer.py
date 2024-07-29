@@ -146,3 +146,16 @@ def test_transfer_transaction_amount_zero():
             recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
             amount=0
         )
+
+
+def test_transfer_serialize(passphrase):
+    transaction = Transfer(
+        recipientId='0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
+        amount=1,
+        fee=10000000,
+    )
+    transaction.set_nonce(6)
+    transaction.sign(passphrase)
+    transaction.transaction.signature = '42faaaf6b5b5eff5bb78c7bb2b116ecbc0a83f53445b801818b72afb34b39226646608d5e7048c12d6aedcebfc3156f035b57ca70c6a5e899b7ac2a1be163bb0'
+
+    assert transaction.serialize(False, False, False) == 'ff011e0100000000000600000000000000023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d38096980000000000000100000000000000000000006f0182a0cc707b055322ccf6d4cb6a5aff1aeb2242faaaf6b5b5eff5bb78c7bb2b116ecbc0a83f53445b801818b72afb34b39226646608d5e7048c12d6aedcebfc3156f035b57ca70c6a5e899b7ac2a1be163bb0'

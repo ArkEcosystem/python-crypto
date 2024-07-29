@@ -4,6 +4,7 @@ from crypto.configuration.fee import get_fee
 from crypto.constants import TRANSACTION_TYPE_GROUP
 from crypto.identity.private_key import PrivateKey
 from crypto.identity.public_key import PublicKey
+from crypto.transactions.serializer import Serializer
 from crypto.transactions.signature import Signature
 from crypto.transactions.transaction import Transaction
 
@@ -63,6 +64,19 @@ class BaseTransactionBuilder(object):
 
         index_formatted = hex(index).replace('x', '')
         self.transaction.signatures.append(index_formatted + signature.decode())
+
+    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
+        """Perform AIP11 compliant serialization.
+
+        Args:
+            skip_signature (bool, optional): do you want to skip the signature
+            skip_second_signature (bool, optional): do you want to skip the 2nd signature
+            skip_multi_signature (bool, optional): do you want to skip multi signature
+
+        Returns:
+            str: Serialized string
+        """
+        return Serializer(self.to_dict()).serialize(skip_signature, skip_second_signature, skip_multi_signature)
 
     def schnorr_verify(self):
         return self.transaction.verify_schnorr()
