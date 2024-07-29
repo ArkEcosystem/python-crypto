@@ -1,7 +1,3 @@
-from binascii import hexlify
-
-from base58 import b58decode_check
-
 from binary.hex.writer import write_high
 from binary.unsigned_integer.writer import write_bit32, write_bit64
 
