@@ -90,7 +90,7 @@ def test_transfer_transaction_custom_fee(passphrase):
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
-def test_transfer_secondsig_transaction(passphrase):
+def test_transfer_secondsign_transaction(passphrase):
     """Test if a transfer transaction with second signature gets built
     """
     transaction = Transfer(
