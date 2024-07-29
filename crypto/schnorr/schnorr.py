@@ -218,8 +218,8 @@ def y(P):
 def encoded_from_point(P):
     """
     Encode and compress a ``secp256k1`` point:
-      * ``bytes(2) || bytes(x)`` if y is even
-      * ``bytes(3) || bytes(x)`` if y is odd
+    * ``bytes(2) || bytes(x)`` if y is even
+    * ``bytes(3) || bytes(x)`` if y is odd
 
     Args:
         P (:class:`list`): ``secp256k1`` point
