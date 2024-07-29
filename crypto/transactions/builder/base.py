@@ -1,7 +1,7 @@
 from binascii import hexlify, unhexlify
 
 from crypto.configuration.fee import get_fee
-from crypto.constants import HTLC_LOCK_EXPIRATION_TYPE, TRANSACTION_TYPE_GROUP
+from crypto.constants import TRANSACTION_TYPE_GROUP
 from crypto.identity.private_key import PrivateKey
 from crypto.identity.public_key import PublicKey
 from crypto.transactions.signature import Signature
@@ -82,12 +82,8 @@ class BaseTransactionBuilder(object):
     def set_sender_public_key(self, public_key):
         self.transaction.senderPublicKey = public_key
 
-    def set_expiration(self, expiration):
-        if type(expiration) == int:
-            self.transaction.expiration = expiration
-        else:
-            types = {HTLC_LOCK_EXPIRATION_TYPE.EPOCH_TIMESTAMP: 1, HTLC_LOCK_EXPIRATION_TYPE.BLOCK_HEIGHT: 2}
-            self.transaction.expiration = types[expiration]
+    def set_expiration(self, expiration: int):
+        self.transaction.expiration = expiration
 
     def set_type_group(self, type_group):
         if type(type_group) == int:

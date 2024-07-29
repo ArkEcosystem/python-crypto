@@ -5,10 +5,7 @@ from hashlib import sha256
 from binary.hex.writer import write_high
 from binary.unsigned_integer.writer import write_bit8
 
-from crypto.constants import (
-    TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION,
-    TRANSACTION_SECOND_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
-)
+from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 from crypto.exceptions import ArkInvalidTransaction
 from crypto.schnorr import schnorr
 from crypto.transactions.deserializer import Deserializer
