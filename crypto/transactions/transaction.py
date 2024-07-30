@@ -1,14 +1,12 @@
 import json
-from binascii import unhexlify
 from hashlib import sha256
+from typing import Optional
 
 from binary.hex.writer import write_high
 from binary.unsigned_integer.writer import write_bit8
 
 from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 from crypto.exceptions import ArkInvalidTransaction
-from crypto.schnorr import schnorr
-from crypto.transactions.deserializer import Deserializer
 from crypto.transactions.serializer import Serializer
 from crypto.transactions.signature import Signature
 
@@ -35,10 +33,25 @@ TRANSACTION_ATTRIBUTES = {
     'expiration': None
 }
 
-
 class Transaction(object):
+    id: str
+    type: int
+    fee: int
+    nonce: int
+    typeGroup: int
+    signatures: list
+    version: int
+    expiration: int
+    type: int
+    amount: int
+    recipientId: str
+    senderPublicKey: str
+    asset: dict
+    vendorField: Optional[bytes]
+    vendorFieldHex: bytes
+    network: int
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         for attribute, attribute_value in TRANSACTION_ATTRIBUTES.items():
             if callable(attribute_value):
                 attribute_value = attribute_value()
@@ -73,7 +86,7 @@ class Transaction(object):
         data = self.to_dict()
         return json.dumps(data)
 
-    def to_bytes(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
+    def to_bytes(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True) -> bytes:
         """Convert the transaction to its byte representation
 
         Args:
@@ -84,20 +97,16 @@ class Transaction(object):
         Returns:
             bytes: bytes representation of the transaction
         """
-        return Serializer(self.to_dict()).serialize(skip_signature=skip_signature,
+        return Serializer(self.to_dict()).serialize_bytes(skip_signature=skip_signature,
                                                     skip_second_signature=skip_second_signature,
-                                                    skip_multi_signature=skip_multi_signature,
-                                                    raw=True)
+                                                    skip_multi_signature=skip_multi_signature)
 
-    def parse_signatures(self, serialized, start_offset):
+    def parse_signatures(self, serialized: str, start_offset: int):
         """Parse the signature, second signature and multi signatures
 
         Args:
             serialized (str): parses a given serialized string
             start_offset (int):
-
-        Returns:
-            None: methods returns nothing
         """
 
         signature_end_offset = start_offset + (64 * 2)
@@ -122,9 +131,7 @@ class Transaction(object):
                 signature_formatted = signature_index + signature
                 self.signatures.append(signature_formatted)
 
-        return
-
-    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True):
+    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True) -> str:
         """Perform AIP11 compliant serialization.
 
         Args:
@@ -136,17 +143,21 @@ class Transaction(object):
             str: Serialized string
         """
         data = self.to_dict()
+
         return Serializer(data).serialize(skip_signature, skip_second_signature, skip_multi_signature)
 
-    def deserialize(self, serialized):
+    @staticmethod
+    def deserialize(serialized: bytes):
         """Perform AIP11 compliant deserialization.
 
         Args:
-            serialized (str): parses a given serialized string
+            serialized (bytes): parses a given serialized string
 
         Returns:
             crypto.transactions.transaction.Transaction: Transaction
         """
+        from crypto.transactions.deserializer import Deserializer
+
         return Deserializer(serialized).deserialize()
 
     def verify_schnorr(self):
@@ -160,7 +171,7 @@ class Transaction(object):
 
         return is_valid
 
-    def verify_schnorr_secondsig(self, secondPublicKey):
+    def verify_secondsig_schnorr(self, secondPublicKey: bytes):
         """Verify the transaction. Method will raise an exception if invalid, if it's valid it will
         returns True
         """
@@ -169,7 +180,9 @@ class Transaction(object):
         if not is_valid:
             raise ArkInvalidTransaction('Transaction could not be verified')
 
-    def verify_schnorr_multisig(self):
+        return is_valid
+
+    def verify_multisig_schnorr(self):
         """Verify the multisignatures transaction. Method will raise an exception if invalid, it will
         returns True
         """
@@ -180,7 +193,7 @@ class Transaction(object):
 
         return is_valid
 
-    def _handle_transaction_type(self, bytes_data):
+    def _handle_transaction_type(self, bytes_data) -> bytes:
         """Handled each transaction type differently
 
         Args:
@@ -190,10 +203,7 @@ class Transaction(object):
             NotImplementedError: raised only if the child transaction doesn't implement this
             required method
         """
-        if self.type == TRANSACTION_SECOND_SIGNATURE_REGISTRATION:
-            public_key = self.asset['signature']['publicKey']
-            bytes_data += unhexlify(public_key)
-        elif self.type == TRANSACTION_DELEGATE_REGISTRATION:
+        if self.type == TRANSACTION_DELEGATE_REGISTRATION:
             bytes_data += self.asset['delegate']['username'].encode()
         elif self.type == TRANSACTION_VOTE:
             bytes_data += ''.join(self.asset['votes']).encode()
@@ -203,7 +213,7 @@ class Transaction(object):
 
         return bytes_data
 
-    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature):
+    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature) -> bytes:
         """Internal method, used to handle the signature
 
         Args:

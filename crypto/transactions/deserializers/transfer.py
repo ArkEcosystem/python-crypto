@@ -1,5 +1,4 @@
 from binascii import hexlify, unhexlify
-
 from binary.unsigned_integer.reader import read_bit32, read_bit64
 
 from crypto.identity.address import get_checksum_address

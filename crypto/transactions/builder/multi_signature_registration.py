@@ -1,12 +1,14 @@
-from crypto.constants import TRANSACTION_FEES, TRANSACTION_MULTI_SIGNATURE_REGISTRATION
-from crypto.transactions.builder.base import BaseTransactionBuilder
+from typing import Optional
 
+from crypto.configuration.fee import get_fee
+from crypto.constants import TRANSACTION_MULTI_SIGNATURE_REGISTRATION
+from crypto.transactions.builder.base import BaseTransactionBuilder
 
 class MultiSignatureRegistration(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_MULTI_SIGNATURE_REGISTRATION
 
-    def __init__(self, fee=None):
+    def __init__(self, fee: Optional[int] = None):
         """Create a new multi signature transaction
 
         Args:
@@ -31,7 +33,10 @@ class MultiSignatureRegistration(BaseTransactionBuilder):
         self.transaction.asset['multiSignature']['publicKeys'] = public_keys
         self.transaction.fee = (len(public_keys) + 1) * self.transaction.fee
 
-    def add_participant(self, public_key):
+    def add_participant(self, public_key: str):
         self.transaction.asset['multiSignature']['publicKeys'].append(public_key)
-        self.transaction.fee = (len(self.transaction.asset['multiSignature']['publicKeys']) + 1) * \
-            TRANSACTION_FEES.get(TRANSACTION_MULTI_SIGNATURE_REGISTRATION)
+
+        public_key_count = (len(self.transaction.asset['multiSignature']['publicKeys']) + 1)
+        transaction_fee = get_fee(TRANSACTION_MULTI_SIGNATURE_REGISTRATION)
+
+        self.transaction.fee = public_key_count * transaction_fee

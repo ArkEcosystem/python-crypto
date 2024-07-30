@@ -3,12 +3,11 @@ from binary.unsigned_integer.writer import write_bit16, write_bit64
 
 from crypto.transactions.serializers.base import BaseSerializer
 
-
 class MultiPaymentSerializer(BaseSerializer):
     """Serializer handling multi payment data
     """
 
-    def serialize(self):
+    def serialize(self) -> bytes:
         self.bytes_data += write_bit16(len(self.transaction['asset']['payments']))
 
         for payment in self.transaction['asset']['payments']:

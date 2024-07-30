@@ -9,14 +9,24 @@ from crypto.transactions.signature import Signature
 from crypto.transactions.transaction import Transaction
 
 class BaseTransactionBuilder(object):
+    transaction: Transaction
 
     def __init__(self):
         self.transaction = Transaction()
-        self.transaction.type = getattr(self, 'transaction_type', None)
-        self.transaction.fee = get_fee(getattr(self, 'transaction_type', None))
-        self.transaction.nonce = getattr(self, 'nonce', None)
+
+        if hasattr(self, 'transaction_type'):
+            self.transaction.type = getattr(self, 'transaction_type')
+
+        if hasattr(self, 'transaction_type'):
+            self.transaction.fee = get_fee(getattr(self, 'transaction_type'))
+
+        if hasattr(self, 'nonce'):
+            self.transaction.nonce = getattr(self, 'nonce')
+
+        if hasattr(self, 'signatures'):
+            self.transaction.signatures = getattr(self, 'signatures')
+
         self.transaction.typeGroup = getattr(self, 'typeGroup', int(TRANSACTION_TYPE_GROUP.CORE))
-        self.transaction.signatures = getattr(self, 'signatures', None)
         self.transaction.version = getattr(self, 'version', 1)
         self.transaction.expiration = getattr(self, 'expiration', 0)
         if self.transaction.type != 0:
@@ -81,19 +91,19 @@ class BaseTransactionBuilder(object):
     def schnorr_verify(self):
         return self.transaction.verify_schnorr()
 
-    def schnorr_verify_second(self, secondPublicKey):
-        return self.transaction.verify_schnorr_secondsig(secondPublicKey)
+    def verify_secondsig_schnorr(self, secondPublicKey):
+        return self.transaction.verify_secondsig_schnorr(secondPublicKey)
 
-    def schnorr_verify_multisig(self):
-        return self.transaction.verify_schnorr_multisig()
+    def verify_multisig_schnorr(self):
+        return self.transaction.verify_multisig_schnorr()
 
     def set_nonce(self, nonce):
         self.transaction.nonce = nonce
 
-    def set_amount(self, amount):
+    def set_amount(self, amount: int):
         self.transaction.amount = amount
 
-    def set_sender_public_key(self, public_key):
+    def set_sender_public_key(self, public_key: str):
         self.transaction.senderPublicKey = public_key
 
     def set_expiration(self, expiration: int):
