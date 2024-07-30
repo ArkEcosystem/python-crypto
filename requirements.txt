@@ -6,12 +6,17 @@ beautifulsoup4==4.12.3
 binary-helpers==0.0.4
 btclib==2023.7.12
 btclib_libsecp256k1==0.4.0
+cached-property==1.5.2
 certifi==2024.7.4
 cffi==1.16.0
 charset-normalizer==3.3.2
 coincurve==20.0.0
 commonmark==0.9.1
 coverage==7.5.4
+cytoolz==0.12.3
+eth-hash==0.7.0
+eth-typing==4.4.0
+eth-utils==4.1.1
 exceptiongroup==1.2.1
 flake8==7.1.0
 flake8-import-order==0.18.2
@@ -33,6 +38,7 @@ Pygments==2.18.0
 pyparsing==3.1.2
 pytest==8.2.2
 pytest-cov==5.0.0
+python-bls==0.1.10
 PyYAML==6.0.1
 requests==2.32.3
 rich==13.7.1
@@ -40,5 +46,7 @@ six==1.16.0
 soupsieve==2.5
 toml==0.10.2
 tomli==2.0.1
+toolz==0.12.1
 tqdm==4.66.4
+typing_extensions==4.12.2
 urllib3==2.2.2
