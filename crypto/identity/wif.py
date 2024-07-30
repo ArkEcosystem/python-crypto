@@ -1,4 +1,5 @@
 import hashlib
+from typing import Optional
 
 from base58 import b58encode_check
 
@@ -6,12 +7,11 @@ from binary.unsigned_integer.writer import write_bit8
 
 from crypto.configuration.network import get_network
 
-
-def wif_from_passphrase(passphrase, network_wif=None):
+def wif_from_passphrase(passphrase: str, network_wif: Optional[int] = None):
     """Get wif from passphrase
 
     Args:
-        passphrase (bytes):
+        passphrase (str):
         network_wif (int, optional):
 
     Returns:
@@ -19,6 +19,7 @@ def wif_from_passphrase(passphrase, network_wif=None):
     """
     if not network_wif:
         network = get_network()
+
         network_wif = network['wif']
 
     private_key = hashlib.sha256(passphrase.encode())

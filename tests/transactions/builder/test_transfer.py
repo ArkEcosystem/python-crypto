@@ -111,7 +111,7 @@ def test_transfer_secondsign_transaction(passphrase):
     assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
 
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
-    transaction.schnorr_verify_second(PublicKey.from_passphrase('second top secret passphrase'))  # if no exception is raised, it means the transaction is valid
+    transaction.verify_secondsig_schnorr(PublicKey.from_passphrase('second top secret passphrase'))  # if no exception is raised, it means the transaction is valid
 
 
 def test_parse_signatures(transaction_type_0):

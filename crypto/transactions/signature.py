@@ -4,7 +4,7 @@ from typing import Union
 
 class Signature:
     @staticmethod
-    def verify(signature, message, publicKey: bytes):
+    def verify(signature, message, publicKey: Union[bytes, str]):
         # Remove leading byte ('02' / '03') from ECDSA key
         if (len(publicKey) == 33):
             publicKey = publicKey[1:]

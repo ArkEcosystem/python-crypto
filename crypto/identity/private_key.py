@@ -3,26 +3,25 @@ from hashlib import sha256
 
 from coincurve import PrivateKey as PvtKey
 
-
 class PrivateKey(object):
-    def __init__(self, private_key):
+    def __init__(self, private_key: str):
         self.private_key = PvtKey.from_hex(private_key)
         self.public_key = hexlify(self.private_key.public_key.format()).decode()
 
-    def sign(self, message):
+    def sign(self, message: bytes) -> bytes:
         """Sign a message with this private key object
 
         Args:
             message (bytes): bytes data you want to sign
 
         Returns:
-            str: signature of the signed message
+            bytes: signature of the signed message
         """
         from crypto.transactions.signature import Signature
 
         signature = Signature.sign(
             hexlify(message),
-            self.private_key.to_hex()
+            self
         )
 
         return signature.encode()
@@ -36,7 +35,7 @@ class PrivateKey(object):
         return self.private_key.to_hex()
 
     @classmethod
-    def from_passphrase(cls, passphrase):
+    def from_passphrase(cls, passphrase: str):
         """Create PrivateKey object from a given passphrase
 
         Args:
@@ -46,10 +45,11 @@ class PrivateKey(object):
             PrivateKey: Private key object
         """
         private_key = sha256(passphrase.encode()).hexdigest()
+
         return cls(private_key)
 
     @classmethod
-    def from_hex(cls, private_key):
+    def from_hex(cls, private_key: str):
         """Create PrivateKey object from a given hex private key
 
         Args:

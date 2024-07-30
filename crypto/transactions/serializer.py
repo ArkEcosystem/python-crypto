@@ -10,21 +10,19 @@ from crypto.constants import TRANSACTION_TYPES
 from crypto.exceptions import ArkSerializerException
 from crypto.transactions.serializers.base import BaseSerializer
 
-
 class Serializer(object):
-
-    transaction = None
+    transaction: dict = {}
 
     def __init__(self, transaction):
         if not transaction:
             raise ArkSerializerException('No transaction data provided')
         self.transaction = transaction
 
-    def serialize(self, skip_signature=True, skip_second_signature=True, skip_multi_signature=True, raw=False):
+    def serialize_bytes(self, skip_signature: bool = True, skip_second_signature: bool = True, skip_multi_signature: bool = True) -> bytes:
         """Perform AIP11 compliant serialization
 
         Returns:
-            bytes: bytes string
+            bytes: Serialized bytes
         """
         network_config = get_network()
         bytes_data = bytes()
@@ -41,21 +39,34 @@ class Serializer(object):
         bytes_data += write_bit64(self.transaction.get('fee'))
 
         if self.transaction.get('vendorField'):
-            vendorFieldLength = len(self.transaction.get('vendorField'))
+            vendorFieldLength = len(self.transaction.get('vendorField') or '')
+
             bytes_data += write_bit8(vendorFieldLength)
             bytes_data += self.transaction['vendorField'].encode()
         elif self.transaction.get('vendorFieldHex'):
             vendorField_hex_length = len(self.transaction['vendorFieldHex'])
+
             bytes_data += write_bit8(vendorField_hex_length / 2)
             bytes_data += self.transaction['vendorFieldHex']
         else:
             bytes_data += write_bit8(0x00)
+
         bytes_data = self._handle_transaction_type(bytes_data)
         bytes_data = self._handle_signature(bytes_data, skip_signature, skip_second_signature, skip_multi_signature)
 
-        return bytes_data if raw else hexlify(bytes_data).decode()
+        return bytes_data
 
-    def _handle_transaction_type(self, bytes_data):
+    def serialize(self, skip_signature: bool = True, skip_second_signature: bool = True, skip_multi_signature: bool = True) -> str:
+        """Perform AIP11 compliant serialization
+
+        Returns:
+            str: Serialized string
+        """
+        bytes_data = self.serialize_bytes(skip_signature, skip_second_signature, skip_multi_signature)
+
+        return hexlify(bytes_data).decode()
+
+    def _handle_transaction_type(self, bytes_data) -> bytes:
         """Serialize transaction specific data (eg. delegate registration)
 
         Args:
@@ -78,9 +89,10 @@ class Serializer(object):
                 # this attribute is actually a specific serializer that we want to use
                 serializer = attribute
                 break
+
         return serializer(self.transaction, bytes_data).serialize()
 
-    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature):
+    def _handle_signature(self, bytes_data, skip_signature, skip_second_signature, skip_multi_signature) -> bytes:
         """Serialize signature data of the transaction
 
         Args:
