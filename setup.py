@@ -6,6 +6,7 @@ import setuptools
 requires = [
     'base58',
     'binary-helpers',
+    'bls_py',
     'coincurve',
     'pycryptodomex',
     'btclib',
