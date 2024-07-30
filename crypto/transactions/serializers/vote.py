@@ -1,15 +1,13 @@
 from binascii import unhexlify
-
 from binary.unsigned_integer.writer import write_bit8
 
 from crypto.transactions.serializers.base import BaseSerializer
-
 
 class VoteSerializer(BaseSerializer):
     """Serializer handling vote data
     """
 
-    def serialize(self):
+    def serialize(self) -> bytes:
         vote_bytes = []
         unvote_bytes = []
 

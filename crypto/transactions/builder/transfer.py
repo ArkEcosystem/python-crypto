@@ -1,12 +1,13 @@
+from typing import Optional
+
 from crypto.constants import TRANSACTION_TRANSFER
 from crypto.transactions.builder.base import BaseTransactionBuilder
-
 
 class Transfer(BaseTransactionBuilder):
 
     transaction_type = TRANSACTION_TRANSFER
 
-    def __init__(self, recipientId, amount, vendorField=None, fee=None):
+    def __init__(self, recipientId: str, amount: int, vendorField: Optional[str] = None, fee: Optional[int] = None):
         """Create a transfer transaction
 
         Args:

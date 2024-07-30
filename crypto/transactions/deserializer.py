@@ -1,31 +1,26 @@
 import inspect
 from binascii import hexlify, unhexlify
-from hashlib import sha256
 from importlib import import_module
+from typing import Union
 
 from binary.unsigned_integer.reader import read_bit8, read_bit16, read_bit32, read_bit64
 
 from crypto.constants import TRANSACTION_TYPES
 from crypto.transactions.deserializers.base import BaseDeserializer
-
+from crypto.transactions.transaction import Transaction
 
 class Deserializer(object):
+    serialized: bytes
 
-    serialized = None
-
-    def __init__(self, serialized):
+    def __init__(self, serialized: Union[bytes, str]):
         self.serialized = unhexlify(serialized)
 
-    def deserialize(self):
+    def deserialize(self) -> Transaction:
         """Deserialize transaction
 
         Returns:
-            object: returns Transaction resource object
+            Transaction: returns transaction object
         """
-        # circular import with transaction.py :( - I'm thinking of just returning a dict here
-        # which then needs to be passed to a Transaction object, instead of returning a Transaction
-        # object
-        from crypto.transactions.transaction import Transaction
 
         transaction = Transaction()
         transaction.version = read_bit8(self.serialized, offset=1)
@@ -53,16 +48,17 @@ class Deserializer(object):
 
         return transaction
 
-    def _handle_transaction_type(self, asset_offset, transaction):
+    def _handle_transaction_type(self, asset_offset: int, transaction):
         """Handle deserialization for a given transaction type
 
         Args:
             asset_offset (int):
-            transaction (object): Transaction resource object
+            transaction (Transaction): Transaction resource object
 
         Returns:
-            object: Transaction resource object of currently deserialized data
+            Transaction: Transaction object of currently deserialized data
         """
+
         deserializer_name = TRANSACTION_TYPES[transaction.type]
         module = import_module('crypto.transactions.deserializers.{}'.format(deserializer_name))
         for attr in dir(module):

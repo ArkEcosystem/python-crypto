@@ -3,10 +3,10 @@ from binascii import unhexlify
 
 from crypto.identity.private_key import PrivateKey
 
-from Cryptodome.Hash import RIPEMD160, keccak
+from Cryptodome.Hash import keccak
 from coincurve import PrivateKey, PublicKey
 
-def get_checksum_address(address: bytes) -> str:
+def get_checksum_address(address: str) -> str:
     """Get checksum address
 
     Args:
@@ -33,50 +33,47 @@ def get_checksum_address(address: bytes) -> str:
 
     return "0x" + ''.join(chars)
 
-def address_from_public_key(public_key):
+def address_from_public_key(public_key: str) -> str:
     """Get an address from a public key
 
     Args:
-        public_key (str):
+        public_key (str): public key to get address
 
     Returns:
         str: address
     """
 
-    public_key = PublicKey(bytes.fromhex(public_key)).format(compressed=False)[1:]
+    public_key_bytes = PublicKey(bytes.fromhex(public_key)).format(compressed=False)[1:]
 
     keccak_hash = keccak.new(
-        data=bytearray.fromhex(public_key.hex()),
+        data=bytearray.fromhex(public_key_bytes.hex()),
         digest_bits=256,
     )
 
     return get_checksum_address(unhexlify(keccak_hash.hexdigest()[22:]).hex())
 
-
-def address_from_private_key(private_key):
+def address_from_private_key(private_key: str) -> str:
     """Get an address from private key
 
     Args:
-        private_key (string):
+        private_key (string): private key to get address
 
     Returns:
-        TYPE: Description
+        str: address
     """
-    private_key = PrivateKey.from_hex(private_key)
+    private_key_object = PrivateKey.from_hex(private_key)
 
-    return address_from_public_key(private_key.public_key.format(compressed=False).hex())
+    return address_from_public_key(private_key_object.public_key.format(compressed=False).hex())
 
-
-def address_from_passphrase(passphrase):
+def address_from_passphrase(passphrase: str) -> str:
     """Get an address from passphrase
 
     Args:
-        passphrase (str):
-        network_version (int, optional):
+        passphrase (str): passphrase to get address
 
     Returns:
-        string: address
+        str: address
     """
     private_key = hashlib.sha256(passphrase.encode()).hexdigest()
-    address = address_from_private_key(private_key)
-    return address
+
+    return address_from_private_key(private_key)

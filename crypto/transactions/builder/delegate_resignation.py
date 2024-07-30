@@ -1,12 +1,12 @@
+from typing import Optional
+
 from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
-
 class DelegateResignation(BaseTransactionBuilder):
-
     transaction_type = TRANSACTION_DELEGATE_RESIGNATION
 
-    def __init__(self, fee=None):
+    def __init__(self, fee: Optional[int] = None):
         """Create a delegate resignation transaction
 
         Args:
@@ -19,5 +19,5 @@ class DelegateResignation(BaseTransactionBuilder):
         if fee:
             self.transaction.fee = fee
 
-    def get_type_group(self):
+    def get_type_group(self) -> int:
         return TRANSACTION_TYPE_GROUP.CORE.value

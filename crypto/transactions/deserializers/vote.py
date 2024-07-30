@@ -1,5 +1,4 @@
 from binascii import hexlify
-
 from binary.unsigned_integer.reader import read_bit8
 
 from crypto.transactions.deserializers.base import BaseDeserializer
