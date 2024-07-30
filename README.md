@@ -7,7 +7,6 @@
 > A simple Cryptography Implementation in Python for the Ark Blockchain.
 
 [![Build Status](https://badgen.now.sh/circleci/github/ArkEcosystem/python-crypto)](https://circleci.com/gh/ArkEcosystem/python-crypto)
-[![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/python-crypto)](https://codecov.io/gh/arkecosystem/python-crypto)
 [![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/python-crypto)](https://github.com/ArkEcosystem/python-crypto/releases/latest)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
