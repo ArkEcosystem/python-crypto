@@ -1,7 +1,7 @@
 from crypto.transactions.serializers.base import BaseSerializer
 
-class DelegateResignationSerializer(BaseSerializer):
-    """Serializer handling delegate resignation data
+class ValidatorResignationSerializer(BaseSerializer):
+    """Serializer handling validator resignation data
     """
 
     def serialize(self) -> bytes:

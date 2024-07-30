@@ -5,7 +5,7 @@ from typing import Optional
 from binary.hex.writer import write_high
 from binary.unsigned_integer.writer import write_bit8
 
-from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
+from crypto.constants import TRANSACTION_VALIDATOR_REGISTRATION, TRANSACTION_MULTI_SIGNATURE_REGISTRATION, TRANSACTION_VOTE
 from crypto.exceptions import ArkInvalidTransaction
 from crypto.transactions.serializer import Serializer
 from crypto.transactions.signature import Signature
@@ -203,8 +203,8 @@ class Transaction(object):
             NotImplementedError: raised only if the child transaction doesn't implement this
             required method
         """
-        if self.type == TRANSACTION_DELEGATE_REGISTRATION:
-            bytes_data += self.asset['delegate']['username'].encode()
+        if self.type == TRANSACTION_VALIDATOR_REGISTRATION:
+            bytes_data += self.asset['validator']['username'].encode()
         elif self.type == TRANSACTION_VOTE:
             bytes_data += ''.join(self.asset['votes']).encode()
         elif self.type == TRANSACTION_MULTI_SIGNATURE_REGISTRATION:

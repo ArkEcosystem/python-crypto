@@ -1,7 +1,7 @@
 from crypto.transactions.deserializer import Deserializer
 
 
-def test_delegate_resignation_deserializer(transaction_type_7):
+def test_validator_resignation_deserializer(transaction_type_7):
     serialized = transaction_type_7['serialized']
 
     deserializer = Deserializer(serialized)

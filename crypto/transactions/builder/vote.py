@@ -11,8 +11,8 @@ class Vote(BaseTransactionBuilder):
         """Create a vote transaction
 
         Args:
-            vote (str, optional): address of a delegate you want to vote
-            unvote (str, optional): address of a delegate you want to unvote
+            vote (str, optional): address of a validator you want to vote
+            unvote (str, optional): address of a validator you want to unvote
             fee (int, optional): fee used for the transaction (default is already set)
         """
         super().__init__()

@@ -2,7 +2,7 @@ from binascii import hexlify
 
 from crypto.transactions.deserializers.base import BaseDeserializer
 
-class DelegateResignationDeserializer(BaseDeserializer):
+class ValidatorResignationDeserializer(BaseDeserializer):
     def deserialize(self):
         self.transaction.parse_signatures(
             hexlify(self.serialized).decode(),
