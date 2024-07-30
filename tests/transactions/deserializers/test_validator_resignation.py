@@ -2,9 +2,7 @@ from crypto.transactions.deserializer import Deserializer
 
 
 def test_validator_resignation_deserializer(transaction_type_7):
-    serialized = transaction_type_7['serialized']
-
-    deserializer = Deserializer(serialized)
+    deserializer = Deserializer(transaction_type_7['serialized'])
     actual = deserializer.deserialize()
 
     assert actual.version == transaction_type_7['version']
