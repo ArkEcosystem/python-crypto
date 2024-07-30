@@ -30,6 +30,17 @@ def test_validator_registration_transaction(passphrase):
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
+def test_validator_registration_transaction_with_invalid_bls_public_key():
+    """Test if a validator registration transaction fails with an invalid BLS public key
+    """
+    try:
+        ValidatorRegistration('023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3')
+
+        raise Exception('ValidatorRegistration should raise an exception with an invalid BLS public key')
+    except ValueError as e:
+        assert e.args[0] == 'Invalid BLS public key'
+
+
 def test_validator_registration_transaction_custom_fee(passphrase):
     """Test if a validator registration transaction gets built with a custom fee
     """
