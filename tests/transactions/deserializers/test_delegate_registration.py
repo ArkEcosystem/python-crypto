@@ -2,9 +2,7 @@ from crypto.transactions.deserializer import Deserializer
 
 
 def test_delegate_registration_deserializer(transaction_type_2):
-    serialized = transaction_type_2['serialized']
-
-    deserializer = Deserializer(serialized)
+    deserializer = Deserializer(transaction_type_2['serialized'])
     actual = deserializer.deserialize()
 
     assert actual.version == transaction_type_2['version']
