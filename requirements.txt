@@ -27,6 +27,7 @@ iniconfig==2.0.0
 markdown-it-py==3.0.0
 mccabe==0.7.0
 mdurl==0.1.2
+numpy==2.0.1
 packaging==24.1
 pluggy==1.5.0
 py==1.11.0
@@ -42,6 +43,7 @@ python-bls==0.1.10
 PyYAML==6.0.1
 requests==2.32.3
 rich==13.7.1
+scipy==1.14.0
 six==1.16.0
 soupsieve==2.5
 toml==0.10.2
