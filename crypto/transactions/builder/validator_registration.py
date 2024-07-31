@@ -1,13 +1,13 @@
 from typing import Optional
 
-from crypto.constants import TRANSACTION_DELEGATE_REGISTRATION
+from crypto.constants import TRANSACTION_VALIDATOR_REGISTRATION
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
-class DelegateRegistration(BaseTransactionBuilder):
-    transaction_type = TRANSACTION_DELEGATE_REGISTRATION
+class ValidatorRegistration(BaseTransactionBuilder):
+    transaction_type = TRANSACTION_VALIDATOR_REGISTRATION
 
     def __init__(self, public_key: str, fee: Optional[int] = None):
-        """Create a delegate registration transaction
+        """Create a validator registration transaction
 
         Args:
             public_key (str): BLS public key of a validator you want to register

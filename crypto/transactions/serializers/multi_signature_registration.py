@@ -4,7 +4,7 @@ from binary.unsigned_integer.writer import write_bit8
 from crypto.transactions.serializers.base import BaseSerializer
 
 class MultiSignatureSerializer(BaseSerializer):
-    """Serializer handling delegate registration data
+    """Serializer handling multi-signature data
     """
 
     def serialize(self) -> bytes:

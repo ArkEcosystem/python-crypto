@@ -1,13 +1,13 @@
 from typing import Optional
 
-from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION, TRANSACTION_TYPE_GROUP
+from crypto.constants import TRANSACTION_VALIDATOR_RESIGNATION, TRANSACTION_TYPE_GROUP
 from crypto.transactions.builder.base import BaseTransactionBuilder
 
-class DelegateResignation(BaseTransactionBuilder):
-    transaction_type = TRANSACTION_DELEGATE_RESIGNATION
+class ValidatorResignation(BaseTransactionBuilder):
+    transaction_type = TRANSACTION_VALIDATOR_RESIGNATION
 
     def __init__(self, fee: Optional[int] = None):
-        """Create a delegate resignation transaction
+        """Create a validator resignation transaction
 
         Args:
             fee (int, optional): fee used for the transaction (default is already set)

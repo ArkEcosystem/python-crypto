@@ -1,23 +1,26 @@
 from crypto.configuration.network import set_network
-from crypto.constants import TRANSACTION_DELEGATE_RESIGNATION, TRANSACTION_TYPE_GROUP
+from crypto.constants import TRANSACTION_VALIDATOR_REGISTRATION, TRANSACTION_TYPE_GROUP
 from crypto.networks.devnet import Devnet
-from crypto.transactions.builder.delegate_resignation import DelegateResignation
+from crypto.transactions.builder.validator_registration import ValidatorRegistration
 
 set_network(Devnet)
 
 
-def test_delegate_resignation_transaction(passphrase):
-    """Test if delegate resignation transaction gets built
+def test_validator_registration_transaction(passphrase):
+    """Test if a validator registration transaction gets built
     """
-    transaction = DelegateResignation()
-    transaction.set_nonce(1)
+    bls_public_key = 'a227bf7c57eaa6e4f5de7b17495b4ea0be645d1204ce2fc9b54dbfabe23a59b6377e924c12aa4a831483af021fbc29ec'
+
+    transaction = ValidatorRegistration(bls_public_key)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
+    transaction.set_nonce(1)
     transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
-    assert transaction_dict['type'] is TRANSACTION_DELEGATE_RESIGNATION
+    assert transaction_dict['asset']['validatorPublicKey'] == bls_public_key
+    assert transaction_dict['type'] is TRANSACTION_VALIDATOR_REGISTRATION
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 2500000000
@@ -27,18 +30,21 @@ def test_delegate_resignation_transaction(passphrase):
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
-def test_delegate_resignation_transaction_custom_fee(passphrase):
-    """Test if delegate resignation transaction gets built with a custom fee
+def test_validator_registration_transaction_custom_fee(passphrase):
+    """Test if a validator registration transaction gets built with a custom fee
     """
-    transaction = DelegateResignation(5)
-    transaction.set_nonce(1)
+    bls_public_key = 'a227bf7c57eaa6e4f5de7b17495b4ea0be645d1204ce2fc9b54dbfabe23a59b6377e924c12aa4a831483af021fbc29ec'
+
+    transaction = ValidatorRegistration(bls_public_key, 5)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
+    transaction.set_nonce(1)
     transaction.sign(passphrase)
     transaction_dict = transaction.to_dict()
 
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
-    assert transaction_dict['type'] is TRANSACTION_DELEGATE_RESIGNATION
+    assert transaction_dict['asset']['validatorPublicKey'] == bls_public_key
+    assert transaction_dict['type'] is TRANSACTION_VALIDATOR_REGISTRATION
     assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5

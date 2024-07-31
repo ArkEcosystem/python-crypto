@@ -140,7 +140,7 @@ def transaction_type_6():
 
 @pytest.fixture
 def transaction_type_7():
-    """Transaction of type "delegate resignation"
+    """Transaction of type "validator resignation"
     """
     data = {
         'version': 1,
