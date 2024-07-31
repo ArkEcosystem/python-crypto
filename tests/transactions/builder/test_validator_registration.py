@@ -9,7 +9,7 @@ set_network(Devnet)
 def test_validator_registration_transaction(passphrase):
     """Test if a validator registration transaction gets built
     """
-    bls_public_key = 'a227bf7c57eaa6e4f5de7b17495b4ea0be645d1204ce2fc9b54dbfabe23a59b6377e924c12aa4a831483af021fbc29ec'
+    bls_public_key = 'b5fea88b9aab3f0b122e5a7e1b07917e62a63ea59103d0a0715ecded3c41685af88f0a9606309b148b3b50f51a2e7036'
 
     transaction = ValidatorRegistration(bls_public_key)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
@@ -30,10 +30,32 @@ def test_validator_registration_transaction(passphrase):
     transaction.schnorr_verify()  # if no exception is raised, it means the transaction is valid
 
 
+def test_validator_registration_transaction_with_invalid_bls_public_key():
+    """Test if a validator registration transaction fails with an invalid BLS public key
+    """
+    try:
+        ValidatorRegistration('b5fea88b9aab3f0b122e5a7e1b07917e62a63ea59103d0a0715ecded3c41685af88f0a9606309b148b3b50f51a2edddd')
+
+        raise Exception('ValidatorRegistration should raise an exception with an invalid BLS public key')
+    except ValueError as e:
+        assert e.args[0] == 'Invalid BLS public key'
+
+
+def test_validator_registration_transaction_with_invalid_bls_public_key_by_length():
+    """Test if a validator registration transaction fails with an invalid BLS public key
+    """
+    try:
+        ValidatorRegistration('023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3')
+
+        raise Exception('ValidatorRegistration should raise an exception with an invalid BLS public key')
+    except ValueError as e:
+        assert e.args[0] == 'Invalid BLS public key'
+
+
 def test_validator_registration_transaction_custom_fee(passphrase):
     """Test if a validator registration transaction gets built with a custom fee
     """
-    bls_public_key = 'a227bf7c57eaa6e4f5de7b17495b4ea0be645d1204ce2fc9b54dbfabe23a59b6377e924c12aa4a831483af021fbc29ec'
+    bls_public_key = 'b5fea88b9aab3f0b122e5a7e1b07917e62a63ea59103d0a0715ecded3c41685af88f0a9606309b148b3b50f51a2e7036'
 
     transaction = ValidatorRegistration(bls_public_key, 5)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
