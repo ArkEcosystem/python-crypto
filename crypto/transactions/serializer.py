@@ -67,7 +67,7 @@ class Serializer(object):
         return hexlify(bytes_data).decode()
 
     def _handle_transaction_type(self, bytes_data) -> bytes:
-        """Serialize transaction specific data (eg. delegate registration)
+        """Serialize transaction specific data (eg. validator registration)
 
         Args:
             bytes_data (bytes): already serialized data about a transaction (eg. version, network)
