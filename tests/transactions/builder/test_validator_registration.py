@@ -41,6 +41,17 @@ def test_validator_registration_transaction_with_invalid_bls_public_key():
         assert e.args[0] == 'Invalid BLS public key'
 
 
+def test_validator_registration_transaction_with_invalid_bls_public_key_by_length():
+    """Test if a validator registration transaction fails with an invalid BLS public key
+    """
+    try:
+        ValidatorRegistration('a227bf7c57eaa6e4f5de7b17495b4ea0be645d1204ce2fc9b54dbfabe23a59b6377e924c12aa4a831483af021fbcdddd')
+
+        raise Exception('ValidatorRegistration should raise an exception with an invalid BLS public key')
+    except ValueError as e:
+        assert e.args[0] == 'Invalid BLS public key'
+
+
 def test_validator_registration_transaction_custom_fee(passphrase):
     """Test if a validator registration transaction gets built with a custom fee
     """

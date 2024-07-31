@@ -34,6 +34,16 @@ class ValidatorRegistration(BaseTransactionBuilder):
             raise ValueError('Invalid BLS public key')
 
         try:
-            PublicKey.from_bytes(bytes.fromhex(public_key))
+            # bls_py.bls.BLS.verify(public_key)
+
+            public_key_bytes = PublicKey.from_bytes(bytes.fromhex(public_key))
+
+            print(public_key_bytes.serialize().hex())
+            print(public_key)
+
+            if public_key != public_key_bytes.serialize().hex():
+                raise ValueError('Invalid BLS public key')
+
+            # print(public_key_bytes, public_key_bytes.value, public_key_bytes.serialize().hex())
         except Exception:
             raise ValueError('Invalid BLS public key')
