@@ -1,6 +1,6 @@
 from typing import Optional
 
-from bls_py.bls import PublicKey
+import blspy
 
 from crypto.constants import TRANSACTION_VALIDATOR_REGISTRATION
 from crypto.transactions.builder.base import BaseTransactionBuilder
@@ -34,16 +34,6 @@ class ValidatorRegistration(BaseTransactionBuilder):
             raise ValueError('Invalid BLS public key')
 
         try:
-            # bls_py.bls.BLS.verify(public_key)
-
-            public_key_bytes = PublicKey.from_bytes(bytes.fromhex(public_key))
-
-            print(public_key_bytes.serialize().hex())
-            print(public_key)
-
-            if public_key != public_key_bytes.serialize().hex():
-                raise ValueError('Invalid BLS public key')
-
-            # print(public_key_bytes, public_key_bytes.value, public_key_bytes.serialize().hex())
+            blspy.PublicKeyMPL.from_bytes(bytes.fromhex(public_key))
         except Exception:
             raise ValueError('Invalid BLS public key')
