@@ -159,6 +159,49 @@ def transaction_type_7():
 
 
 @pytest.fixture
+def transaction_type_8():
+    """Transaction of type "username registration"
+    """
+    data = {
+        'version': 1,
+        'network': 30,
+        'typeGroup': 1,
+        'type': 8,
+        'nonce': 9,
+        'senderPublicKey': '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3',
+        'fee': 2500000000,
+        'asset': {
+            'username': 'test_username'
+        },
+        'signature': 'd6886e48b8df120f5f51d22c00583ef9cda61c32fd578cd07812f95cca16cdf98972e7f0789221cf1e0ad8fe174f68b4b3fe57a32692c83e0f7b1bd18c9b1640',  # noqa
+        'amount': 0,
+        'id': 'f6ae0049bc3b79ddac96e37ceb6dadbf311b817d70ae1613ca5a97ceba6c8d40',
+        'serialized': 'ff011e0100000008000900000000000000023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d300f9029500000000000d746573745f757365726e616d65d6886e48b8df120f5f51d22c00583ef9cda61c32fd578cd07812f95cca16cdf98972e7f0789221cf1e0ad8fe174f68b4b3fe57a32692c83e0f7b1bd18c9b1640'  # noqa
+    }
+    return data
+
+
+@pytest.fixture
+def transaction_type_9():
+    """Transaction of type "username resignation"
+    """
+    data = {
+        'version': 1,
+        'network': 30,
+        'typeGroup': 1,
+        'type': 9,
+        'nonce': 9,
+        'senderPublicKey': '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3',
+        'fee': 2500000000,
+        'amount': 0,
+        'signature': '728c2c5d5f090e8c5dfd433bb2b15b30442cbafb9b882117f7b6f284da4093c6a96e8456f764628ec809514ac4e8b06d5450978b9b763f7d01f696b8881f702a',
+        'id': '9d01eb12cb47d5acbfe0ba0aff501e24e8313e2b08ecba118bb45332903d776b',
+        'serialized': 'ff011e0100000009000900000000000000023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d300f902950000000000728c2c5d5f090e8c5dfd433bb2b15b30442cbafb9b882117f7b6f284da4093c6a96e8456f764628ec809514ac4e8b06d5450978b9b763f7d01f696b8881f702a'
+    }
+    return data
+
+
+@pytest.fixture
 def message():
     data = {
         'publicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
