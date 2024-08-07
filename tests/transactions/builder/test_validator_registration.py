@@ -21,7 +21,6 @@ def test_validator_registration_transaction(passphrase):
     assert transaction_dict['signature']
     assert transaction_dict['asset']['validatorPublicKey'] == bls_public_key
     assert transaction_dict['type'] is TRANSACTION_VALIDATOR_REGISTRATION
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 2500000000
     assert transaction_dict['expiration'] == 0
@@ -67,7 +66,6 @@ def test_validator_registration_transaction_custom_fee(passphrase):
     assert transaction_dict['signature']
     assert transaction_dict['asset']['validatorPublicKey'] == bls_public_key
     assert transaction_dict['type'] is TRANSACTION_VALIDATOR_REGISTRATION
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5
     assert transaction_dict['expiration'] == 0
