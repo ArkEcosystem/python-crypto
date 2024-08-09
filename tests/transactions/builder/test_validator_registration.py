@@ -9,7 +9,7 @@ set_network(Devnet)
 def test_validator_registration_transaction(passphrase):
     """Test if a validator registration transaction gets built
     """
-    bls_public_key = 'b5fea88b9aab3f0b122e5a7e1b07917e62a63ea59103d0a0715ecded3c41685af88f0a9606309b148b3b50f51a2e7036'
+    bls_public_key = 'b4865127896c3c5286296a7b26e7c8002586a3ecf5832bfb59e689336f1f4c75e10491b9dfaed8dfb2c2fbe22d11fa93'
 
     transaction = ValidatorRegistration(bls_public_key)
     transaction.set_type_group(TRANSACTION_TYPE_GROUP.CORE)
