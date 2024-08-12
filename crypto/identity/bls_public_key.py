@@ -27,7 +27,6 @@ class BLSPublicKey:
         # seed = unhexlify(sha256(passphrase.encode()).hexdigest())
         # seed = hexlify(passphrase.encode())
         seed = btclib.mnemonic.bip39.seed_from_mnemonic(passphrase, '')
-        seed = bytes('1234'.encode())
 
         private_key = my_bls.deriveChild(my_bls.deriveMaster(seed), 0).hex()
         # public_key = generate_public_key(private_key).hex()
