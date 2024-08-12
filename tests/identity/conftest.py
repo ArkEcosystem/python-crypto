@@ -14,3 +14,13 @@ def identity():
         'passphrase': 'my super secret passphrase'
     }
     return data
+
+@pytest.fixture
+def validator():
+    """Validator fixture
+    """
+    return {
+        'bls_public_key': 'b0093ac8f37588e15df7cfb04d0722dc5486cec062233136d3b6a16d41946577a1f332c4c29c0601ccefac1905dbb611',
+        'bls_private_key': '3c0e55f46009b02bd739a16945babe797e6cbd096294dcc2550bce4baea2bde9',
+        'passphrase': 'bless organ december boring ill obvious unaware dinosaur broccoli build hamster rebuild skin airport stay entry denial agent october thought duck trouble decorate way',
+    }
