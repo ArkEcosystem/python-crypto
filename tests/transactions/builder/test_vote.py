@@ -22,7 +22,6 @@ def test_vote_transaction(passphrase):
     assert transaction_dict['asset']['votes'] == votes
     assert transaction_dict['asset']['unvotes'] == []
     assert transaction_dict['type'] is TRANSACTION_VOTE
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 100000000
     assert transaction_dict['expiration'] == 0
@@ -46,7 +45,6 @@ def test_unvote_transaction(passphrase):
     assert transaction_dict['asset']['votes'] == []
     assert transaction_dict['asset']['unvotes'] == unvotes
     assert transaction_dict['type'] is TRANSACTION_VOTE
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 100000000
     assert transaction_dict['expiration'] == 0
@@ -71,7 +69,6 @@ def test_vote_swap_transaction(passphrase):
     assert transaction_dict['asset']['votes'] == votes
     assert transaction_dict['asset']['unvotes'] == unvotes
     assert transaction_dict['type'] is TRANSACTION_VOTE
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 100000000
     assert transaction_dict['expiration'] == 0
@@ -95,7 +92,6 @@ def test_vote_transaction_custom_fee(passphrase):
     assert transaction_dict['asset']['votes'] == votes
     assert transaction_dict['asset']['unvotes'] == []
     assert transaction_dict['type'] is TRANSACTION_VOTE
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5
     assert transaction_dict['expiration'] == 0
