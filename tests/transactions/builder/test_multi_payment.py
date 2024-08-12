@@ -20,7 +20,6 @@ def test_multi_payment_transaction(passphrase):
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_MULTI_PAYMENT
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 10000000
     assert transaction_dict['expiration'] == 0
@@ -48,7 +47,6 @@ def test_multi_payment_transaction_custom_fee(passphrase):
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_MULTI_PAYMENT
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5
     assert transaction_dict['expiration'] == 0

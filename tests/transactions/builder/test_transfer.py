@@ -79,7 +79,6 @@ def test_transfer_transaction_custom_fee(passphrase):
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_TRANSFER
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['fee'] == 5
     assert transaction_dict['expiration'] == 0
@@ -105,7 +104,6 @@ def test_transfer_secondsign_transaction(passphrase):
     assert transaction_dict['signature']
     assert transaction_dict['signSignature']
     assert transaction_dict['type'] is TRANSACTION_TRANSFER
-    assert transaction_dict['typeGroup'] == 1
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value
     assert transaction_dict['expiration'] == 0
     assert transaction_dict['senderPublicKey'] == '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3'
