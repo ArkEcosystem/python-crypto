@@ -9,7 +9,7 @@ import py_ecc
 
 import blspy
 from blspy import PrivateKey, AugSchemeMPL, G1Element, BasicSchemeMPL, PopSchemeMPL
-from py_ecc import bn128
+from py_ecc import bn128, bls12_381
 
 import crypto.utils.bls as my_bls
 
@@ -43,15 +43,29 @@ class BLSPublicKey:
         private_key = my_bls.eip_2333_keygen(seed)
         # public_key = my_bls.generate_public_key(private_key).hex()
 
-        public_key = py_ecc.bls12_381.bls12_381_curve.multiply(bn128.bn128_curve.G1, private_key)
+        public_key = bls12_381.bls12_381_curve.multiply(bn128.bn128_curve.G1, private_key)
 
         return public_key
+
+
+
+    @classmethod
+    def from_passphrase(cls, passphrase: str) -> str:
+        seed = btclib.mnemonic.bip39.seed_from_mnemonic(passphrase, '')
+
+        master_key = my_bls.deriveMaster(seed)
+
+        print('master_key', master_key.hex())
+
+        public_key = my_bls.deriveChild(master_key, 0)
+
+        print('public_key', public_key.hex())
 
 
     @classmethod
     def from_passphrase_attempt_3(cls, passphrase: str) -> str:
         seed = btclib.mnemonic.bip39.seed_from_mnemonic(passphrase, '')
-        # print(seed.hex().encode())
+        print('seed', seed.hex().encode())
         # print()
 
         private_key = unhexlify(sha256(passphrase.encode()).hexdigest()) #hexlify(passphrase.encode()) #sha256(passphrase.encode()).hexdigest()
@@ -71,6 +85,7 @@ class BLSPublicKey:
         for attempt_name in attempts:
             attempt = attempts[attempt_name]
             print(attempt_name)
+
             master_sk = attempt
             child: PrivateKey = AugSchemeMPL.derive_child_sk(master_sk, 152)
             grandchild: PrivateKey = AugSchemeMPL.derive_child_sk(child, 952)

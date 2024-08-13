@@ -37,7 +37,7 @@ def hkdf(hash_algo, ikm, salt, info=b'', length=None):
 def blsR():
     """ Placeholder for curve order r, replace with actual value """
     # This should be replaced with the actual curve order for BLS
-    return 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEC2F63BDC9064449C8943E350C0A7DC19D7
+    return 52435875175126190479447740508185965837690552500527637822603658699938581184513
 
 def assertUint32(value):
     """ Assert value fits within uint32 range """
@@ -73,11 +73,6 @@ def hkdfModR(ikm, keyInfo=b''):
         okm = hkdf(hashes.SHA256, input, salt, info=label, length=48)
         SK = os2ip(okm) % blsR()
 
-    # FIX THIS...?
-    print(SK)
-    return bytes(''.encode())
-
-    # return (SK % (2**256)).to_bytes(32, byteorder='big')  # Adjusted to fit within 32 bytes
     return SK.to_bytes(32, byteorder='big')
 
 def deriveMaster(seed):

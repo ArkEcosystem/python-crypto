@@ -37,7 +37,9 @@ def test_public_key_from_passphrase(validator):
 
 
 
-    assert True == False
+    public_key = BLSPublicKey.from_passphrase(validator['passphrase'])
+
+    assert public_key == validator['bls_public_key']
 
 
 # def test_public_key_from_hex(validator):
