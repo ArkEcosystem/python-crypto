@@ -10,8 +10,11 @@ import py_ecc
 import blspy
 from blspy import PrivateKey, AugSchemeMPL, G1Element, BasicSchemeMPL, PopSchemeMPL
 from py_ecc import bn128, bls12_381
+import py_ecc.bls12_381
 
 import crypto.utils.bls as my_bls
+
+from py_ecc.bls import G2ProofOfPossession as bls_pop
 
 class BLSPublicKey:
 
@@ -23,9 +26,6 @@ class BLSPublicKey:
 
     @classmethod
     def from_passphrase_attempt_1(cls, passphrase: str) -> str:
-        # seed = sha256(passphrase.encode()).digest()
-        # seed = unhexlify(sha256(passphrase.encode()).hexdigest())
-        # seed = hexlify(passphrase.encode())
         seed = btclib.mnemonic.bip39.seed_from_mnemonic(passphrase, '')
 
         private_key = my_bls.deriveChild(my_bls.deriveMaster(seed), 0).hex()
@@ -48,18 +48,45 @@ class BLSPublicKey:
         return public_key
 
 
-
     @classmethod
-    def from_passphrase(cls, passphrase: str) -> str:
+    def from_passphrase(cls, passphrase: str):
         seed = btclib.mnemonic.bip39.seed_from_mnemonic(passphrase, '')
 
         master_key = my_bls.deriveMaster(seed)
 
         print('master_key', master_key.hex())
 
-        public_key = my_bls.deriveChild(master_key, 0)
+        private_key = blspy.PrivateKey.from_bytes(master_key)
+
+        print('private_key', private_key, private_key.get_g1())
+
+
+
+        master_key_raw = py_ecc.bls.ciphersuites.G2Basic.KeyGen(seed)
+        master_key = master_key_raw.to_bytes(32, byteorder='big')
+
+        print('master_key', master_key.hex())
+
+        public_key = py_ecc.bls.ciphersuites.G2Basic.SkToPk(master_key_raw)
 
         print('public_key', public_key.hex())
+
+
+
+
+
+
+
+        # child_key = my_bls.deriveChild(master_key, 0)
+        # child_key2 = AugSchemeMPL.derive_child_sk(private_key, 952)
+
+        # print('child_key', child_key.hex())
+        # print('child_key2', child_key2.get_g1())
+
+        # private_key = blspy.PrivateKey.from_bytes(child_key)
+        # private_key2 = blspy.PrivateKey.from_bytes(child_key2.get_g1())
+
+        # print('private_key2', private_key, private_key.get_g1())
 
 
     @classmethod
