@@ -1,11 +1,8 @@
 import hashlib
-import os
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF as crypto_hkdf
-from cryptography.exceptions import InvalidSignature
-import hkdf as base_hkdf
-from py_ecc import bn128
-from py_ecc.bls import G2ProofOfPossession as bls_pop
+
+BLS_MOD = 52435875175126190479447740508185965837690552500527637822603658699938581184513
 
 def i2osp(index, length):
     """ Convert integer to octet string """
@@ -34,32 +31,29 @@ def hkdf(hash_algo, ikm, salt, info=b'', length=None):
     hkdf_obj = crypto_hkdf(algorithm=hash_algo(), salt=salt, info=info, length=length)
     return hkdf_obj.derive(ikm)
 
-def blsR():
-    """ Placeholder for curve order r, replace with actual value """
-    # This should be replaced with the actual curve order for BLS
-    return 52435875175126190479447740508185965837690552500527637822603658699938581184513
-
 def assertUint32(value):
     """ Assert value fits within uint32 range """
     if not 0 <= value < 2**32:
         raise ValueError("Value out of uint32 range")
 
 def ikmToLamportSK(ikm, salt):
-    """ Generate Lamport secret key from IKM and salt """
-    hashed = sha256(concatBytes(ikm, salt))
-    return hashed
+    okm = hkdf(hashes.SHA256, ikm, salt, length=32*255)
+
+    return [okm[i*32:(i+1)*32] for i in range(255)]
 
 def parentSKToLamportPK(parentSK, index):
     """ Convert parent secret key to Lamport public key """
     if not isinstance(parentSK, bytes):
         raise TypeError('Expected bytes')
+
     assertUint32(index)
     salt = i2osp(index, 4)
     ikm = parentSK
     lamport0 = ikmToLamportSK(ikm, salt)
     notIkm = bytes(~byte & 0xFF for byte in parentSK)
     lamport1 = ikmToLamportSK(notIkm, salt)
-    lamportPK = [sha256(part) for part in [lamport0, lamport1]]
+    lamportPK = [sha256(part) for part in [*lamport0, *lamport1]] # [sha256(concatBytes(*part)) for part in [lamport0, lamport1]]
+
     return sha256(concatBytes(*lamportPK))
 
 def hkdfModR(ikm, keyInfo=b''):
@@ -71,7 +65,7 @@ def hkdfModR(ikm, keyInfo=b''):
     while SK == 0:
         salt = sha256(salt)
         okm = hkdf(hashes.SHA256, input, salt, info=label, length=48)
-        SK = os2ip(okm) % blsR()
+        SK = os2ip(okm) % BLS_MOD
 
     return SK.to_bytes(32, byteorder='big')
 
@@ -81,47 +75,5 @@ def deriveMaster(seed):
 
 def deriveChild(parentKey, index):
     """ Derive child secret key """
+
     return hkdfModR(parentSKToLamportPK(parentKey, index))
-
-def generate_public_key(private_key):
-    """
-    Derive the BLS public key from a given private key.
-
-    Args:
-    - private_key (int): The BLS private key.
-
-    Returns:
-    - tuple: The BLS public key (x, y) coordinates on the curve.
-    """
-    public_key = bls_pop.SkToPk(private_key)
-
-    return public_key
-
-
-def eip_2333_keygen(entropy):
-    """
-    Generate a BLS private key according to EIP-2333.
-
-    Args:
-    - entropy (bytes): The entropy source for key generation.
-
-    Returns:
-    - int: The generated BLS private key.
-    """
-    salt = b"BLS-SIG-KEYGEN-SALT-"
-    SK = 0
-
-    while SK == 0:
-        # Hash the salt
-        salt = sha256(salt)
-
-        # HKDF-Extract
-        prk = base_hkdf.hkdf_extract(salt, entropy + b'\x00')
-
-        # HKDF-Expand
-        okm = base_hkdf.hkdf_expand(prk, b"", bn128.bn128_curve.curve_order.bit_length() // 8)
-
-        # Convert OKM to integer and reduce modulo r
-        SK = int.from_bytes(okm, byteorder='big') % bn128.bn128_curve.curve_order
-
-    return SK
