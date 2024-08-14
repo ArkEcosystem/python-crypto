@@ -10,6 +10,7 @@ requires = [
     'coincurve',
     'pycryptodomex',
     'btclib',
+    'cryptography',
 ]
 
 tests_require = [
