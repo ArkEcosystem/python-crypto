@@ -4,7 +4,7 @@ attrs==23.2.0
 base58==2.1.1
 beautifulsoup4==4.12.3
 binary-helpers==0.0.4
--e git+https://github.com/ArkEcosystem/bls-signatures@e7942654c48e94e955c81e7a131bc3d5e9d6b707#egg=blspy
+# -e git+https://github.com/ArkEcosystem/bls-signatures@dff63010f69c5d8a56c4a7ca18c4e4f58c624a93#egg=blspy_impl&subdirectory=python-impl
 btclib==2023.7.12
 btclib_libsecp256k1==0.4.0
 cached-property==1.5.2

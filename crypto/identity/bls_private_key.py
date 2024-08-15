@@ -1,13 +1,12 @@
-import os
-import sys
 from btclib.mnemonic import bip39
 
-os.environ['VIRTUAL_ENV']
+import sys
+import os
+from os.path import dirname
 
-sys.path.append(os.path.join(os.environ['VIRTUAL_ENV'], 'src', 'blspy', 'python-impl'))
+sys.path.append(os.path.join(dirname(dirname(dirname(__file__))), 'thirdparty/bls-signatures/python-impl'))
 
-from schemes import BasicSchemeMPL # type: ignore
-
+from schemes import BasicSchemeMPL
 
 class BLSPrivateKey(object):
     def __init__(self, private_key: bytes):

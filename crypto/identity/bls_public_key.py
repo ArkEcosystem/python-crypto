@@ -1,4 +1,10 @@
-import blspy # type: ignore
+import sys
+import os
+from os.path import dirname
+
+sys.path.append(os.path.join(dirname(dirname(dirname(__file__))), 'thirdparty/bls-signatures/python-impl'))
+
+from schemes import PrivateKey
 
 from crypto.identity.bls_private_key import BLSPrivateKey
 
@@ -13,4 +19,4 @@ class BLSPublicKey:
     def from_passphrase(cls, passphrase: str):
         private_key = BLSPrivateKey.from_passphrase(passphrase)
 
-        return cls(bytes(blspy.PrivateKey.from_bytes(private_key.private_key).get_g1()))
+        return cls(bytes(PrivateKey.from_bytes(private_key.private_key).get_g1()))
