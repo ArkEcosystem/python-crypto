@@ -6,7 +6,7 @@ import setuptools
 requires = [
     'base58',
     'binary-helpers',
-    'blspy @ git+https://github.com/ArkEcosystem/bls-signatures@aa453d3ee99667a0f0bf25018d279e21f2b5f0b9#egg=blspy',
+    'blspy @ git+https://github.com/ArkEcosystem/bls-signatures@e7942654c48e94e955c81e7a131bc3d5e9d6b707#egg=blspy',
     'coincurve',
     'pycryptodomex',
     'btclib',
