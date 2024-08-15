@@ -1,4 +1,4 @@
-import blspy
+import blspy # type: ignore
 
 from crypto.identity.bls_private_key import BLSPrivateKey
 
