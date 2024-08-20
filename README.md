@@ -15,11 +15,12 @@
 ## Guide for contributing
 
 1. Fork the repository on GitHub.
-2. Run the tests to confirm they all pass on your system. If they don’t, you’ll need to investigate why they fail. If you’re unable to diagnose this yourself raise it as a bug report.
-3. Make your change.
-4. Write tests that demonstrate your bug or feature.
-5. Run the entire test suite again, confirming that all tests pass including the ones you just added.
-6. Send a GitHub Pull Request. GitHub Pull Requests are the expected method of code collaboration on this project.
+2. Clone locally (making sure to load submodules): `git clone --recurse-submodules git@github.com:ArkEcosystem/python-crypto.git`
+3. Run the tests to confirm they all pass on your system. If they don’t, you’ll need to investigate why they fail. If you’re unable to diagnose this yourself raise it as a bug report.
+4. Make your change.
+5. Write tests that demonstrate your bug or feature.
+6. Run the entire test suite again, confirming that all tests pass including the ones you just added.
+7. Send a GitHub Pull Request. GitHub Pull Requests are the expected method of code collaboration on this project.
 
 If you have any questions, requests or ideas open an issue or ask us in #developers channel on the [ArkEcosystem Discord](https://discord.ark.io/).
 

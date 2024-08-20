@@ -6,10 +6,10 @@ import setuptools
 requires = [
     'base58',
     'binary-helpers',
-    'blspy',
     'coincurve',
     'pycryptodomex',
     'btclib',
+    'cryptography',
 ]
 
 tests_require = [

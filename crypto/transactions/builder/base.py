@@ -66,6 +66,9 @@ class BaseTransactionBuilder(object):
         if not self.transaction.signatures:
             self.transaction.signatures = []
 
+        if self.transaction.senderPublicKey is None:
+            raise Exception('Sender Public Key is required for multi signature')
+
         index = len(self.transaction.signatures) if index == -1 else index
 
         msg = self.transaction.to_bytes()
