@@ -4,7 +4,6 @@ attrs==23.2.0
 base58==2.1.1
 beautifulsoup4==4.12.3
 binary-helpers==0.0.4
-blspy==2.0.3
 btclib==2023.7.12
 btclib_libsecp256k1==0.4.0
 cached-property==1.5.2
@@ -14,6 +13,7 @@ charset-normalizer==3.3.2
 coincurve==20.0.0
 commonmark==0.9.1
 coverage==7.5.4
+cryptography==43.0.0
 cytoolz==0.12.3
 eth-hash==0.7.0
 eth-typing==4.4.0

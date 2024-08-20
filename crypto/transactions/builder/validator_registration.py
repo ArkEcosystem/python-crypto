@@ -1,9 +1,15 @@
 from typing import Optional
 
-import blspy
-
 from crypto.constants import TRANSACTION_VALIDATOR_REGISTRATION
 from crypto.transactions.builder.base import BaseTransactionBuilder
+
+import sys
+import os
+from os.path import dirname
+
+sys.path.append(os.path.join(dirname(dirname(dirname(__file__))), 'thirdparty/bls-signatures/python-impl'))
+
+from ec import G1FromBytes
 
 class ValidatorRegistration(BaseTransactionBuilder):
     transaction_type = TRANSACTION_VALIDATOR_REGISTRATION
@@ -34,6 +40,6 @@ class ValidatorRegistration(BaseTransactionBuilder):
             raise ValueError('Invalid BLS public key')
 
         try:
-            blspy.PublicKeyMPL.from_bytes(bytes.fromhex(public_key))
+            G1FromBytes(bytes.fromhex(public_key)).check_valid()
         except Exception:
             raise ValueError('Invalid BLS public key')

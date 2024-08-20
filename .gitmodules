@@ -1,0 +1,3 @@
+[submodule "thirdparty/bls-signatures"]
+	path = thirdparty/bls-signatures
+	url = https://github.com/ArkEcosystem/bls-signatures
