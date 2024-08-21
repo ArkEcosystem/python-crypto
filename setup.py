@@ -36,7 +36,7 @@ setuptools.setup(
     author_email='info@ark.io',
     url='https://github.com/ArkEcosystem/python-crypto',
     packages=setuptools.find_packages(exclude=['tests', 'tests.*', 'thirdparty/bls-signatures'])
-        + ['thirdparty/bls-signatures/python-impl']
+        + ['thirdparty/bls-signatures/python-impl'],
     install_requires=requires,
     extras_require=extras_require,
     tests_require=tests_require,
