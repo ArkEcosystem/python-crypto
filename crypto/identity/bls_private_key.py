@@ -4,7 +4,7 @@ import sys
 import os
 from os.path import dirname
 
-sys.path.append(os.path.join(dirname(dirname(dirname(__file__))), 'thirdparty/bls-signatures/python-impl'))
+sys.path.append(os.path.join(dirname(dirname(__file__)), 'thirdparty/bls-signatures/python-impl'))
 
 from schemes import BasicSchemeMPL
 
