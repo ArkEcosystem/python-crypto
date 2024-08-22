@@ -73,10 +73,10 @@ class BaseTransactionBuilder(object):
 
         msg = self.transaction.to_bytes()
         secret = unhexlify(PrivateKey.from_passphrase(passphrase).to_hex())
-        signature = hexlify(Signature.sign(msg, secret).encode())
+        signature = Signature.sign(msg, secret)
 
         index_formatted = hex(index).replace('x', '')
-        self.transaction.signatures.append(index_formatted + signature.decode())
+        self.transaction.signatures.append(index_formatted + signature)
 
     def serialize(self, skip_signature=False, skip_second_signature=False, skip_multi_signature=False):
         """Perform AIP11 compliant serialization.
