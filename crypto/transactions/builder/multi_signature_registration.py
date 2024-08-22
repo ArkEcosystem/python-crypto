@@ -31,12 +31,8 @@ class MultiSignatureRegistration(BaseTransactionBuilder):
 
     def set_public_keys(self, public_keys):
         self.transaction.asset['multiSignature']['publicKeys'] = public_keys
-        self.transaction.fee = (len(public_keys) + 1) * self.transaction.fee
 
     def add_participant(self, public_key: str):
         self.transaction.asset['multiSignature']['publicKeys'].append(public_key)
 
-        public_key_count = (len(self.transaction.asset['multiSignature']['publicKeys']) + 1)
-        transaction_fee = get_fee(TRANSACTION_MULTI_SIGNATURE_REGISTRATION)
-
-        self.transaction.fee = public_key_count * transaction_fee
+        self.transaction.fee = get_fee(TRANSACTION_MULTI_SIGNATURE_REGISTRATION)
