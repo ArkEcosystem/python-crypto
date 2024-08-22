@@ -31,7 +31,7 @@ def test_multi_signature_registration_transaction(passphrase):
 
     assert transaction_dict['nonce'] == 1
     assert transaction_dict['version'] == 1
-    assert transaction_dict['fee'] == 2000000000
+    assert transaction_dict['fee'] == 500000000
     assert transaction_dict['signature']
     assert transaction_dict['type'] is TRANSACTION_MULTI_SIGNATURE_REGISTRATION
     assert transaction_dict['typeGroup'] == TRANSACTION_TYPE_GROUP.CORE.value

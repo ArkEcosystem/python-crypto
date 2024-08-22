@@ -84,7 +84,7 @@ def test_with_methods(passphrase):
     assert actual.type == 4
     assert actual.nonce == 15
     assert actual.senderPublicKey == sender_public_key
-    assert actual.fee == TRANSACTION_FEES[4] * 4
+    assert actual.fee == TRANSACTION_FEES[4]
     assert actual.amount == 0
     assert actual.signature == transaction.transaction.signature
     assert actual.id == transaction.transaction.id
