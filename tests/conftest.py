@@ -2,6 +2,12 @@ import pytest
 
 
 @pytest.fixture
+def passphrase():
+    """Passphrase used for tests"""
+
+    return 'my super secret passphrase'
+
+@pytest.fixture
 def transaction_type_0():
     """Transaction of type "transfer"
     """
