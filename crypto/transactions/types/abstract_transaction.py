@@ -4,7 +4,7 @@ from typing import Optional
 from crypto.configuration.network import get_network
 from crypto.identity.address import address_from_public_key
 from crypto.identity.private_key import PrivateKey
-
+from crypto.utils.transaction_hasher import TransactionHasher
 
 class AbstractTransaction:
     def __init__(self, data: Optional[dict] = None):
@@ -60,19 +60,10 @@ class AbstractTransaction:
         return json.dumps(self.to_dict())
 
     def hash(self, skip_signature: bool) -> bytes:
-        hash_data = {
-            'gasPrice': self.data.get('gasPrice'),
-            'network': self.data.get('network', get_network().get('version')),
-            'nonce': self.data.get('nonce'),
-            'value': self.data.get('value'),
-            'gasLimit': self.data.get('gasLimit'),
-            'data': self.data.get('data'),
-            'recipientAddress': self.data.get('recipientAddress'),
-            'signature': self.data.get('signature') if not skip_signature else None,
-        }
-        # TODO: Implement TransactionHasher
-        # return TransactionHasher.to_hash(hash_data, skip_signature)
-        return b''
+        hash_data = self.data.copy()
+        if skip_signature:
+            hash_data['signature'] = None
+        return TransactionHasher.to_hash(hash_data, skip_signature)
 
     def get_signature(self):
         # TODO: Implement this method
