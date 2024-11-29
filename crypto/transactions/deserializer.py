@@ -1,5 +1,3 @@
-# deserializer.py
-
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.transfer import Transfer
 # from crypto.transactions.types.evm_call import EvmCall
@@ -9,11 +7,14 @@ from crypto.transactions.types.transfer import Transfer
 # from crypto.transactions.types.validator_resignation import ValidatorResignation
 from binascii import unhexlify, hexlify
 
-from binary.unsigned_integer.reader import read_bit8, read_bit16, read_bit32, read_bit64, read_bit256
-from binary.hex.reader import read_high
-
-from crypto.configuration.network import get_network
-# from crypto.identity.address import address_from_hex  # 
+from binary.unsigned_integer.reader import (
+    read_bit8,
+    read_bit32,
+    read_bit64,
+    # read_bit256,
+)
+# from crypto.enums.abi_function import AbiFunction  # TODO: Implement or import AbiFunction
+# from crypto.utils.abi_decoder import AbiDecoder  # TODO: Implement or import AbiDecoder
 
 
 class Deserializer:
@@ -22,7 +23,7 @@ class Deserializer:
 
     def __init__(self, serialized: str):
         self.serialized = unhexlify(serialized) if isinstance(serialized, str) else serialized
-        self.pointer = 0 
+        self.pointer = 0
 
     @staticmethod
     def new(serialized: str):
@@ -67,25 +68,24 @@ class Deserializer:
         data['value'] = '0'
 
     def deserialize_data(self, data: dict):
-        # Read value (uint256)
-        value, _ = read_bit256(self.serialized, self.pointer)
+        # @TODO: this should use read_bit256
+        # value, _ = read_bit256(self.serialized, self.pointer)
+        value, _ = read_bit64(self.serialized, self.pointer)
+        
         data['value'] = str(value)
         self.pointer += 32
 
-        # Read recipient marker and recipientAddress
         recipient_marker, _ = read_bit8(self.serialized, self.pointer)
         self.pointer += 1
 
         if recipient_marker == 1:
-            recipient_address_bytes = self.read_bytes(20)  # 20 bytes address
+            recipient_address_bytes = self.read_bytes(20)
             recipient_address = '0x' + hexlify(recipient_address_bytes).decode()
             data['recipientAddress'] = recipient_address
 
-        # Read payload length (uint32)
         payload_length, _ = read_bit32(self.serialized, self.pointer)
         self.pointer += 4
 
-        # Read payload as hex
         payload_hex = ''
         if payload_length > 0:
             payload_bytes = self.read_bytes(payload_length)
@@ -94,7 +94,7 @@ class Deserializer:
         data['data'] = payload_hex
 
     def deserialize_signatures(self, data: dict):
-        signature_length = self.SIGNATURE_SIZE + self.RECOVERY_SIZE  # in bytes
+        signature_length = self.SIGNATURE_SIZE + self.RECOVERY_SIZE
         signature_bytes = self.read_bytes(signature_length)
         data['signature'] = hexlify(signature_bytes).decode()
 
@@ -103,12 +103,10 @@ class Deserializer:
             return Transfer(data)
 
         # payload_data = self.decode_payload(data)
-        payload_data = None  # Como AbiDecoder no está implementado
+        payload_data = None  # As AbiDecoder is not implemented
 
         if payload_data is None:
-            return Transfer(data)  # Usamos Transfer por ahora
-
-        # function_name = payload_data['functionName']
+            return Transfer(data)  # Using Transfer for now
 
         # if function_name == AbiFunction.VOTE.value:
         #     return Vote(data)
@@ -123,8 +121,8 @@ class Deserializer:
 
     # def decode_payload(self, data: dict) -> dict:
     #     payload = data.get('data', '')
-
+    #
     #     if payload == '':
     #         return None
-
+    #
     #     return AbiDecoder().decode_function_data(payload)

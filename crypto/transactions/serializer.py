@@ -1,7 +1,13 @@
-from binascii import hexlify, unhexlify
+from binascii import unhexlify
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.configuration.network import get_network
-from binary.unsigned_integer.writer import write_bit8, write_bit32, write_bit64, write_bit256
+from binary.unsigned_integer.writer import (
+    write_bit8,
+    write_bit32,
+    write_bit64,
+    # write_bit256,
+)
+# from crypto.utils.address import Address  # TODO: Implement or import Address
 
 
 class Serializer:
@@ -31,7 +37,7 @@ class Serializer:
     def serialize_common(self) -> bytes:
         bytes_data = bytes()
         network_version = self.transaction.data.get('network', get_network()['version'])
-        bytes_data += write_bit8(network_version)
+        bytes_data += write_bit8(int(network_version))
         bytes_data += write_bit64(int(self.transaction.data['nonce']))
         bytes_data += write_bit32(int(self.transaction.data['gasPrice']))
         bytes_data += write_bit32(int(self.transaction.data['gasLimit']))
@@ -39,22 +45,22 @@ class Serializer:
 
     def serialize_data(self) -> bytes:
         bytes_data = bytes()
-        # Write value as uint256 (32 bytes big-endian integer)
-        bytes_data += write_bit256(int(self.transaction.data['value']))
+        
+        # @TODO: this should use write_bit256
+        # bytes_data += write_bit256(int(self.transaction.data['value']))
+        bytes_data += write_bit64(int(self.transaction.data['value']))
 
         if 'recipientAddress' in self.transaction.data:
-            bytes_data += write_bit8(1)  # Recipient marker
+            bytes_data += write_bit8(1)
             recipient_address = self.transaction.data['recipientAddress']
-            # Assuming the address is in hexadecimal format without '0x'
             bytes_data += unhexlify(recipient_address.replace('0x', ''))
         else:
-            bytes_data += write_bit8(0)  # No recipient
+            bytes_data += write_bit8(0)
 
         payload_hex = self.transaction.data.get('data', '')
-        payload_length = len(payload_hex) // 2  # Number of bytes in payload
+        payload_length = len(payload_hex) // 2
         bytes_data += write_bit32(payload_length)
 
-        # Write payload as hex
         if payload_length > 0:
             bytes_data += unhexlify(payload_hex)
 

@@ -3,9 +3,6 @@ from typing import Optional
 
 from crypto.configuration.network import get_network
 from crypto.identity.address import address_from_public_key
-from crypto.transactions.serializer import Serializer
-# @todo add TransactionHasher
-# from crypto.utils.transaction_hasher import TransactionHasher
 from crypto.identity.private_key import PrivateKey
 
 
@@ -18,15 +15,9 @@ class AbstractTransaction:
         return ''
 
     def decode_payload(self, data: dict) -> Optional[dict]:
-        if 'data' not in data:
+        if 'data' not in data or data['data'] == '':
             return None
-
-        payload = data['data']
-
-        if payload == '':
-            return None
-
-        # @TODO: add abidecoder
+        # TODO: add AbiDecoder to decode the payload
         return {}
 
     def refresh_payload_data(self):
@@ -36,23 +27,16 @@ class AbstractTransaction:
         return self.hash(skip_signature=False).hex()
 
     def get_bytes(self, skip_signature: bool = False) -> bytes:
+        from crypto.transactions.serializer import Serializer
         return Serializer.get_bytes(self, skip_signature)
 
     def sign(self, private_key: PrivateKey):
         hash_ = self.hash(skip_signature=True)
-        # signature = private_key.sign_compact(hash_)
-        # # Extraer el recovery ID y la firma
-        # recovery_id = signature[0] - 27 - 4
-        # signature_hex = signature[1:].hex()
-        # # Añadir el recovery ID al final
-        # signature_hex += format(recovery_id, '02x')
-        # self.data['signature'] = signature_hex
-
-
+        # TODO: Implement signing logic
         return self
 
     def get_public_key(self, compact_signature):
-        # @TODO: Implementar este método
+        # TODO: Implement this method
         pass
 
     def recover_sender(self):
@@ -62,10 +46,11 @@ class AbstractTransaction:
         self.data['senderAddress'] = address_from_public_key(self.data['senderPublicKey'])
 
     def verify(self) -> bool:
-        # @TODO: Implment this method
-        return True  # temporary
+        # TODO: Implement this method
+        return True
 
     def serialize(self, skip_signature: bool = False) -> bytes:
+        from crypto.transactions.serializer import Serializer
         return Serializer(self).serialize(skip_signature)
 
     def to_dict(self) -> dict:
@@ -85,11 +70,10 @@ class AbstractTransaction:
             'recipientAddress': self.data.get('recipientAddress'),
             'signature': self.data.get('signature') if not skip_signature else None,
         }
-        
-        # @TODO: add transaction hasher
+        # TODO: Implement TransactionHasher
         # return TransactionHasher.to_hash(hash_data, skip_signature)
         return b''
 
     def get_signature(self):
-        # @TODO: implement this
+        # TODO: Implement this method
         pass
