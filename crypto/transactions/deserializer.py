@@ -11,7 +11,6 @@ from binary.unsigned_integer.reader import (
     read_bit8,
     read_bit32,
     read_bit64,
-    # read_bit256,
 )
 # from crypto.enums.abi_function import AbiFunction  # TODO: Implement or import AbiFunction
 # from crypto.utils.abi_decoder import AbiDecoder  # TODO: Implement or import AbiDecoder
@@ -68,9 +67,8 @@ class Deserializer:
         data['value'] = '0'
 
     def deserialize_data(self, data: dict):
-        # @TODO: this should use read_bit256
-        # value, _ = read_bit256(self.serialized, self.pointer)
-        value, _ = read_bit64(self.serialized, self.pointer)
+        value = int.from_bytes(self.serialized[self.pointer:self.pointer + 32], byteorder='big')
+        self.pointer += 32
         
         data['value'] = str(value)
         self.pointer += 32

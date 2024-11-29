@@ -33,10 +33,6 @@ def test_transfer_transaction(passphrase):
         .sign(passphrase)
     )
 
-    print(builder.transaction.serialize().hex())
-    print(fixture['serialized'])
-
-
     assert builder.transaction.serialize().hex() == fixture['serialized']
     assert builder.transaction.data['id'] == fixture['data']['id']
     assert builder.verify()

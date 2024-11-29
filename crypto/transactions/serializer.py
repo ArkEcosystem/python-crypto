@@ -5,7 +5,6 @@ from binary.unsigned_integer.writer import (
     write_bit8,
     write_bit32,
     write_bit64,
-    # write_bit256,
 )
 # from crypto.utils.address import Address  # TODO: Implement or import Address
 
@@ -46,9 +45,7 @@ class Serializer:
     def serialize_data(self) -> bytes:
         bytes_data = bytes()
         
-        # @TODO: this should use write_bit256
-        # bytes_data += write_bit256(int(self.transaction.data['value']))
-        bytes_data += write_bit64(int(self.transaction.data['value']))
+        bytes_data += int(self.transaction.data['value']).to_bytes(32, byteorder='big')
 
         if 'recipientAddress' in self.transaction.data:
             bytes_data += write_bit8(1)
