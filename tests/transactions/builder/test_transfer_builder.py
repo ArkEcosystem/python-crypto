@@ -20,7 +20,7 @@ def get_transaction_fixture(fixture_name):
 
 
 def test_transfer_transaction(passphrase):
-    # Cargar el fixture
+    # add fixture
     fixture = get_transaction_fixture('transfer')
 
     builder = (

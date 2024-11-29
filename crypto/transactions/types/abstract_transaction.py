@@ -40,13 +40,15 @@ class AbstractTransaction:
 
     def sign(self, private_key: PrivateKey):
         hash_ = self.hash(skip_signature=True)
-        signature = private_key.sign_compact(hash_)
-        # Extraer el recovery ID y la firma
-        recovery_id = signature[0] - 27 - 4
-        signature_hex = signature[1:].hex()
-        # Añadir el recovery ID al final
-        signature_hex += format(recovery_id, '02x')
-        self.data['signature'] = signature_hex
+        # signature = private_key.sign_compact(hash_)
+        # # Extraer el recovery ID y la firma
+        # recovery_id = signature[0] - 27 - 4
+        # signature_hex = signature[1:].hex()
+        # # Añadir el recovery ID al final
+        # signature_hex += format(recovery_id, '02x')
+        # self.data['signature'] = signature_hex
+
+
         return self
 
     def get_public_key(self, compact_signature):
@@ -60,8 +62,8 @@ class AbstractTransaction:
         self.data['senderAddress'] = address_from_public_key(self.data['senderPublicKey'])
 
     def verify(self) -> bool:
-        # @TODO: Implementar este método
-        return True  # Retornar True temporalmente
+        # @TODO: Implment this method
+        return True  # temporary
 
     def serialize(self, skip_signature: bool = False) -> bytes:
         return Serializer(self).serialize(skip_signature)
@@ -89,5 +91,5 @@ class AbstractTransaction:
         return b''
 
     def get_signature(self):
-        # @TODO: Implementar este método
+        # @TODO: implement this
         pass
