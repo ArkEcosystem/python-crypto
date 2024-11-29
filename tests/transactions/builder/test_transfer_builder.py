@@ -1,26 +1,7 @@
-import pytest
-import json
-import os
-
 from crypto.transactions.builder.transfer_builder import TransferBuilder
-from crypto.configuration.network import set_network
-from crypto.networks.devnet import Devnet
 
-set_network(Devnet)
-
-
-def get_transaction_fixture(fixture_name):
-    fixtures_path = os.path.join(
-        os.path.dirname(__file__),
-        '../../fixtures',
-        f'{fixture_name}.json'
-    )
-    with open(fixtures_path, 'r') as f:
-        return json.load(f)
-
-
-def test_transfer_transaction(passphrase):
-    fixture = get_transaction_fixture('transfer')
+def test_transfer_transaction(passphrase, load_transaction_fixture):
+    fixture = load_transaction_fixture('transfer')
 
     builder = (
         TransferBuilder()
