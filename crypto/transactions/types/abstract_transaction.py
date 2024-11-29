@@ -5,6 +5,8 @@ from crypto.configuration.network import get_network
 from crypto.identity.address import address_from_public_key
 from crypto.identity.private_key import PrivateKey
 from crypto.utils.transaction_hasher import TransactionHasher
+from coincurve import PublicKey
+
 
 class AbstractTransaction:
     def __init__(self, data: Optional[dict] = None):
@@ -32,22 +34,40 @@ class AbstractTransaction:
 
     def sign(self, private_key: PrivateKey):
         hash_ = self.hash(skip_signature=True)
-        # TODO: Implement signing logic
+        signature_with_recid = private_key.private_key.sign_recoverable(hash_, hasher=None)
+        signature_hex = signature_with_recid.hex()
+        self.data['signature'] = signature_hex
         return self
 
-    def get_public_key(self, compact_signature):
-        # TODO: Implement this method
-        pass
+    def get_public_key(self, compact_signature, hash_):
+        public_key = PublicKey.from_signature_and_message(compact_signature, hash_, hasher=None)
+        return public_key
 
     def recover_sender(self):
-        compact_signature = self.get_signature()
-        public_key = self.get_public_key(compact_signature)
-        self.data['senderPublicKey'] = public_key.hex()
+        signature_hex = self.data.get('signature')
+        if not signature_hex:
+            raise ValueError("No signature to recover from")
+
+        signature_with_recid = bytes.fromhex(signature_hex)
+        hash_ = self.hash(skip_signature=True)
+        public_key = self.get_public_key(signature_with_recid, hash_)
+        self.data['senderPublicKey'] = public_key.format().hex()
         self.data['senderAddress'] = address_from_public_key(self.data['senderPublicKey'])
 
     def verify(self) -> bool:
-        # TODO: Implement this method
-        return True
+        signature_hex = self.data.get('signature')
+        if not signature_hex:
+            return False
+
+        signature_with_recid = bytes.fromhex(signature_hex)
+        hash_ = self.hash(skip_signature=True)
+        recovered_public_key = self.get_public_key(signature_with_recid, hash_)
+        sender_public_key_hex = self.data.get('senderPublicKey')
+        if not sender_public_key_hex:
+            return False
+
+        sender_public_key_bytes = bytes.fromhex(sender_public_key_hex)
+        return recovered_public_key.format() == sender_public_key_bytes
 
     def serialize(self, skip_signature: bool = False) -> bytes:
         from crypto.transactions.serializer import Serializer
@@ -66,5 +86,7 @@ class AbstractTransaction:
         return TransactionHasher.to_hash(hash_data, skip_signature)
 
     def get_signature(self):
-        # TODO: Implement this method
-        pass
+        signature_hex = self.data.get('signature')
+        if signature_hex:
+            return bytes.fromhex(signature_hex)
+        return None
