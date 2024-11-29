@@ -17,14 +17,9 @@ class PrivateKey(object):
         Returns:
             bytes: signature of the signed message
         """
-        from crypto.transactions.signature import Signature
-
-        signature = Signature.sign(
-            hexlify(message),
-            self
-        )
-
-        return signature.encode()
+        signature = self.private_key.sign(message)
+        
+        return hexlify(signature).decode()
 
     def to_hex(self):
         """Returns a private key in hex format
