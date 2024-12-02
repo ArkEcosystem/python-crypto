@@ -1,6 +1,5 @@
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.utils.abi_encoder import AbiEncoder
-from crypto.utils.abi_decoder import AbiDecoder
 from crypto.enums.abi_function import AbiFunction
 
 class ValidatorRegistration(AbstractTransaction):
