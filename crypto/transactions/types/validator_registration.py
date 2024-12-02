@@ -4,8 +4,11 @@ from crypto.enums.abi_function import AbiFunction
 
 class ValidatorRegistration(AbstractTransaction):
     def __init__(self, data: dict = None):
+        data = data or {}
+        payload = self.decode_payload(data)
+        if payload:
+            data['validatorPublicKey'] = payload.get('args', [None])[0].lstrip('0x') if payload.get('args') else None
         super().__init__(data)
-        self.decode_payload(data)
 
     def get_payload(self) -> str:
         if 'validatorPublicKey' not in self.data:

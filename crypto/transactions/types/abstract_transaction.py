@@ -6,7 +6,7 @@ from crypto.identity.address import address_from_public_key
 from crypto.identity.private_key import PrivateKey
 from crypto.utils.transaction_hasher import TransactionHasher
 from coincurve import PublicKey
-
+from crypto.utils.abi_decoder import AbiDecoder
 
 class AbstractTransaction:
     def __init__(self, data: Optional[dict] = None):
@@ -19,8 +19,13 @@ class AbstractTransaction:
     def decode_payload(self, data: dict) -> Optional[dict]:
         if 'data' not in data or data['data'] == '':
             return None
-        # TODO: add AbiDecoder to decode the payload
-        return {}
+        
+        payload = data['data']
+        decoder = AbiDecoder()
+
+        decoded_data = decoder.decode_function_data(payload)
+
+        return decoded_data
 
     def refresh_payload_data(self):
         self.data['data'] = self.get_payload().lstrip('0x')

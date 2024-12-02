@@ -6,8 +6,6 @@ from binary.unsigned_integer.writer import (
     write_bit32,
     write_bit64,
 )
-# from crypto.utils.address import Address  # TODO: Implement or import Address
-
 
 class Serializer:
     def __init__(self, transaction: AbstractTransaction):
@@ -57,7 +55,7 @@ class Serializer:
         payload_hex = self.transaction.data.get('data', '')
         payload_length = len(payload_hex) // 2
         bytes_data += write_bit32(payload_length)
-
+        
         if payload_length > 0:
             bytes_data += unhexlify(payload_hex)
 
@@ -67,4 +65,5 @@ class Serializer:
         bytes_data = bytes()
         if 'signature' in self.transaction.data:
             bytes_data += unhexlify(self.transaction.data['signature'])
+
         return bytes_data
