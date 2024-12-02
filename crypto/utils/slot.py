@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 from crypto.configuration.network import get_network
 
@@ -9,7 +9,7 @@ def get_time():
     Returns:
         int: difference in seconds
     """
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()
     network = get_network()
     seconds = int((now - network['epoch']).total_seconds())
     return seconds
