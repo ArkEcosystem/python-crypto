@@ -1,10 +1,10 @@
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.transfer import Transfer
-# from crypto.transactions.types.evm_call import EvmCall
-# from crypto.transactions.types.vote import Vote
-# from crypto.transactions.types.unvote import Unvote
-# from crypto.transactions.types.validator_registration import ValidatorRegistration
-# from crypto.transactions.types.validator_resignation import ValidatorResignation
+from crypto.transactions.types.evm_call import EvmCall
+from crypto.transactions.types.vote import Vote
+from crypto.transactions.types.unvote import Unvote
+from crypto.transactions.types.validator_registration import ValidatorRegistration
+from crypto.transactions.types.validator_resignation import ValidatorResignation
 from binascii import unhexlify, hexlify
 
 from binary.unsigned_integer.reader import (
@@ -12,9 +12,8 @@ from binary.unsigned_integer.reader import (
     read_bit32,
     read_bit64,
 )
-# from crypto.enums.abi_function import AbiFunction  # TODO: Implement or import AbiFunction
-# from crypto.utils.abi_decoder import AbiDecoder  # TODO: Implement or import AbiDecoder
-
+from crypto.enums.abi_function import AbiFunction
+from crypto.utils.abi_decoder import AbiDecoder
 
 class Deserializer:
     SIGNATURE_SIZE = 64
@@ -49,18 +48,18 @@ class Deserializer:
         return result
 
     def deserialize_common(self, data: dict):
-        data['network'], _ = read_bit8(self.serialized, self.pointer)
+        data['network'] = read_bit8(self.serialized, self.pointer)
         self.pointer += 1
 
-        nonce, _ = read_bit64(self.serialized, self.pointer)
+        nonce = read_bit64(self.serialized, self.pointer)
         data['nonce'] = str(nonce)
         self.pointer += 8
 
-        gas_price, _ = read_bit32(self.serialized, self.pointer)
+        gas_price = read_bit32(self.serialized, self.pointer)
         data['gasPrice'] = gas_price
         self.pointer += 4
 
-        gas_limit, _ = read_bit32(self.serialized, self.pointer)
+        gas_limit = read_bit32(self.serialized, self.pointer)
         data['gasLimit'] = gas_limit
         self.pointer += 4
 
@@ -71,9 +70,8 @@ class Deserializer:
         self.pointer += 32
         
         data['value'] = str(value)
-        self.pointer += 32
 
-        recipient_marker, _ = read_bit8(self.serialized, self.pointer)
+        recipient_marker = read_bit8(self.serialized, self.pointer)
         self.pointer += 1
 
         if recipient_marker == 1:
@@ -81,7 +79,7 @@ class Deserializer:
             recipient_address = '0x' + hexlify(recipient_address_bytes).decode()
             data['recipientAddress'] = recipient_address
 
-        payload_length, _ = read_bit32(self.serialized, self.pointer)
+        payload_length = read_bit32(self.serialized, self.pointer)
         self.pointer += 4
 
         payload_hex = ''
@@ -100,27 +98,32 @@ class Deserializer:
         if data['value'] != '0':
             return Transfer(data)
 
-        # payload_data = self.decode_payload(data)
-        payload_data = None  # As AbiDecoder is not implemented
+        payload_data = self.decode_payload(data)
 
         if payload_data is None:
-            return Transfer(data)  # Using Transfer for now
+            return EvmCall(data)
 
-        # if function_name == AbiFunction.VOTE.value:
-        #     return Vote(data)
-        # elif function_name == AbiFunction.UNVOTE.value:
-        #     return Unvote(data)
-        # elif function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
-        #     return ValidatorRegistration(data)
-        # elif function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
-        #     return ValidatorResignation(data)
-        # else:
-        #     return Transfer(data)
+        function_name = payload_data.get('functionName')
+        if function_name == AbiFunction.VOTE.value:
+            return Vote(data)
+        elif function_name == AbiFunction.UNVOTE.value:
+            return Unvote(data)
+        elif function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
+            return ValidatorRegistration(data)
+        elif function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
+            return ValidatorResignation(data)
+        else:
+            return EvmCall(data)
 
-    # def decode_payload(self, data: dict) -> dict:
-    #     payload = data.get('data', '')
-    #
-    #     if payload == '':
-    #         return None
-    #
-    #     return AbiDecoder().decode_function_data(payload)
+    def decode_payload(self, data: dict) -> dict:
+        payload = data.get('data', '')
+
+        if payload == '':
+            return None
+
+        decoder = AbiDecoder()
+        try:
+            return decoder.decode_function_data(payload)
+        except Exception as e:
+            print(f"Error decoding payload: {str(e)}")
+            return None
