@@ -12,12 +12,3 @@ class Vote(AbstractTransaction):
             return ''
         encoder = AbiEncoder()
         return encoder.encode_function_call('vote', [self.data['vote']])
-
-    def decode_payload(self, data: dict) -> dict:
-        if 'data' not in data or not data['data']:
-            return {}
-        decoder = AbiDecoder()
-        decoded = decoder.decode_function_data(data['data'])
-        if decoded['functionName'] == 'vote':
-            self.data['vote'] = decoded['args'][0]
-        return self.data
