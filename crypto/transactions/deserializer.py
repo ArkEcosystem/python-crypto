@@ -1,76 +1,129 @@
-import inspect
-from binascii import hexlify, unhexlify
-from importlib import import_module
-from typing import Union
+from crypto.transactions.types.abstract_transaction import AbstractTransaction
+from crypto.transactions.types.transfer import Transfer
+from crypto.transactions.types.evm_call import EvmCall
+from crypto.transactions.types.vote import Vote
+from crypto.transactions.types.unvote import Unvote
+from crypto.transactions.types.validator_registration import ValidatorRegistration
+from crypto.transactions.types.validator_resignation import ValidatorResignation
+from binascii import unhexlify, hexlify
 
-from binary.unsigned_integer.reader import read_bit8, read_bit16, read_bit32, read_bit64
+from binary.unsigned_integer.reader import (
+    read_bit8,
+    read_bit32,
+    read_bit64,
+)
+from crypto.enums.abi_function import AbiFunction
+from crypto.utils.abi_decoder import AbiDecoder
 
-from crypto.constants import TRANSACTION_TYPES
-from crypto.transactions.deserializers.base import BaseDeserializer
-from crypto.transactions.transaction import Transaction
+class Deserializer:
+    SIGNATURE_SIZE = 64
+    RECOVERY_SIZE = 1
 
-class Deserializer(object):
-    serialized: bytes
+    def __init__(self, serialized: str):
+        self.serialized = unhexlify(serialized) if isinstance(serialized, str) else serialized
+        self.pointer = 0
 
-    def __init__(self, serialized: Union[bytes, str]):
-        self.serialized = unhexlify(serialized)
+    @staticmethod
+    def new(serialized: str):
+        return Deserializer(serialized)
 
-    def deserialize(self) -> Transaction:
-        """Deserialize transaction
+    def deserialize(self) -> AbstractTransaction:
+        data = {}
 
-        Returns:
-            Transaction: returns transaction object
-        """
+        self.deserialize_common(data)
+        self.deserialize_data(data)
+        transaction = self.guess_transaction_from_data(data)
+        self.deserialize_signatures(data)
 
-        transaction = Transaction()
-        transaction.version = read_bit8(self.serialized, offset=1)
-        transaction.network = read_bit8(self.serialized, offset=2)
-        transaction.typeGroup = read_bit32(self.serialized, offset=3)
-        transaction.type = read_bit16(self.serialized, offset=7)
-        transaction.nonce = read_bit64(self.serialized, offset=9)
-        transaction.senderPublicKey = hexlify(self.serialized)[34:66+34].decode()
-        transaction.fee = read_bit64(self.serialized, offset=50)
+        transaction.data = data
+        transaction.recover_sender()
 
-        vendor_field_length = read_bit8(self.serialized, offset=58)
-        if vendor_field_length > 0:
-            vendor_field_offset = (58 + 8) * 2
-            vendorField_take = vendor_field_length * 2
-            transaction.vendorFieldHex = hexlify(
-                self.serialized
-            )[vendor_field_offset:vendorField_take]
-
-        asset_offset = (58 + 1) * 2 + vendor_field_length * 2
-
-        handled_transaction = self._handle_transaction_type(asset_offset, transaction)
-        transaction.amount = handled_transaction.amount
-        transaction.version = handled_transaction.version
-        transaction.id = transaction.get_id()
+        transaction.data['id'] = transaction.hash(skip_signature=False).hex()
 
         return transaction
 
-    def _handle_transaction_type(self, asset_offset: int, transaction):
-        """Handle deserialization for a given transaction type
+    def read_bytes(self, length: int) -> bytes:
+        result = self.serialized[self.pointer:self.pointer + length]
+        self.pointer += length
+        return result
 
-        Args:
-            asset_offset (int):
-            transaction (Transaction): Transaction resource object
+    def deserialize_common(self, data: dict):
+        data['network'] = read_bit8(self.serialized, self.pointer)
+        self.pointer += 1
 
-        Returns:
-            Transaction: Transaction object of currently deserialized data
-        """
+        nonce = read_bit64(self.serialized, self.pointer)
+        data['nonce'] = str(nonce)
+        self.pointer += 8
 
-        deserializer_name = TRANSACTION_TYPES[transaction.type]
-        module = import_module('crypto.transactions.deserializers.{}'.format(deserializer_name))
-        for attr in dir(module):
-            # If attr name is `BaseDeserializer`, skip it as it's a class and also has a
-            # subclass of BaseDeserializer
-            if attr == 'BaseDeserializer':
-                continue
+        gas_price = read_bit32(self.serialized, self.pointer)
+        data['gasPrice'] = gas_price
+        self.pointer += 4
 
-            attribute = getattr(module, attr)
-            if inspect.isclass(attribute) and issubclass(attribute, BaseDeserializer):
-                # this attribute is actually a specific deserializer that we want to use
-                deserializer = attribute
-                break
+        gas_limit = read_bit32(self.serialized, self.pointer)
+        data['gasLimit'] = gas_limit
+        self.pointer += 4
 
-        return deserializer(self.serialized, asset_offset, transaction).deserialize()
+        data['value'] = '0'
+
+    def deserialize_data(self, data: dict):
+        value = int.from_bytes(self.serialized[self.pointer:self.pointer + 32], byteorder='big')
+        self.pointer += 32
+        
+        data['value'] = str(value)
+
+        recipient_marker = read_bit8(self.serialized, self.pointer)
+        self.pointer += 1
+
+        if recipient_marker == 1:
+            recipient_address_bytes = self.read_bytes(20)
+            recipient_address = '0x' + hexlify(recipient_address_bytes).decode()
+            data['recipientAddress'] = recipient_address
+
+        payload_length = read_bit32(self.serialized, self.pointer)
+        self.pointer += 4
+
+        payload_hex = ''
+        if payload_length > 0:
+            payload_bytes = self.read_bytes(payload_length)
+            payload_hex = hexlify(payload_bytes).decode()
+
+        data['data'] = payload_hex
+
+    def deserialize_signatures(self, data: dict):
+        signature_length = self.SIGNATURE_SIZE + self.RECOVERY_SIZE
+        signature_bytes = self.read_bytes(signature_length)
+        data['signature'] = hexlify(signature_bytes).decode()
+
+    def guess_transaction_from_data(self, data: dict) -> AbstractTransaction:
+        if data['value'] != '0':
+            return Transfer(data)
+
+        payload_data = self.decode_payload(data)
+
+        if payload_data is None:
+            return EvmCall(data)
+
+        function_name = payload_data.get('functionName')
+        if function_name == AbiFunction.VOTE.value:
+            return Vote(data)
+        elif function_name == AbiFunction.UNVOTE.value:
+            return Unvote(data)
+        elif function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
+            return ValidatorRegistration(data)
+        elif function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
+            return ValidatorResignation(data)
+        else:
+            return EvmCall(data)
+
+    def decode_payload(self, data: dict) -> dict:
+        payload = data.get('data', '')
+
+        if payload == '':
+            return None
+
+        decoder = AbiDecoder()
+        try:
+            return decoder.decode_function_data(payload)
+        except Exception as e:
+            print(f"Error decoding payload: {str(e)}")
+            return None
