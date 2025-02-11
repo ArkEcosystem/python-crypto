@@ -16,6 +16,19 @@ def identity():
     return data
 
 @pytest.fixture
+def sign_compact():
+    """Identity fixture
+    """
+    data = {
+        'data': {
+            'serialized': '1f0567c4def813a66e03fa1cd499a27c6922698a67e25e0b38458d8f4bb0e581fc25fcdf9d110b82bde15bae4a49118deb83cfc3ec1656c2a29286d7836d328abe',
+            'message': 'ff13b004d11523dda1efac58723ed4c63a3afe61a5464498fcb5058de20aeb7a'
+        },
+        'passphrase': 'my super secret passphrase'
+    }
+    return data
+
+@pytest.fixture
 def validator():
     """Validator fixture
     """
