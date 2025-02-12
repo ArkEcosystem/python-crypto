@@ -1,13 +1,13 @@
 import re
-from typing import TypedDict
+from typing import TypedDict, Union
 
 class DecodedType(TypedDict):
     consumed: int
-    result: str | list
+    result: Union[str, list]
 
 class RlpDecoder:
     @classmethod
-    def decode(cls, data: str) -> str | list:
+    def decode(cls, data: str) -> Union[str, list]:
         bytes_data = cls.get_bytes(data, 'data')
         decoded = cls._decode(bytes_data, 0)
 
