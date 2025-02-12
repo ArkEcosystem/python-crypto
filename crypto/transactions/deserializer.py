@@ -28,11 +28,7 @@ class Deserializer:
         return Deserializer(serialized)
 
     def deserialize(self) -> AbstractTransaction:
-        print('ENCODED_RLP:', self.encoded_rlp)
-
         decoded_rlp = RlpDecoder.decode(self.encoded_rlp)
-
-        print('DECODED_RLP:', decoded_rlp)
 
         data = {
             'network': Deserializer.parse_number(decoded_rlp[0]),
@@ -50,9 +46,6 @@ class Deserializer:
             data['s'] = Deserializer.parse_hex(decoded_rlp[11])
 
         transaction = self.guess_transaction_from_data(data)
-
-        serialized_hex = self.EIP1559_PREFIX + self.encoded_rlp
-        # transaction.serialized = serialized_hex
 
         transaction.data = data
         transaction.recover_sender()
