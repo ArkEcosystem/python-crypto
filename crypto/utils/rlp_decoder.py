@@ -17,7 +17,7 @@ class RlpDecoder:
         return decoded['result']
 
     @staticmethod
-    def get_bytes(value: str, name: str = 'value') -> list:
+    def get_bytes(value: str, name: str = 'value') -> list[int]:
         if re.match(r'^0x(?:[0-9a-fA-F]{2})*$', value):
             hex_value = value[2:]
             length = len(hex_value) // 2
@@ -28,15 +28,15 @@ class RlpDecoder:
         raise ValueError(f'Invalid BytesLike value for "{name}": {value}')
 
     @staticmethod
-    def hexlify(data) -> str:
+    def hexlify(data: list[int]) -> str:
         return '0x' + ''.join(f'{byte:02x}' for byte in data)
 
     @staticmethod
-    def hexlify_byte(value) -> str:
+    def hexlify_byte(value: int) -> str:
         return f'0x{value & 0xff:02x}'
 
     @staticmethod
-    def unarrayify_integer(data, offset, length) -> int:
+    def unarrayify_integer(data: list[int], offset: int, length: int) -> int:
         result = 0
         for i in range(length):
             result = (result << 8) + data[offset + i]
@@ -44,7 +44,7 @@ class RlpDecoder:
         return result
 
     @classmethod
-    def _decode_children(cls, data, offset, child_offset, length) -> DecodedType:
+    def _decode_children(cls, data: list[int], offset: int, child_offset: int, length: int) -> DecodedType:
         result = []
         end = offset + 1 + length
 
@@ -62,7 +62,7 @@ class RlpDecoder:
         }
 
     @classmethod
-    def _decode(cls, data, offset) -> DecodedType:
+    def _decode(cls, data: list[int], offset: int) -> DecodedType:
         cls.check_offset(offset, data)
 
         prefix = data[offset]
@@ -114,6 +114,6 @@ class RlpDecoder:
         }
 
     @staticmethod
-    def check_offset(offset, data) -> None:
+    def check_offset(offset: int, data: list[int]) -> None:
         if offset > len(data):
             raise ValueError('data short segment or out of range')

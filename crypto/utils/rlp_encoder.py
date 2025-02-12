@@ -1,10 +1,10 @@
 from binascii import hexlify, unhexlify
-
+from typing import Union
 
 class RlpEncoder:
     @classmethod
-    def encode(cls, obj) -> str:
-        encoded = cls._encode(obj)
+    def encode(cls, data: Union[str, bytes, int, list]) -> str:
+        encoded = cls._encode(data)
         hex_str = ''
         nibbles = '0123456789abcdef'
 
@@ -15,10 +15,10 @@ class RlpEncoder:
         return hex_str
 
     @classmethod
-    def _encode(cls, obj) -> list:
-        if isinstance(obj, list):
+    def _encode(cls, data: Union[str, bytes, int, list]) -> list:
+        if isinstance(data, list):
             payload = []
-            for child in obj:
+            for child in data:
                 payload.extend(cls._encode(child))
 
             payload_length = len(payload)
@@ -32,7 +32,7 @@ class RlpEncoder:
 
             return length + payload
 
-        data = cls.get_bytes(obj)
+        data = cls.get_bytes(data)
         data_length = len(data)
         if data_length == 1 and data[0] <= 0x7f:
             return data
@@ -57,7 +57,7 @@ class RlpEncoder:
         return result
 
     @staticmethod
-    def get_bytes(value) -> list:
+    def get_bytes(value: Union[str, bytes, int, list]) -> list:
         if isinstance(value, str) or isinstance(value, bytes):
             if isinstance(value, str):
                 value = value.encode()
