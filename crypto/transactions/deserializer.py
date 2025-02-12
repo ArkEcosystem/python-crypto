@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.transfer import Transfer
 from crypto.transactions.types.evm_call import EvmCall
@@ -75,7 +76,7 @@ class Deserializer:
         else:
             return EvmCall(data)
 
-    def decode_payload(self, data: dict) -> dict | None:
+    def decode_payload(self, data: dict) -> Optional[dict]:
         payload = data.get('data', '')
 
         if payload == '':
@@ -102,5 +103,5 @@ class Deserializer:
         return re.sub(r'^0x', '', value)
 
     @staticmethod
-    def parse_address(value: str) -> str | None:
+    def parse_address(value: str) -> Optional[str]:
         return None if value == '0x' else value
