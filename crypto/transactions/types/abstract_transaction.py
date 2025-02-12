@@ -57,12 +57,11 @@ class AbstractTransaction:
         return public_key
 
     def recover_sender(self):
-        signature_hex = self.data.get('signature')
-        if not signature_hex:
-            raise ValueError("No signature to recover from")
+        signature_with_recid = self.get_signature()
+        if not signature_with_recid:
+            return False
 
-        signature_with_recid = bytes.fromhex(signature_hex)
-        hash_ = self.hash(skip_signature=True)
+        hash_ = bytes.fromhex(self.hash(skip_signature=True))
         public_key = self.get_public_key(signature_with_recid, hash_)
         self.data['senderPublicKey'] = public_key.format().hex()
         self.data['senderAddress'] = address_from_public_key(self.data['senderPublicKey'])
