@@ -1,18 +1,11 @@
 from binascii import hexlify
 from hashlib import sha256
-
-from btclib.to_prv_key import PrvKey, int_from_prv_key
-from btclib.to_pub_key import pub_keyinfo_from_key
-from btclib.ecc import bms
+from coincurve import PrivateKey as PvtKey
 
 class PrivateKey(object):
-    private_key: PrvKey
-    private_key_raw: str
-
     def __init__(self, private_key: str):
-        self.private_key_raw = private_key
-        self.private_key = int_from_prv_key(private_key)
-        self.public_key = hexlify(pub_keyinfo_from_key(self.private_key)[0]).decode()
+        self.private_key = PvtKey.from_hex(private_key)
+        self.public_key = hexlify(self.private_key.public_key.format()).decode()
 
     def sign(self, message: bytes) -> bytes:
         """Sign a message with this private key object
@@ -23,11 +16,11 @@ class PrivateKey(object):
         Returns:
             bytes: signature of the signed message
         """
-        signature = bms.sign(message, self.private_key)
+        signature = self.private_key.sign(message)
 
-        return signature.serialize()
+        return hexlify(signature)
 
-    def sign_compact(self, message: bytes) -> bms.Sig:
+    def sign_compact(self, message: bytes) -> bytes:
         """Sign a message with this private key object
 
         Args:
@@ -36,13 +29,10 @@ class PrivateKey(object):
         Returns:
             bytes: signature of the signed message
         """
-        return bms.sign(message, self.private_key)
-        # wif, address = bms.gen_keys(self.private_key, compressed=True)
+        pkey = PvtKey.from_hex(sha256(b'my super secret passphrase').hexdigest())
+        der = pkey.sign_recoverable(message)
 
-        # # print('WIF', wif)
-        # # print('address', address)
-
-        # return bms.sign(message, wif, address)
+        return bytes([der[64] + 31]) + der[0:64]
 
     def to_hex(self):
         """Returns a private key in hex format
@@ -50,7 +40,7 @@ class PrivateKey(object):
         Returns:
             str: private key in hex format
         """
-        return hexlify(self.private_key.to_bytes(32, 'big')).decode()
+        return self.private_key.to_hex()
 
     @classmethod
     def from_passphrase(cls, passphrase: str):
