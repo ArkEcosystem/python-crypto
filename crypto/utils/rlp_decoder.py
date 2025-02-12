@@ -1,8 +1,13 @@
 import re
+from typing import TypedDict
+
+class DecodedType(TypedDict):
+    consumed: int
+    result: str | list
 
 class RlpDecoder:
     @classmethod
-    def decode(cls, data: str):
+    def decode(cls, data: str) -> str | list:
         bytes_data = cls.get_bytes(data, 'data')
         decoded = cls._decode(bytes_data, 0)
 
@@ -17,6 +22,7 @@ class RlpDecoder:
             hex_value = value[2:]
             length = len(hex_value) // 2
             bytes_data = [int(hex_value[i * 2:i * 2 + 2], 16) for i in range(length)]
+
             return bytes_data
 
         raise ValueError(f'Invalid BytesLike value for "{name}": {value}')
@@ -34,10 +40,11 @@ class RlpDecoder:
         result = 0
         for i in range(length):
             result = (result << 8) + data[offset + i]
+
         return result
 
     @classmethod
-    def _decode_children(cls, data, offset, child_offset, length) -> dict:
+    def _decode_children(cls, data, offset, child_offset, length) -> DecodedType:
         result = []
         end = offset + 1 + length
 
@@ -55,7 +62,7 @@ class RlpDecoder:
         }
 
     @classmethod
-    def _decode(cls, data, offset) -> dict[str, int | str]:
+    def _decode(cls, data, offset) -> DecodedType:
         cls.check_offset(offset, data)
 
         prefix = data[offset]
@@ -68,12 +75,14 @@ class RlpDecoder:
             cls.check_offset(offset + 1 + length_length + length - 1, data)
 
             return cls._decode_children(data, offset, offset + 1 + length_length, length_length + length)
+
         elif prefix >= 0xc0:
             length = prefix - 0xc0
             if length > 0:
                 cls.check_offset(offset + 1 + length - 1, data)
 
             return cls._decode_children(data, offset, offset + 1, length)
+
         elif prefix >= 0xb8:
             length_length = prefix - 0xb7
             cls.check_offset(offset + length_length, data)
@@ -87,6 +96,7 @@ class RlpDecoder:
                 'consumed': 1 + length_length + length,
                 'result': cls.hexlify(slice_data),
             }
+
         elif prefix >= 0x80:
             length = prefix - 0x80
             if length > 0:
