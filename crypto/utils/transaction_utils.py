@@ -1,4 +1,4 @@
-from binascii import hexlify, unhexlify
+from binascii import unhexlify
 import hashlib
 
 from crypto.utils.rlp_encoder import RlpEncoder

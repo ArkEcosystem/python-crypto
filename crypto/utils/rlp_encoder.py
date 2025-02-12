@@ -1,10 +1,12 @@
-from binascii import hexlify, unhexlify
 from typing import Union
 
 class RlpEncoder:
     @classmethod
     def encode(cls, data: Union[str, bytes, int, list]) -> str:
-        encoded = cls._encode(data)
+        """
+        Encodes the given data into RLP format.
+        """
+        encoded = cls.__encode(data)
         hex_str = ''
         nibbles = '0123456789abcdef'
 
@@ -15,11 +17,11 @@ class RlpEncoder:
         return hex_str
 
     @classmethod
-    def _encode(cls, data: Union[str, bytes, int, list]) -> list:
+    def __encode(cls, data: Union[str, bytes, int, list]) -> list:
         if isinstance(data, list):
             payload = []
             for child in data:
-                payload.extend(cls._encode(child))
+                payload.extend(cls.__encode(child))
 
             payload_length = len(payload)
             if payload_length <= 55:
@@ -27,12 +29,12 @@ class RlpEncoder:
 
                 return payload
 
-            length = cls.arrayify_integer(payload_length)
+            length = cls.__arrayify_integer(payload_length)
             length.insert(0, 0xf7 + (len(length)))
 
             return length + payload
 
-        data = cls.get_bytes(data)
+        data = cls.__get_bytes(data)
         data_length = len(data)
         if data_length == 1 and data[0] <= 0x7f:
             return data
@@ -42,13 +44,13 @@ class RlpEncoder:
 
             return data
 
-        length = cls.arrayify_integer(len(data))
+        length = cls.__arrayify_integer(len(data))
         length.insert(0, 0xb7 + len(length))
 
         return length + data
 
-    @staticmethod
-    def arrayify_integer(value) -> list:
+    @classmethod
+    def __arrayify_integer(cls, value: int) -> list:
         result = []
         while value > 0:
             result.insert(0, value & 0xff)
@@ -56,8 +58,8 @@ class RlpEncoder:
 
         return result
 
-    @staticmethod
-    def get_bytes(value: Union[str, bytes, int, list]) -> list:
+    @classmethod
+    def __get_bytes(cls, value: Union[str, bytes, int, list]) -> list:
         if isinstance(value, str) or isinstance(value, bytes):
             if isinstance(value, str):
                 value = value.encode()

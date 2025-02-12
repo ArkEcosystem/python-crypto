@@ -1,6 +1,4 @@
-from crypto.transactions.deserializer import Deserializer
 from crypto.utils.rlp_decoder import RlpDecoder
-from crypto.utils.transaction_utils import TransactionUtils
 
 
 def test_decode_function_call(load_transaction_fixture):

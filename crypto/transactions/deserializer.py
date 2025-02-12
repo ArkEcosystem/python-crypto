@@ -1,4 +1,5 @@
 import re
+from binascii import unhexlify
 from typing import Optional
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.transfer import Transfer
@@ -7,7 +8,6 @@ from crypto.transactions.types.vote import Vote
 from crypto.transactions.types.unvote import Unvote
 from crypto.transactions.types.validator_registration import ValidatorRegistration
 from crypto.transactions.types.validator_resignation import ValidatorResignation
-from binascii import unhexlify
 
 from crypto.enums.abi_function import AbiFunction
 from crypto.utils.abi_decoder import AbiDecoder
