@@ -5,13 +5,23 @@ def test_evm_call_transaction(passphrase, load_transaction_fixture):
 
     builder = (
         EvmCallBuilder()
-        .gas_price(fixture['data']['gasPrice'])
-        .nonce(fixture['data']['nonce'])
-        .network(fixture['data']['network'])
-        .payload(fixture['data']['data'])
-        .gas_limit(fixture['data']['gasLimit'])
-        .recipient_address('0xE536720791A7DaDBeBdBCD8c8546fb0791a11901')
-        .sign(passphrase)
+            .gas_price(fixture['data']['gasPrice'])
+            .nonce(fixture['data']['nonce'])
+            .network(fixture['data']['network'])
+            .payload(fixture['data']['data'])
+            .gas_limit(fixture['data']['gasLimit'])
+            .recipient_address('0xE536720791A7DaDBeBdBCD8c8546fb0791a11901')
+            .sign(passphrase)
     )
+
+    assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
+    assert builder.transaction.data['nonce'] == fixture['data']['nonce']
+    assert builder.transaction.data['network'] == fixture['data']['network']
+    assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
+    assert builder.transaction.data['recipientAddress'].lower() == fixture['data']['recipientAddress'].lower()
+    assert builder.transaction.data['value'] == fixture['data']['value']
+    assert builder.transaction.data['v'] == fixture['data']['v']
+    assert builder.transaction.data['r'] == fixture['data']['r']
+    assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.verify()

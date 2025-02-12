@@ -22,8 +22,8 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     assert builder.transaction.data['value'] == fixture['data']['value']
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
-    # assert builder.transaction.data['s'] == fixture['data']['s']
+    assert builder.transaction.data['s'] == fixture['data']['s']
 
-    # assert builder.transaction.serialize().hex() == fixture['serialized']
+    assert builder.transaction.serialize().hex() == fixture['serialized']
     assert builder.transaction.data['id'] == fixture['data']['id']
     assert builder.verify()

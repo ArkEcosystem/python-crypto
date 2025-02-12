@@ -5,14 +5,24 @@ def test_validator_registration_transaction(passphrase, load_transaction_fixture
 
     builder = (
         ValidatorRegistrationBuilder()
-        .gas_price(fixture['data']['gasPrice'])
-        .nonce(fixture['data']['nonce'])
-        .network(fixture['data']['network'])
-        .gas_limit(fixture['data']['gasLimit'])
-        .validator_public_key('a08058db53e2665c84a40f5152e76dd2b652125a6079130d4c315e728bcf4dd1dfb44ac26e82302331d61977d3141118')
-        .recipient_address(fixture['data']['recipientAddress'])
-        .sign(passphrase)
+            .gas_price(fixture['data']['gasPrice'])
+            .nonce(fixture['data']['nonce'])
+            .network(fixture['data']['network'])
+            .gas_limit(fixture['data']['gasLimit'])
+            .validator_public_key('954f46d6097a1d314e900e66e11e0dad0a57cd03e04ec99f0dedd1c765dcb11e6d7fa02e22cf40f9ee23d9cc1c0624bd')
+            .recipient_address(fixture['data']['recipientAddress'])
+            .sign(passphrase)
     )
+
+    assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
+    assert builder.transaction.data['nonce'] == fixture['data']['nonce']
+    assert builder.transaction.data['network'] == fixture['data']['network']
+    assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
+    assert builder.transaction.data['recipientAddress'] == fixture['data']['recipientAddress']
+    assert builder.transaction.data['value'] == fixture['data']['value']
+    assert builder.transaction.data['v'] == fixture['data']['v']
+    assert builder.transaction.data['r'] == fixture['data']['r']
+    assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
     assert builder.transaction.data['id'] == fixture['data']['id']
