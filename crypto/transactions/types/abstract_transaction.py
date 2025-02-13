@@ -32,7 +32,7 @@ class AbstractTransaction:
         self.data['data'] = self.get_payload().lstrip('0x')
 
     def get_id(self) -> str:
-        return TransactionUtils.get_id(self.data.copy())
+        return TransactionUtils.get_id(self.data)
 
     def get_bytes(self, skip_signature: bool = False) -> bytes:
         from crypto.transactions.serializer import Serializer
