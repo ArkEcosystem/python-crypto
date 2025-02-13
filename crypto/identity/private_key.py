@@ -31,8 +31,7 @@ class PrivateKey(object):
         Returns:
             bytes: signature of the signed message
         """
-        pkey = PvtKey.from_hex(sha256(b'my super secret passphrase').hexdigest())
-        der = pkey.sign_recoverable(message)
+        der = self.private_key.sign_recoverable(message)
 
         return bytes([der[64] + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value]) + der[0:64]
 
