@@ -2,6 +2,7 @@ import json
 from typing import Optional
 
 from crypto.configuration.network import get_network
+from crypto.enums.constants import Constants
 from crypto.identity.address import address_from_public_key
 from crypto.identity.private_key import PrivateKey
 from crypto.utils.transaction_utils import TransactionUtils
@@ -96,7 +97,7 @@ class AbstractTransaction:
         return TransactionUtils.to_hash(self.data, skip_signature=skip_signature)
 
     def get_signature(self):
-        recover_id = int(self.data.get('v', 0)) - 31
+        recover_id = int(self.data.get('v', 0)) - Constants.ETHEREUM_RECOVERY_ID_OFFSET.value
         r = self.data.get('r')
         s = self.data.get('s')
 

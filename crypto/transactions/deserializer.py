@@ -1,6 +1,7 @@
 import re
 from binascii import unhexlify
 from typing import Optional
+from crypto.enums.constants import Constants
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.transfer import Transfer
 from crypto.transactions.types.evm_call import EvmCall
@@ -16,7 +17,6 @@ from crypto.utils.rlp_decoder import RlpDecoder
 class Deserializer:
     SIGNATURE_SIZE = 64
     RECOVERY_SIZE = 1
-    EIP1559_PREFIX = '02'
 
     def __init__(self, serialized: str):
         self.serialized = unhexlify(serialized) if isinstance(serialized, str) else serialized
@@ -42,7 +42,7 @@ class Deserializer:
         }
 
         if len(decoded_rlp) == 12:
-            data['v'] = Deserializer.parse_number(decoded_rlp[9]) + 31
+            data['v'] = Deserializer.parse_number(decoded_rlp[9]) + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value
             data['r'] = Deserializer.parse_hex(decoded_rlp[10])
             data['s'] = Deserializer.parse_hex(decoded_rlp[11])
 

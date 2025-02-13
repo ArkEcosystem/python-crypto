@@ -2,6 +2,8 @@ from binascii import hexlify
 from hashlib import sha256
 from coincurve import PrivateKey as PvtKey
 
+from crypto.enums.constants import Constants
+
 class PrivateKey(object):
     def __init__(self, private_key: str):
         self.private_key = PvtKey.from_hex(private_key)
@@ -32,7 +34,7 @@ class PrivateKey(object):
         pkey = PvtKey.from_hex(sha256(b'my super secret passphrase').hexdigest())
         der = pkey.sign_recoverable(message)
 
-        return bytes([der[64] + 31]) + der[0:64]
+        return bytes([der[64] + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value]) + der[0:64]
 
     def to_hex(self):
         """Returns a private key in hex format

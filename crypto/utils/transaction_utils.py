@@ -1,11 +1,10 @@
 from binascii import unhexlify
 import hashlib
 
+from crypto.enums.constants import Constants
 from crypto.utils.rlp_encoder import RlpEncoder
 
 class TransactionUtils:
-    EIP1559_PREFIX = '02'
-
     @classmethod
     def to_buffer(cls, transaction: dict, skip_signature: bool = False) -> bytes:
         # Process recipientAddress
@@ -31,13 +30,13 @@ class TransactionUtils:
         ]
 
         if not skip_signature and 'v' in transaction and 'r' in transaction and 's' in transaction:
-            fields.append(cls.to_be_array(int(transaction['v']) - 31))
+            fields.append(cls.to_be_array(int(transaction['v']) - Constants.ETHEREUM_RECOVERY_ID_OFFSET.value))
             fields.append(bytes.fromhex(transaction['r']))
             fields.append(bytes.fromhex(transaction['s']))
 
         encoded = RlpEncoder.encode(fields)
 
-        hash_input = cls.EIP1559_PREFIX + encoded
+        hash_input = Constants.EIP_1559_PREFIX.value + encoded
 
         return hash_input.encode()
 
