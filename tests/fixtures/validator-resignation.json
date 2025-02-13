@@ -10,7 +10,7 @@
         "recipientAddress": "0x535b3d7a252fa034ed71f0c53ec0c6f784cb64e1",
         "value": "0",
         "data": "b85f5da2",
-        "v": 31,
+        "v": 27,
         "r": "52d016bfb61cb3b57d36a7444ce26d3c557b2acb31a10b5951fc3c9e8d2e49a6",
         "s": "4940013218020780485b24cea9afbc6c93249286a308af33735c0c87bdeb4b5a"
     },

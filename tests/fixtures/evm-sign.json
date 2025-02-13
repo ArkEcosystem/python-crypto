@@ -10,7 +10,7 @@
         "senderPublicKey": "023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3",
         "senderAddress": "0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22",
         "id": "2cfa9d51e71f014f8054881052e41dc61267587f9dba04c59a31cc881f8ce35b",
-        "v": 31,
+        "v": 27,
         "r": "a56cf78a7203927af0c8216fdbc804182a0788569e460067efec519b6f7b2e55",
         "s": "52ce951a20c7406a4a34707557f02e5a2af1451cc4e216645778c4ee0391a4cd"
     },
