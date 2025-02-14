@@ -1,5 +1,6 @@
 # import numpy as np
 from decimal import Decimal
+from typing import Union
 
 class UnitConverter:
     WEI_MULTIPLIER = '1'
@@ -7,7 +8,7 @@ class UnitConverter:
     ARK_MULTIPLIER = '1000000000000000000'  # 1e18
 
     @staticmethod
-    def parse_units(value, unit='ark') -> str:
+    def parse_units(value: Union[float, int, str, Decimal], unit='ark') -> str:
         value = Decimal(str(value))
 
         unit = unit.lower()
@@ -23,7 +24,7 @@ class UnitConverter:
         raise ValueError(f"Unsupported unit: {unit}. Supported units are 'wei', 'gwei', and 'ark'.")
 
     @staticmethod
-    def format_units(value, unit='ark') -> Decimal:
+    def format_units(value: Union[float, int, str, Decimal], unit='ark') -> Decimal:
         value = Decimal(str(value))
 
         unit = unit.lower()
@@ -39,7 +40,7 @@ class UnitConverter:
         raise ValueError(f"Unsupported unit: {unit}. Supported units are 'wei', 'gwei', and 'ark'.")
 
     @staticmethod
-    def wei_to_ark(value, suffix=None):
+    def wei_to_ark(value: Union[float, int, str, Decimal], suffix=None):
         converted_value = UnitConverter.format_units(UnitConverter.parse_units(value, 'wei'), 'ark')
         converted_value = format(converted_value.normalize(), 'f')
 
@@ -49,7 +50,7 @@ class UnitConverter:
         return str(converted_value)
 
     @staticmethod
-    def gwei_to_ark(value, suffix=None):
+    def gwei_to_ark(value: Union[float, int, str, Decimal], suffix=None):
         converted_value = UnitConverter.format_units(UnitConverter.parse_units(value, 'gwei'), 'ark')
         converted_value = format(converted_value.normalize(), 'f')
 
