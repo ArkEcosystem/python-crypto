@@ -1,0 +1,18 @@
+{
+    "data": {
+        "network": 30,
+        "nonce": "123",
+        "gasPrice": 5,
+        "gasLimit": 21000,
+        "recipientAddress": "0xb693449adda7efc015d87944eae8b7c37eb1690a",
+        "value": "0",
+        "data": "",
+        "v": 28,
+        "r": "f7bae93b75f06c39600f123ca6c805a38636db9643eac29d20d21c6bf0d2eca2",
+        "s": "17265ff237bff3fe0620c53ff1615c4b8ad9136fe3d61dca38562c60dc5fcae2",
+        "senderPublicKey": "03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd",
+        "senderAddress": "0x41aD2bc63A2059f9b623533d87fe99887D794847",
+        "id": "7d6ad61dabbc9907484080100096c9c7c6364c130ca003f9dd730901c112437f"
+    },
+    "serialized": "02f8621e7b800582520894b693449adda7efc015d87944eae8b7c37eb1690a8080c001a0f7bae93b75f06c39600f123ca6c805a38636db9643eac29d20d21c6bf0d2eca2a017265ff237bff3fe0620c53ff1615c4b8ad9136fe3d61dca38562c60dc5fcae2"
+}

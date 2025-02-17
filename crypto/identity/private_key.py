@@ -1,7 +1,8 @@
 from binascii import hexlify
 from hashlib import sha256
-
 from coincurve import PrivateKey as PvtKey
+
+from crypto.enums.constants import Constants
 
 class PrivateKey(object):
     def __init__(self, private_key: str):
@@ -18,8 +19,21 @@ class PrivateKey(object):
             bytes: signature of the signed message
         """
         signature = self.private_key.sign(message)
-        
-        return hexlify(signature).decode()
+
+        return hexlify(signature)
+
+    def sign_compact(self, message: bytes) -> bytes:
+        """Sign a message with this private key object
+
+        Args:
+            message (bytes): bytes data you want to sign
+
+        Returns:
+            bytes: signature of the signed message
+        """
+        der = self.private_key.sign_recoverable(message)
+
+        return bytes([der[64] + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value]) + der[0:64]
 
     def to_hex(self):
         """Returns a private key in hex format

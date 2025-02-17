@@ -1,3 +1,7 @@
+import re
+from binascii import unhexlify
+from typing import Optional
+from crypto.enums.constants import Constants
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.transfer import Transfer
 from crypto.transactions.types.evm_call import EvmCall
@@ -5,15 +9,10 @@ from crypto.transactions.types.vote import Vote
 from crypto.transactions.types.unvote import Unvote
 from crypto.transactions.types.validator_registration import ValidatorRegistration
 from crypto.transactions.types.validator_resignation import ValidatorResignation
-from binascii import unhexlify, hexlify
 
-from binary.unsigned_integer.reader import (
-    read_bit8,
-    read_bit32,
-    read_bit64,
-)
 from crypto.enums.abi_function import AbiFunction
 from crypto.utils.abi_decoder import AbiDecoder
+from crypto.utils.rlp_decoder import RlpDecoder
 
 class Deserializer:
     SIGNATURE_SIZE = 64
@@ -23,76 +22,38 @@ class Deserializer:
         self.serialized = unhexlify(serialized) if isinstance(serialized, str) else serialized
         self.pointer = 0
 
+        self.encoded_rlp = '0x' + serialized[2:]
+
     @staticmethod
     def new(serialized: str):
         return Deserializer(serialized)
 
     def deserialize(self) -> AbstractTransaction:
-        data = {}
+        decoded_rlp = RlpDecoder.decode(self.encoded_rlp)
 
-        self.deserialize_common(data)
-        self.deserialize_data(data)
+        data = {
+            'network': Deserializer.parse_number(decoded_rlp[0]),
+            'nonce': Deserializer.parse_big_number(decoded_rlp[1]),
+            'gasPrice': Deserializer.parse_number(decoded_rlp[3]),
+            'gasLimit': Deserializer.parse_number(decoded_rlp[4]),
+            'recipientAddress': Deserializer.parse_address(decoded_rlp[5]),
+            'value': Deserializer.parse_big_number(decoded_rlp[6]),
+            'data': Deserializer.parse_hex(decoded_rlp[7]),
+        }
+
+        if len(decoded_rlp) == 12:
+            data['v'] = Deserializer.parse_number(decoded_rlp[9]) + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value
+            data['r'] = Deserializer.parse_hex(decoded_rlp[10])
+            data['s'] = Deserializer.parse_hex(decoded_rlp[11])
+
         transaction = self.guess_transaction_from_data(data)
-        self.deserialize_signatures(data)
 
         transaction.data = data
         transaction.recover_sender()
 
-        transaction.data['id'] = transaction.hash(skip_signature=False).hex()
+        transaction.data['id'] = transaction.get_id()
 
         return transaction
-
-    def read_bytes(self, length: int) -> bytes:
-        result = self.serialized[self.pointer:self.pointer + length]
-        self.pointer += length
-        return result
-
-    def deserialize_common(self, data: dict):
-        data['network'] = read_bit8(self.serialized, self.pointer)
-        self.pointer += 1
-
-        nonce = read_bit64(self.serialized, self.pointer)
-        data['nonce'] = str(nonce)
-        self.pointer += 8
-
-        gas_price = read_bit32(self.serialized, self.pointer)
-        data['gasPrice'] = gas_price
-        self.pointer += 4
-
-        gas_limit = read_bit32(self.serialized, self.pointer)
-        data['gasLimit'] = gas_limit
-        self.pointer += 4
-
-        data['value'] = '0'
-
-    def deserialize_data(self, data: dict):
-        value = int.from_bytes(self.serialized[self.pointer:self.pointer + 32], byteorder='big')
-        self.pointer += 32
-        
-        data['value'] = str(value)
-
-        recipient_marker = read_bit8(self.serialized, self.pointer)
-        self.pointer += 1
-
-        if recipient_marker == 1:
-            recipient_address_bytes = self.read_bytes(20)
-            recipient_address = '0x' + hexlify(recipient_address_bytes).decode()
-            data['recipientAddress'] = recipient_address
-
-        payload_length = read_bit32(self.serialized, self.pointer)
-        self.pointer += 4
-
-        payload_hex = ''
-        if payload_length > 0:
-            payload_bytes = self.read_bytes(payload_length)
-            payload_hex = hexlify(payload_bytes).decode()
-
-        data['data'] = payload_hex
-
-    def deserialize_signatures(self, data: dict):
-        signature_length = self.SIGNATURE_SIZE + self.RECOVERY_SIZE
-        signature_bytes = self.read_bytes(signature_length)
-        data['signature'] = hexlify(signature_bytes).decode()
 
     def guess_transaction_from_data(self, data: dict) -> AbstractTransaction:
         if data['value'] != '0':
@@ -115,7 +76,7 @@ class Deserializer:
         else:
             return EvmCall(data)
 
-    def decode_payload(self, data: dict) -> dict:
+    def decode_payload(self, data: dict) -> Optional[dict]:
         payload = data.get('data', '')
 
         if payload == '':
@@ -126,4 +87,21 @@ class Deserializer:
             return decoder.decode_function_data(payload)
         except Exception as e:
             print(f"Error decoding payload: {str(e)}")
-            return None
+
+        return None
+
+    @staticmethod
+    def parse_number(value: str) -> int:
+        return 0 if value == '0x' else int(value, 16)
+
+    @staticmethod
+    def parse_big_number(value: str) -> str:
+        return str(Deserializer.parse_number(value))
+
+    @staticmethod
+    def parse_hex(value: str) -> str:
+        return re.sub(r'^0x', '', value)
+
+    @staticmethod
+    def parse_address(value: str) -> Optional[str]:
+        return None if value == '0x' else value
