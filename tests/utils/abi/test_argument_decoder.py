@@ -1,18 +1,6 @@
 from crypto.utils.abi.argument_decoder import ArgumentDecoder
 
 
-# def test_decode_vote_payload():
-#     decoder = ArgumentDecoder()
-#     function_name = 'vote'
-#     args = ['0x512F366D524157BcF734546eB29a6d687B762255']
-#     data = '0x6dd7d8ea000000000000000000000000512f366d524157bcf734546eb29a6d687b762255'
-
-#     decoded_data = decoder.decode_function_data(data)
-
-#     assert decoded_data ==
-#         'functionName': function_name,
-#         'args': args,
-
 def test_it_should_decode_address():
     payload  = '000000000000000000000000512F366D524157BcF734546eB29a6d687B762255'
     expected = '0x512F366D524157BcF734546eB29a6d687B762255'
