@@ -8,3 +8,7 @@ class ArkSerializerException(ArkCryptoException):
 
 class ArkInvalidTransaction(ArkCryptoException):
     """Raised when transaction is not valid"""
+
+
+class InvalidUsernameException(Exception):
+    """Raised when username is invalid"""

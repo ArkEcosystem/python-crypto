@@ -1,0 +1,6 @@
+from enum import Enum
+
+class ContractAddresses(Enum):
+    CONSENSUS = '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'
+    MULTIPAYMENT = '0x83769BeEB7e5405ef0B7dc3C66C43E3a51A6d27f'
+    USERNAMES = '0x2c1DE3b4Dbb4aDebEbB5dcECAe825bE2a9fc6eb6'

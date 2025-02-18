@@ -4,16 +4,22 @@ import json
 import os
 import re
 from binascii import unhexlify
+from typing import Optional
 from Cryptodome.Hash import keccak
+from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.identity.address import get_checksum_address
 
 
 class AbiBase:
-    def __init__(self):
-        # Cargar el ABI desde un archivo JSON
-        abi_file_path = os.path.join(os.path.dirname(__file__), 'Abi.Consensus.json')
+    def __init__(self, abi_type: ContractAbiType = ContractAbiType.CONSENSUS, path: Optional[str] = None):
+        abi_file_path = self.__contract_abi_path(abi_type, path)
+
+        if abi_file_path is None:
+            raise Exception('ABI file path is not provided')
+
         with open(abi_file_path, 'r') as f:
             abi_json = json.load(f)
+
         self.abi = abi_json.get('abi', [])
 
     def get_array_components(self, type_str):
@@ -51,3 +57,12 @@ class AbiBase:
         hash_ = self.keccak256(signature)
         selector = '0x' + self.strip_hex_prefix(hash_)[0:8]
         return selector
+
+    def __contract_abi_path(self, abi_type: ContractAbiType, path: Optional[str] = None) -> Optional[str]:
+        if abi_type == ContractAbiType.CONSENSUS:
+            return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Consensus.json')
+
+        if abi_type == ContractAbiType.USERNAMES:
+            return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Usernames.json')
+
+        return path
