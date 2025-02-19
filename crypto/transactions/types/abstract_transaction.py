@@ -18,11 +18,6 @@ class AbstractTransaction:
     def get_payload(self) -> str:
         return ''
 
-    def decode_payload(self, data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
-        from crypto.transactions.deserializer import Deserializer
-
-        return Deserializer.decode_payload(data, abi_type)
-
     def refresh_payload_data(self):
         self.data['data'] = TransactionUtils.parse_hex_from_str(self.get_payload())
 
@@ -100,3 +95,9 @@ class AbstractTransaction:
             return bytes.fromhex(r) + bytes.fromhex(s) + bytes([recover_id])
 
         return None
+
+    @staticmethod
+    def decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
+        from crypto.transactions.deserializer import Deserializer
+
+        return Deserializer.decode_payload(data, abi_type)
