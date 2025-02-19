@@ -36,7 +36,7 @@ def load_transaction_fixture():
 def passphrase():
     """Passphrase used for tests"""
 
-    return 'my super secret passphrase'
+    return 'found lobster oblige describe ready addict body brave live vacuum display salute lizard combine gift resemble race senior quality reunion proud tell adjust angle'
 
 @pytest.fixture
 def transaction_type_0():

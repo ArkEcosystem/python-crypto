@@ -4,4 +4,16 @@ import pytest
 def passphrase():
     """Passphrase used for tests"""
 
-    return 'my super secret passphrase'
+    return 'found lobster oblige describe ready addict body brave live vacuum display salute lizard combine gift resemble race senior quality reunion proud tell adjust angle'
+
+@pytest.fixture
+def validator_public_key():
+    """BLS Public used for validator tests"""
+
+    return '30954f46d6097a1d314e900e66e11e0dad0a57cd03e04ec99f0dedd1c765dcb11e6d7fa02e22cf40f9ee23d9cc1c0624'
+
+@pytest.fixture
+def username():
+    """Username used for tests"""
+
+    return 'fixture'

@@ -6,12 +6,14 @@ def identity():
     """
     data = {
         'data': {
-            'private_key': 'bef98d4c0e58d0e4695560594f91a349421b7cdc3e63a560470ccb259f99f087',
-            'public_key': '023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d3',
-            'address': '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22',
-            'wif': 'SFyRYRYL1DddchRpuhp94hKN1tpYjzAEkLuUDAMjGJBkoAaz2RQk'
+            'private_key': '50829dd3b7ffbe2df401d730b5e60cea7520ba3f3a18e5b1490707667fb43fae',
+            'public_key': '0243333347c8cbf4e3cbc7a96964181d02a2b0c854faa2fef86b4b8d92afcf473d',
+            'address': '0x1E6747BEAa5B4076a6A98D735DF8c35a70D18Bdd',
+            'wif': 'UZYnRZ8qpeQWTLeCNzw93guWSdKLmr2vHEWGG4sNv7TJofL7TZvy',
+            'validatorPublicKey': 'b209f4a7454ae17c5808991dffbf204c747b851f351d2ce72a6e18903d0e2f609e0328ebbc3fb97cd4d3660b4bc156f1',
+            'validatorPrivateKey': '6ec4993df152b10e672567c1fdf854a4cee50708fa30986a7d9b259673099175',
         },
-        'passphrase': 'my super secret passphrase'
+        'passphrase': 'found lobster oblige describe ready addict body brave live vacuum display salute lizard combine gift resemble race senior quality reunion proud tell adjust angle'
     }
     return data
 
@@ -21,13 +23,13 @@ def sign_compact():
     """
     data = {
         'data': {
-            'serialized': '1b0567c4def813a66e03fa1cd499a27c6922698a67e25e0b38458d8f4bb0e581fc25fcdf9d110b82bde15bae4a49118deb83cfc3ec1656c2a29286d7836d328abe',
-            'message': '02e31e018005825208946f0182a0cc707b055322ccf6d4cb6a5aff1aeb228405f5e10080c0',
-            'v': 27,
-            'r': '0567c4def813a66e03fa1cd499a27c6922698a67e25e0b38458d8f4bb0e581fc',
-            's': '25fcdf9d110b82bde15bae4a49118deb83cfc3ec1656c2a29286d7836d328abe',
+            'serialized': '1c104665257d4dea61c4654e74c6c0f6cd0a398905781c3040bea67dc641a66da046d718d04b2331f3b0561808549ed3f3f0d867a284acf6b334869078df7a9136',
+            'message': '02ea822710018085012a05f200825208946f0182a0cc707b055322ccf6d4cb6a5aff1aeb228405f5e10080c0',
+            'v': 28,
+            'r': '104665257d4dea61c4654e74c6c0f6cd0a398905781c3040bea67dc641a66da0',
+            's': '46d718d04b2331f3b0561808549ed3f3f0d867a284acf6b334869078df7a9136',
         },
-        'passphrase': 'my super secret passphrase'
+        'passphrase': 'found lobster oblige describe ready addict body brave live vacuum display salute lizard combine gift resemble race senior quality reunion proud tell adjust angle'
     }
     return data
 
