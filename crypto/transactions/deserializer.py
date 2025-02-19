@@ -1,4 +1,3 @@
-import re
 from binascii import unhexlify
 from typing import Optional
 from crypto.enums.constants import Constants
@@ -16,6 +15,7 @@ from crypto.transactions.types.validator_resignation import ValidatorResignation
 from crypto.enums.abi_function import AbiFunction
 from crypto.utils.abi_decoder import AbiDecoder
 from crypto.utils.rlp_decoder import RlpDecoder
+from crypto.utils.transaction_utils import TransactionUtils
 
 class Deserializer:
     SIGNATURE_SIZE = 64
@@ -113,7 +113,7 @@ class Deserializer:
 
     @staticmethod
     def parse_hex(value: str) -> str:
-        return re.sub(r'^0x', '', value)
+        return TransactionUtils.parse_hex_from_str(value)
 
     @staticmethod
     def parse_address(value: str) -> Optional[str]:

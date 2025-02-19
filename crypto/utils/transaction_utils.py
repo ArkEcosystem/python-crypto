@@ -1,5 +1,6 @@
 from binascii import unhexlify
 import hashlib
+import re
 
 from Cryptodome.Hash import keccak
 from crypto.enums.constants import Constants
@@ -61,3 +62,7 @@ class TransactionUtils:
             return value
 
         raise TypeError("Unsupported type for to_be_array")
+
+    @staticmethod
+    def parse_hex_from_str(value: str) -> str:
+        return re.sub(r'^0x', '', value)

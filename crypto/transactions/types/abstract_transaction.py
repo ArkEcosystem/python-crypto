@@ -24,7 +24,7 @@ class AbstractTransaction:
         return Deserializer.decode_payload(data, abi_type)
 
     def refresh_payload_data(self):
-        self.data['data'] = self.get_payload().lstrip('0x')
+        self.data['data'] = TransactionUtils.parse_hex_from_str(self.get_payload())
 
     def get_id(self) -> str:
         return TransactionUtils.get_id(self.data)

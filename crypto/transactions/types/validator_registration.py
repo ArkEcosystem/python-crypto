@@ -1,13 +1,15 @@
+from typing import Optional
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.utils.abi_encoder import AbiEncoder
 from crypto.enums.abi_function import AbiFunction
+from crypto.utils.transaction_utils import TransactionUtils
 
 class ValidatorRegistration(AbstractTransaction):
-    def __init__(self, data: dict = None):
+    def __init__(self, data: Optional[dict] = None):
         data = data or {}
         payload = self.decode_payload(data)
         if payload:
-            data['validatorPublicKey'] = payload.get('args', [None])[0].lstrip('0x') if payload.get('args') else None
+            data['validatorPublicKey'] = TransactionUtils.parse_hex_from_str(payload.get('args', [None])[0].lstrip('0x')) if payload.get('args') else None
         super().__init__(data)
 
     def get_payload(self) -> str:
