@@ -3,6 +3,7 @@ from typing import Optional
 
 from crypto.configuration.network import get_network
 from crypto.enums.constants import Constants
+from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.identity.address import address_from_public_key
 from crypto.identity.private_key import PrivateKey
 from crypto.utils.transaction_utils import TransactionUtils
@@ -17,16 +18,10 @@ class AbstractTransaction:
     def get_payload(self) -> str:
         return ''
 
-    def decode_payload(self, data: dict) -> Optional[dict]:
-        if 'data' not in data or data['data'] == '':
-            return None
+    def decode_payload(self, data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
+        from crypto.transactions.deserializer import Deserializer
 
-        payload = data['data']
-        decoder = AbiDecoder()
-
-        decoded_data = decoder.decode_function_data(payload)
-
-        return decoded_data
+        return Deserializer.decode_payload(data, abi_type)
 
     def refresh_payload_data(self):
         self.data['data'] = self.get_payload().lstrip('0x')
