@@ -1,9 +1,10 @@
+from typing import Optional
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.utils.abi_encoder import AbiEncoder
 from crypto.enums.abi_function import AbiFunction
 
 class Vote(AbstractTransaction):
-    def __init__(self, data: dict = None):
+    def __init__(self, data: Optional[dict] = None):
         data = data or {}
         payload = self.decode_payload(data)
         if payload:
