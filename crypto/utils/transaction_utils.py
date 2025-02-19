@@ -1,6 +1,7 @@
 from binascii import unhexlify
 import hashlib
 
+from Cryptodome.Hash import keccak
 from crypto.enums.constants import Constants
 from crypto.utils.rlp_encoder import RlpEncoder
 
@@ -42,7 +43,7 @@ class TransactionUtils:
 
     @classmethod
     def to_hash(cls, transaction: dict, skip_signature: bool = False) -> str:
-        return hashlib.sha256(unhexlify(cls.to_buffer(transaction, skip_signature))).hexdigest()
+        return keccak.new(data=unhexlify(cls.to_buffer(transaction, skip_signature)), digest_bits=256).hexdigest()
 
     @classmethod
     def get_id(cls, transaction: dict) -> str:
