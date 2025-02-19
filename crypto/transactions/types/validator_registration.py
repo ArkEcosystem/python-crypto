@@ -9,7 +9,7 @@ class ValidatorRegistration(AbstractTransaction):
         data = data or {}
         payload = self.decode_payload(data)
         if payload:
-            data['validatorPublicKey'] = TransactionUtils.parse_hex_from_str(payload.get('args', [None])[0].lstrip('0x')) if payload.get('args') else None
+            data['validatorPublicKey'] = TransactionUtils.parse_hex_from_str(payload.get('args', [None])[0]) if payload.get('args') else None
         super().__init__(data)
 
     def get_payload(self) -> str:

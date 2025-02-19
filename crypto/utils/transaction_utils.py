@@ -10,7 +10,7 @@ class TransactionUtils:
     @classmethod
     def to_buffer(cls, transaction: dict, skip_signature: bool = False) -> bytes:
         # Process recipientAddress
-        hex_address = transaction.get('recipientAddress', '').lstrip('0x')
+        hex_address = cls.parse_hex_from_str(transaction.get('recipientAddress', ''))
 
         # Pad with leading zero if necessary
         if len(hex_address) % 2 != 0:
@@ -27,7 +27,7 @@ class TransactionUtils:
             cls.to_be_array(int(transaction['gasLimit'])),
             recipient_address,
             cls.to_be_array(int(transaction.get('value', 0))),
-            bytes.fromhex(transaction.get('data', '').lstrip('0x')) if transaction.get('data') else b'',
+            bytes.fromhex(cls.parse_hex_from_str(transaction.get('data', ''))) if transaction.get('data') else b'',
             [],
         ]
 
