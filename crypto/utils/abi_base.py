@@ -39,7 +39,8 @@ class AbiBase:
     def is_valid_address(self, address):
         # Compute the checksum address and compare
         computed_checksum_address = get_checksum_address(address.lower())
-        return address == computed_checksum_address
+
+        return address.lower() == computed_checksum_address.lower()
 
     def keccak256(self, input_str):
         k = keccak.new(digest_bits=256)
