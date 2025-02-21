@@ -64,32 +64,36 @@ class AbiDecoder(AbiBase):
         if match:
             signed = match.group(1) == 'int'
             bits = int(match.group(2))
-            return self.decode_number(bytes_data, offset, bits, signed)
+            return self.decode_number(bytes_data, offset, signed)
         if type_ == 'tuple':
             return self.decode_tuple(bytes_data, offset, param)
         raise Exception('Unsupported type: ' + type_)
 
-    def decode_address(self, bytes_data, offset):
+    @staticmethod
+    def decode_address(bytes_data, offset):
         data = bytes_data[offset:offset+32]
         address_bytes = data[12:32]
         address = '0x' + address_bytes.hex()
         address = get_checksum_address(address)
         return address, 32
 
-    def decode_bool(self, bytes_data, offset):
+    @staticmethod
+    def decode_bool(bytes_data, offset):
         data = bytes_data[offset:offset+32]
         value = int.from_bytes(data, byteorder='big') != 0
         return value, 32
 
-    def decode_number(self, bytes_data, offset, bits, signed):
+    @staticmethod
+    def decode_number(bytes_data, offset, signed):
         data = bytes_data[offset:offset+32]
         value = int.from_bytes(data, byteorder='big', signed=signed)
         return value, 32
 
-    def decode_string(self, bytes_data, offset):
-        data_offset = self.read_uint(bytes_data, offset)
+    @classmethod
+    def decode_string(cls, bytes_data, offset):
+        data_offset = cls.read_uint(bytes_data, offset)
         string_offset = offset + data_offset
-        length = self.read_uint(bytes_data, string_offset)
+        length = cls.read_uint(bytes_data, string_offset)
         string_data = bytes_data[string_offset+32:string_offset+32+length]
         value = string_data.decode('utf-8')
         return value, 32
@@ -140,6 +144,7 @@ class AbiDecoder(AbiBase):
             values[name] = value
         return values, 32
 
-    def read_uint(self, bytes_data, offset):
+    @staticmethod
+    def read_uint(bytes_data, offset):
         data = bytes_data[offset:offset+32]
         return int.from_bytes(data, byteorder='big')
