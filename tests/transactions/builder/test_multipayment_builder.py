@@ -1,4 +1,4 @@
-from crypto.transactions.builder.multipayment import MultipaymentBuilder
+from crypto.transactions.builder.multipayment_builder import MultipaymentBuilder
 
 def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixture):
     fixture = load_transaction_fixture('multipayment')
