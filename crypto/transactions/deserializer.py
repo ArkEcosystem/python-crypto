@@ -1,10 +1,12 @@
-import re
 from binascii import unhexlify
 from typing import Optional
 from crypto.enums.constants import Constants
+from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.transfer import Transfer
 from crypto.transactions.types.evm_call import EvmCall
+from crypto.transactions.types.username_registration import UsernameRegistration
+from crypto.transactions.types.username_resignation import UsernameResignation
 from crypto.transactions.types.vote import Vote
 from crypto.transactions.types.unvote import Unvote
 from crypto.transactions.types.validator_registration import ValidatorRegistration
@@ -13,6 +15,7 @@ from crypto.transactions.types.validator_resignation import ValidatorResignation
 from crypto.enums.abi_function import AbiFunction
 from crypto.utils.abi_decoder import AbiDecoder
 from crypto.utils.rlp_decoder import RlpDecoder
+from crypto.utils.transaction_utils import TransactionUtils
 
 class Deserializer:
     SIGNATURE_SIZE = 64
@@ -59,30 +62,40 @@ class Deserializer:
         if data['value'] != '0':
             return Transfer(data)
 
-        payload_data = self.decode_payload(data)
+        consensus_payload_data = self.decode_payload(data)
+        if consensus_payload_data is not None:
+            function_name = consensus_payload_data.get('functionName')
+            if function_name == AbiFunction.VOTE.value:
+                return Vote(data)
 
-        if payload_data is None:
-            return EvmCall(data)
+            if function_name == AbiFunction.UNVOTE.value:
+                return Unvote(data)
 
-        function_name = payload_data.get('functionName')
-        if function_name == AbiFunction.VOTE.value:
-            return Vote(data)
-        elif function_name == AbiFunction.UNVOTE.value:
-            return Unvote(data)
-        elif function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
-            return ValidatorRegistration(data)
-        elif function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
-            return ValidatorResignation(data)
-        else:
-            return EvmCall(data)
+            if function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
+                return ValidatorRegistration(data)
 
-    def decode_payload(self, data: dict) -> Optional[dict]:
+            if function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
+                return ValidatorResignation(data)
+
+        username_payload_data = self.decode_payload(data, ContractAbiType.USERNAMES)
+        if username_payload_data is not None:
+            function_name = username_payload_data.get('functionName')
+            if function_name == AbiFunction.USERNAME_REGISTRATION.value:
+                return UsernameRegistration(data)
+
+            if function_name == AbiFunction.USERNAME_RESIGNATION.value:
+                return UsernameResignation(data)
+
+        return EvmCall(data)
+
+    @staticmethod
+    def decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
         payload = data.get('data', '')
 
         if payload == '':
             return None
 
-        decoder = AbiDecoder()
+        decoder = AbiDecoder(abi_type)
         try:
             return decoder.decode_function_data(payload)
         except Exception as e:
@@ -100,7 +113,7 @@ class Deserializer:
 
     @staticmethod
     def parse_hex(value: str) -> str:
-        return re.sub(r'^0x', '', value)
+        return TransactionUtils.parse_hex_from_str(value)
 
     @staticmethod
     def parse_address(value: str) -> Optional[str]:

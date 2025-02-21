@@ -1,5 +1,7 @@
 from crypto.transactions.deserializer import Deserializer
 from crypto.transactions.types.transfer import Transfer
+from crypto.transactions.types.username_registration import UsernameRegistration
+from crypto.transactions.types.username_resignation import UsernameResignation
 from crypto.transactions.types.vote import Vote
 from crypto.transactions.types.unvote import Unvote
 from crypto.transactions.types.validator_registration import ValidatorRegistration
@@ -27,7 +29,7 @@ def test_deserialize_vote(load_transaction_fixture):
 
     assert isinstance(transaction, Vote)
     assert transaction.data['vote'].lower() == '0xc3bbe9b1cee1ff85ad72b87414b0e9b7f2366763'
-    assert transaction.data['id'] == '991a3a63dc47be84d7982acb4c2aae488191373f31b8097e07d3ad95c0997e69'
+    assert transaction.data['id'] == fixture['data']['id']
 
 def test_deserialize_unvote(load_transaction_fixture):
     fixture = load_transaction_fixture('unvote')
@@ -46,6 +48,18 @@ def test_deserialize_validator_resignation(load_transaction_fixture):
     transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
 
     assert isinstance(transaction, ValidatorResignation)
+
+def test_deserialize_username_registration(load_transaction_fixture):
+    fixture = load_transaction_fixture('username-registration')
+    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+
+    assert isinstance(transaction, UsernameRegistration)
+
+def test_deserialize_username_resignation(load_transaction_fixture):
+    fixture = load_transaction_fixture('username-resignation')
+    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+
+    assert isinstance(transaction, UsernameResignation)
 
 def test_parse_number():
     assert Deserializer.parse_number('0x01') == 1

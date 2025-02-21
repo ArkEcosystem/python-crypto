@@ -1,6 +1,6 @@
 from crypto.transactions.builder.validator_registration_builder import ValidatorRegistrationBuilder
 
-def test_validator_registration_transaction(passphrase, load_transaction_fixture):
+def test_validator_registration_transaction(passphrase, validator_public_key, load_transaction_fixture):
     fixture = load_transaction_fixture('validator-registration')
 
     builder = (
@@ -9,11 +9,12 @@ def test_validator_registration_transaction(passphrase, load_transaction_fixture
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
             .gas_limit(fixture['data']['gasLimit'])
-            .validator_public_key('954f46d6097a1d314e900e66e11e0dad0a57cd03e04ec99f0dedd1c765dcb11e6d7fa02e22cf40f9ee23d9cc1c0624bd')
+            .validator_public_key(validator_public_key)
             .recipient_address(fixture['data']['recipientAddress'])
             .sign(passphrase)
     )
 
+    assert builder.transaction.serialize().hex() == fixture['serialized']
     assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']

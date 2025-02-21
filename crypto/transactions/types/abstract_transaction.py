@@ -3,6 +3,7 @@ from typing import Optional
 
 from crypto.configuration.network import get_network
 from crypto.enums.constants import Constants
+from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.identity.address import address_from_public_key
 from crypto.identity.private_key import PrivateKey
 from crypto.utils.transaction_utils import TransactionUtils
@@ -17,19 +18,8 @@ class AbstractTransaction:
     def get_payload(self) -> str:
         return ''
 
-    def decode_payload(self, data: dict) -> Optional[dict]:
-        if 'data' not in data or data['data'] == '':
-            return None
-
-        payload = data['data']
-        decoder = AbiDecoder()
-
-        decoded_data = decoder.decode_function_data(payload)
-
-        return decoded_data
-
     def refresh_payload_data(self):
-        self.data['data'] = self.get_payload().lstrip('0x')
+        self.data['data'] = TransactionUtils.parse_hex_from_str(self.get_payload())
 
     def get_id(self) -> str:
         return TransactionUtils.get_id(self.data)
@@ -105,3 +95,9 @@ class AbstractTransaction:
             return bytes.fromhex(r) + bytes.fromhex(s) + bytes([recover_id])
 
         return None
+
+    @staticmethod
+    def decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
+        from crypto.transactions.deserializer import Deserializer
+
+        return Deserializer.decode_payload(data, abi_type)

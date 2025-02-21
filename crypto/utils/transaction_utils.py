@@ -1,6 +1,8 @@
 from binascii import unhexlify
 import hashlib
+import re
 
+from Cryptodome.Hash import keccak
 from crypto.enums.constants import Constants
 from crypto.utils.rlp_encoder import RlpEncoder
 
@@ -8,7 +10,7 @@ class TransactionUtils:
     @classmethod
     def to_buffer(cls, transaction: dict, skip_signature: bool = False) -> bytes:
         # Process recipientAddress
-        hex_address = transaction.get('recipientAddress', '').lstrip('0x')
+        hex_address = cls.parse_hex_from_str(transaction.get('recipientAddress', ''))
 
         # Pad with leading zero if necessary
         if len(hex_address) % 2 != 0:
@@ -25,7 +27,7 @@ class TransactionUtils:
             cls.to_be_array(int(transaction['gasLimit'])),
             recipient_address,
             cls.to_be_array(int(transaction.get('value', 0))),
-            bytes.fromhex(transaction.get('data', '').lstrip('0x')) if transaction.get('data') else b'',
+            bytes.fromhex(cls.parse_hex_from_str(transaction.get('data', ''))) if transaction.get('data') else b'',
             [],
         ]
 
@@ -42,7 +44,7 @@ class TransactionUtils:
 
     @classmethod
     def to_hash(cls, transaction: dict, skip_signature: bool = False) -> str:
-        return hashlib.sha256(unhexlify(cls.to_buffer(transaction, skip_signature))).hexdigest()
+        return keccak.new(data=unhexlify(cls.to_buffer(transaction, skip_signature)), digest_bits=256).hexdigest()
 
     @classmethod
     def get_id(cls, transaction: dict) -> str:
@@ -60,3 +62,7 @@ class TransactionUtils:
             return value
 
         raise TypeError("Unsupported type for to_be_array")
+
+    @staticmethod
+    def parse_hex_from_str(value: str) -> str:
+        return re.sub(r'^0x', '', value)
