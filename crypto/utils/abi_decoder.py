@@ -137,7 +137,7 @@ class AbiDecoder(AbiBase):
 
         if length is None:
             data_offset = self.read_uint(bytes_data, offset)
-            array_offset = offset + data_offset
+            array_offset = data_offset
             array_length = self.read_uint(bytes_data, array_offset)
             cursor = array_offset + 32
         else:
