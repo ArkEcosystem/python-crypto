@@ -3,6 +3,7 @@ from typing import Optional
 from crypto.enums.constants import Constants
 from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
+from crypto.transactions.types.multipayment import Multipayment
 from crypto.transactions.types.transfer import Transfer
 from crypto.transactions.types.evm_call import EvmCall
 from crypto.transactions.types.username_registration import UsernameRegistration
@@ -59,6 +60,12 @@ class Deserializer:
         return transaction
 
     def guess_transaction_from_data(self, data: dict) -> AbstractTransaction:
+        multipayment_payload_data = self.decode_payload(data, ContractAbiType.MULTIPAYMENT)
+        if multipayment_payload_data is not None:
+            function_name = multipayment_payload_data.get('functionName')
+            if function_name == AbiFunction.MULTIPAYMENT.value:
+                return Multipayment(data, multipayment_payload_data)
+
         if data['value'] != '0':
             return Transfer(data)
 
