@@ -66,13 +66,13 @@ class Deserializer:
         if consensus_payload_data is not None:
             function_name = consensus_payload_data.get('functionName')
             if function_name == AbiFunction.VOTE.value:
-                return Vote(data)
+                return Vote(data, consensus_payload_data)
 
             if function_name == AbiFunction.UNVOTE.value:
                 return Unvote(data)
 
             if function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
-                return ValidatorRegistration(data)
+                return ValidatorRegistration(data, consensus_payload_data)
 
             if function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
                 return ValidatorResignation(data)
@@ -81,7 +81,7 @@ class Deserializer:
         if username_payload_data is not None:
             function_name = username_payload_data.get('functionName')
             if function_name == AbiFunction.USERNAME_REGISTRATION.value:
-                return UsernameRegistration(data)
+                return UsernameRegistration(data, username_payload_data)
 
             if function_name == AbiFunction.USERNAME_RESIGNATION.value:
                 return UsernameResignation(data)
