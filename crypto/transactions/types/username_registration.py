@@ -5,9 +5,11 @@ from crypto.utils.abi_encoder import AbiEncoder
 from crypto.enums.abi_function import AbiFunction
 
 class UsernameRegistration(AbstractTransaction):
-    def __init__(self, data: Optional[dict] = None):
+    def __init__(self, data: Optional[dict] = None, payload: Optional[dict] = None):
         data = data or {}
-        payload = self.decode_payload(data, ContractAbiType.USERNAMES)
+        if payload is None:
+            payload = self.decode_payload(data, ContractAbiType.USERNAMES)
+
         if payload:
             data['username'] = payload.get('args', [None])[0] if payload.get('args') else None
 

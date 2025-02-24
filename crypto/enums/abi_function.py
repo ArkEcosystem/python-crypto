@@ -3,6 +3,7 @@ from enum import Enum
 class AbiFunction(Enum):
     VOTE = 'vote'
     UNVOTE = 'unvote'
+    MULTIPAYMENT = 'pay'
     USERNAME_REGISTRATION = 'registerUsername'
     USERNAME_RESIGNATION = 'resignUsername'
     VALIDATOR_REGISTRATION = 'registerValidator'

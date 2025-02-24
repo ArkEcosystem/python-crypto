@@ -3,6 +3,7 @@ from typing import Optional
 from crypto.enums.constants import Constants
 from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
+from crypto.transactions.types.multipayment import Multipayment
 from crypto.transactions.types.transfer import Transfer
 from crypto.transactions.types.evm_call import EvmCall
 from crypto.transactions.types.username_registration import UsernameRegistration
@@ -59,6 +60,12 @@ class Deserializer:
         return transaction
 
     def guess_transaction_from_data(self, data: dict) -> AbstractTransaction:
+        multipayment_payload_data = self.decode_payload(data, ContractAbiType.MULTIPAYMENT)
+        if multipayment_payload_data is not None:
+            function_name = multipayment_payload_data.get('functionName')
+            if function_name == AbiFunction.MULTIPAYMENT.value:
+                return Multipayment(data, multipayment_payload_data)
+
         if data['value'] != '0':
             return Transfer(data)
 
@@ -66,13 +73,13 @@ class Deserializer:
         if consensus_payload_data is not None:
             function_name = consensus_payload_data.get('functionName')
             if function_name == AbiFunction.VOTE.value:
-                return Vote(data)
+                return Vote(data, consensus_payload_data)
 
             if function_name == AbiFunction.UNVOTE.value:
                 return Unvote(data)
 
             if function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
-                return ValidatorRegistration(data)
+                return ValidatorRegistration(data, consensus_payload_data)
 
             if function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
                 return ValidatorResignation(data)
@@ -81,7 +88,7 @@ class Deserializer:
         if username_payload_data is not None:
             function_name = username_payload_data.get('functionName')
             if function_name == AbiFunction.USERNAME_REGISTRATION.value:
-                return UsernameRegistration(data)
+                return UsernameRegistration(data, username_payload_data)
 
             if function_name == AbiFunction.USERNAME_RESIGNATION.value:
                 return UsernameResignation(data)

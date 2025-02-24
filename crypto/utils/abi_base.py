@@ -39,7 +39,8 @@ class AbiBase:
     def is_valid_address(self, address):
         # Compute the checksum address and compare
         computed_checksum_address = get_checksum_address(address.lower())
-        return address == computed_checksum_address
+
+        return address.lower() == computed_checksum_address.lower()
 
     def keccak256(self, input_str):
         k = keccak.new(digest_bits=256)
@@ -61,6 +62,9 @@ class AbiBase:
     def __contract_abi_path(self, abi_type: ContractAbiType, path: Optional[str] = None) -> Optional[str]:
         if abi_type == ContractAbiType.CONSENSUS:
             return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Consensus.json')
+
+        if abi_type == ContractAbiType.MULTIPAYMENT:
+            return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Multipayment.json')
 
         if abi_type == ContractAbiType.USERNAMES:
             return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Usernames.json')

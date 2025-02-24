@@ -10,3 +10,15 @@ def test_encode_vote_function_call():
     encoded_data = encoder.encode_function_call(function_name, args)
 
     assert encoded_data == expected_encoded_data
+
+def test_encode_address():
+    assert AbiEncoder().encode_address('0xC3bBE9B1CeE1ff85Ad72b87414B0E9B7F2366763') == {
+        'dynamic': False,
+        'encoded': '0x000000000000000000000000c3bbe9b1cee1ff85ad72b87414b0e9b7f2366763',
+    }
+
+    # lowercase
+    assert AbiEncoder().encode_address('0xc3bbe9b1cee1ff85ad72b87414b0e9b7f2366763') == {
+        'dynamic': False,
+        'encoded': '0x000000000000000000000000c3bbe9b1cee1ff85ad72b87414b0e9b7f2366763',
+    }
