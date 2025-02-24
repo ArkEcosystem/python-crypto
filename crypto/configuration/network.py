@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Type, TypedDict, Union
-from crypto.networks.devnet import Devnet
 from crypto.networks.mainnet import Mainnet
 from crypto.networks.testnet import Testnet
 
@@ -10,12 +9,12 @@ class NetworkType(TypedDict):
     wif: int
 
 network: NetworkType = {
-    'epoch': Devnet.epoch,
-    'version': Devnet.version,
-    'wif': Devnet.wif,
+    'epoch': Testnet.epoch,
+    'version': Testnet.version,
+    'wif': Testnet.wif,
 }
 
-def set_network(network_object: Union[Type[Mainnet], Type[Devnet], Type[Testnet]]) -> None:
+def set_network(network_object: Union[Type[Mainnet], Type[Testnet]]) -> None:
     """Set what network you want to use in the crypto library
 
     Args:
