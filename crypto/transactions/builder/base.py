@@ -25,7 +25,7 @@ class AbstractTransactionBuilder:
     def new(cls, data: Optional[dict] = None):
         return cls(data)
 
-    def gas_limit(self, gas_limit: int):
+    def gas_limit(self, gas_limit: int | str):
         self.transaction.data['gasLimit'] = gas_limit
         return self
 
@@ -33,7 +33,7 @@ class AbstractTransactionBuilder:
         self.transaction.data['recipientAddress'] = recipient_address
         return self
 
-    def gas_price(self, gas_price: int):
+    def gas_price(self, gas_price: int | str):
         self.transaction.data['gasPrice'] = gas_price
         return self
 
