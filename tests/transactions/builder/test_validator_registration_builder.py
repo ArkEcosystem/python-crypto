@@ -29,7 +29,7 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
     assert builder.transaction.data['id'] == fixture['data']['id']
     assert builder.verify()
 
-def test_validator_registration_transaction_with_default_recipient_address(passphrase, load_transaction_fixture):
+def test_validator_registration_transaction_with_default_recipient_address(passphrase, validator_public_key, load_transaction_fixture):
     fixture = load_transaction_fixture('validator-registration')
 
     builder = (
@@ -38,7 +38,7 @@ def test_validator_registration_transaction_with_default_recipient_address(passp
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
             .gas_limit(fixture['data']['gasLimit'])
-            .validator_public_key('954f46d6097a1d314e900e66e11e0dad0a57cd03e04ec99f0dedd1c765dcb11e6d7fa02e22cf40f9ee23d9cc1c0624bd')
+            .validator_public_key(validator_public_key)
             .sign(passphrase)
     )
 
