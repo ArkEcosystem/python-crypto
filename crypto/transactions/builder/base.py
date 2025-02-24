@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from crypto.configuration.network import get_network
 from crypto.identity.private_key import PrivateKey
@@ -25,7 +25,7 @@ class AbstractTransactionBuilder:
     def new(cls, data: Optional[dict] = None):
         return cls(data)
 
-    def gas_limit(self, gas_limit: int | str):
+    def gas_limit(self, gas_limit: Union[int, str]):
         self.transaction.data['gasLimit'] = gas_limit
         return self
 
@@ -33,7 +33,7 @@ class AbstractTransactionBuilder:
         self.transaction.data['recipientAddress'] = recipient_address
         return self
 
-    def gas_price(self, gas_price: int | str):
+    def gas_price(self, gas_price: Union[int, str]):
         self.transaction.data['gasPrice'] = gas_price
         return self
 
