@@ -2,16 +2,16 @@ import pytest
 import json
 import os
 from crypto.configuration.network import set_network
-from crypto.networks.devnet import Devnet
+from crypto.networks.testnet import Testnet
 
 
 @pytest.fixture(scope='session', autouse=True)
 def configure_network():
     """
-    Configures the network to Devnet before running any tests.
+    Configures the network to Testnet before running any tests.
     This fixture runs automatically once per test session.
     """
-    set_network(Devnet)
+    set_network(Testnet)
 
 @pytest.fixture
 def load_transaction_fixture():
