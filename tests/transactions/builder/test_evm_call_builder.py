@@ -19,7 +19,7 @@ def test_evm_call_transaction(passphrase, load_transaction_fixture):
     assert builder.transaction.data['network'] == fixture['data']['network']
     assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
     assert builder.transaction.data['recipientAddress'].lower() == fixture['data']['recipientAddress'].lower()
-    assert builder.transaction.data['value'] == fixture['data']['value']
+    assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
     assert builder.transaction.data['s'] == fixture['data']['s']

@@ -20,7 +20,7 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     assert builder.transaction.data['network'] == fixture['data']['network']
     assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
     assert builder.transaction.data['recipientAddress'] == fixture['data']['recipientAddress']
-    assert builder.transaction.data['value'] == fixture['data']['value']
+    assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
     assert builder.transaction.data['s'] == fixture['data']['s']
@@ -40,9 +40,9 @@ def test_it_should_handle_unit_converter(passphrase, address):
             .sign(passphrase)
     )
 
-    assert builder.transaction.data['gasPrice'] == '5000000000'
+    assert builder.transaction.data['gasPrice'] == 5000000000
     assert builder.transaction.data['nonce'] == '1'
-    assert builder.transaction.data['gasLimit'] == '100000000'
-    assert builder.transaction.data['value'] == '10000000000000000000'
+    assert builder.transaction.data['gasLimit'] == 100000000
+    assert builder.transaction.data['value'] == 10000000000000000000
 
     assert builder.verify()

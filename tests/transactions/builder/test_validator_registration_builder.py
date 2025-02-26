@@ -20,7 +20,7 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
     assert builder.transaction.data['network'] == fixture['data']['network']
     assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
     assert builder.transaction.data['recipientAddress'] == fixture['data']['recipientAddress']
-    assert builder.transaction.data['value'] == fixture['data']['value']
+    assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
     assert builder.transaction.data['s'] == fixture['data']['s']
@@ -47,7 +47,7 @@ def test_validator_registration_transaction_with_default_recipient_address(passp
     assert builder.transaction.data['network'] == fixture['data']['network']
     assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
     assert builder.transaction.data['recipientAddress'].lower() == fixture['data']['recipientAddress'].lower()
-    assert builder.transaction.data['value'] == fixture['data']['value']
+    assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
     assert builder.transaction.data['s'] == fixture['data']['s']
