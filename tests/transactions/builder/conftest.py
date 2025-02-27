@@ -17,3 +17,9 @@ def username():
     """Username used for tests"""
 
     return 'fixture'
+
+@pytest.fixture
+def address():
+    """Address used for tests"""
+
+    return '0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22'

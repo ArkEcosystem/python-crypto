@@ -14,7 +14,6 @@ def test_transfer_serialization(load_transaction_fixture):
 def test_vote_serialization(load_transaction_fixture):
     fixture = load_transaction_fixture('vote')
     transaction = Vote(fixture['data'])
-    print(f"transaction: {transaction.data}")
     serializer = Serializer.new(transaction)
     assert serializer.serialize().hex() == fixture['serialized']
 

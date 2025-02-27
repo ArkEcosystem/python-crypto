@@ -1,5 +1,4 @@
 from typing import Optional
-
 from crypto.configuration.network import get_network
 from crypto.identity.private_key import PrivateKey
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
@@ -8,7 +7,7 @@ from crypto.transactions.types.abstract_transaction import AbstractTransaction
 class AbstractTransactionBuilder:
     def __init__(self, data: Optional[dict] = None):
         default_data = {
-            'value': '0',
+            'value': 0,
             'senderPublicKey': '',
             'gasPrice': '5',
             'nonce': '1',
@@ -26,7 +25,7 @@ class AbstractTransactionBuilder:
         return cls(data)
 
     def gas_limit(self, gas_limit: int):
-        self.transaction.data['gasLimit'] = gas_limit
+        self.transaction.data['gasLimit'] = int(gas_limit)
         return self
 
     def recipient_address(self, recipient_address: str):
@@ -34,7 +33,7 @@ class AbstractTransactionBuilder:
         return self
 
     def gas_price(self, gas_price: int):
-        self.transaction.data['gasPrice'] = gas_price
+        self.transaction.data['gasPrice'] = int(gas_price)
         return self
 
     def nonce(self, nonce: str):
