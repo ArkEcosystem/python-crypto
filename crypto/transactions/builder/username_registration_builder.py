@@ -1,12 +1,11 @@
 import re
-from typing import Optional
 from crypto.enums.contract_addresses import ContractAddresses
 from crypto.exceptions import InvalidUsernameException
 from crypto.transactions.builder.base import AbstractTransactionBuilder
 from crypto.transactions.types.username_registration import UsernameRegistration
 
 class UsernameRegistrationBuilder(AbstractTransactionBuilder):
-    def __init__(self, data: Optional[dict] = None):
+    def __init__(self, data: dict):
         super().__init__(data)
 
         self.recipient_address(ContractAddresses.USERNAMES.value)

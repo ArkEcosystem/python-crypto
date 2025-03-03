@@ -1,10 +1,9 @@
-from typing import Optional
 from crypto.enums.contract_addresses import ContractAddresses
 from crypto.transactions.builder.base import AbstractTransactionBuilder
 from crypto.transactions.types.multipayment import Multipayment
 
 class MultipaymentBuilder(AbstractTransactionBuilder):
-    def __init__(self, data: Optional[dict] = None):
+    def __init__(self, data: dict):
         super().__init__(data)
 
         self.transaction.data['pay'] = [[], []]
