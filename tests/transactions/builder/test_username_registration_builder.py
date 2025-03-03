@@ -5,7 +5,8 @@ def test_username_registration_transaction(passphrase, username, load_transactio
     fixture = load_transaction_fixture('username-registration')
 
     builder = (
-        UsernameRegistrationBuilder()
+        UsernameRegistrationBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])

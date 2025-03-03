@@ -4,7 +4,8 @@ def test_username_resignation_transaction(passphrase, load_transaction_fixture):
     fixture = load_transaction_fixture('username-resignation')
 
     builder = (
-        UsernameResignationBuilder()
+        UsernameResignationBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])

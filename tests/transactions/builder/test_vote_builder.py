@@ -4,7 +4,8 @@ def test_vote_transaction(passphrase, load_transaction_fixture):
     fixture = load_transaction_fixture('vote')
 
     builder = (
-        VoteBuilder()
+        VoteBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
@@ -32,7 +33,8 @@ def test_vote_transaction_with_default_recipient_address(passphrase, load_transa
     fixture = load_transaction_fixture('vote')
 
     builder = (
-        VoteBuilder()
+        VoteBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])

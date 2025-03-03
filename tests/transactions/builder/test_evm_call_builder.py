@@ -4,7 +4,8 @@ def test_evm_call_transaction(passphrase, load_transaction_fixture):
     fixture = load_transaction_fixture('evm-sign')
 
     builder = (
-        EvmCallBuilder()
+        EvmCallBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
