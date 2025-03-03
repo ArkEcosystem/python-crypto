@@ -4,8 +4,7 @@ from crypto.utils.abi_encoder import AbiEncoder
 from crypto.enums.abi_function import AbiFunction
 
 class Vote(AbstractTransaction):
-    def __init__(self, data: Optional[dict] = None, payload: Optional[dict] = None):
-        data = data or {}
+    def __init__(self, data: dict, payload: Optional[dict] = None):
         if payload is None:
             payload = self.decode_payload(data)
 
