@@ -5,10 +5,8 @@ from crypto.enums.abi_function import AbiFunction
 from crypto.utils.transaction_utils import TransactionUtils
 
 class ValidatorRegistration(AbstractTransaction):
-    def __init__(self, data: dict, payload: Optional[dict] = None):
-        if payload is None:
-            payload = self.decode_payload(data)
-
+    def __init__(self, data: dict):
+        payload = self.decode_payload(data)
         if payload:
             data['validatorPublicKey'] = TransactionUtils.parse_hex_from_str(payload.get('args', [None])[0]) if payload.get('args') else None
         super().__init__(data)
