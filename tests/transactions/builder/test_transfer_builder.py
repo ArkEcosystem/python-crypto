@@ -5,7 +5,8 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     fixture = load_transaction_fixture('transfer')
 
     builder = (
-        TransferBuilder()
+        TransferBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
@@ -31,7 +32,8 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
 
 def test_it_should_handle_unit_converter(passphrase, address):
     builder = (
-        TransferBuilder()
+        TransferBuilder
+            .new()
             .gas_price(UnitConverter.parse_units(5, 'gwei'))
             .nonce('1')
             .gas_limit(UnitConverter.parse_units(0.1, 'gwei'))

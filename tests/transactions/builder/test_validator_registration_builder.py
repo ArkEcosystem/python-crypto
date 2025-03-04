@@ -4,7 +4,8 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
     fixture = load_transaction_fixture('validator-registration')
 
     builder = (
-        ValidatorRegistrationBuilder()
+        ValidatorRegistrationBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
@@ -33,7 +34,8 @@ def test_validator_registration_transaction_with_default_recipient_address(passp
     fixture = load_transaction_fixture('validator-registration')
 
     builder = (
-        ValidatorRegistrationBuilder()
+        ValidatorRegistrationBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])

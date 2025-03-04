@@ -5,8 +5,8 @@ from crypto.transactions.types.abstract_transaction import AbstractTransaction
 
 
 class AbstractTransactionBuilder:
-    def __init__(self, data: Optional[dict] = None):
-        default_data = {
+    def __init__(self, data: dict):
+        data = {
             'value': 0,
             'senderPublicKey': '',
             'gasPrice': '5',
@@ -14,15 +14,18 @@ class AbstractTransactionBuilder:
             'network': get_network()['version'],
             'gasLimit': 1_000_000,
             'data': '',
+
+            **data,
         }
-        self.transaction = self.get_transaction_instance(data or default_data)
+
+        self.transaction = self.get_transaction_instance(data)
 
     def __str__(self):
         return self.to_json()
 
     @classmethod
-    def new(cls, data: Optional[dict] = None):
-        return cls(data)
+    def new(cls):
+        return cls({})
 
     def gas_limit(self, gas_limit: int):
         self.transaction.data['gasLimit'] = int(gas_limit)

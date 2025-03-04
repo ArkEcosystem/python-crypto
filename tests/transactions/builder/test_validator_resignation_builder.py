@@ -4,7 +4,8 @@ def test_validator_resignation_transaction(passphrase, load_transaction_fixture)
     fixture = load_transaction_fixture('validator-resignation')
 
     builder = (
-        ValidatorResignationBuilder()
+        ValidatorResignationBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
@@ -31,7 +32,8 @@ def test_validator_resignation_transaction_with_default_recipient_address(passph
     fixture = load_transaction_fixture('validator-resignation')
 
     builder = (
-        ValidatorResignationBuilder()
+        ValidatorResignationBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])

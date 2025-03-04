@@ -4,7 +4,8 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     fixture = load_transaction_fixture('multipayment')
 
     builder = (
-        MultipaymentBuilder()
+        MultipaymentBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
@@ -30,7 +31,8 @@ def test_it_should_handle_single_recipient(passphrase, load_transaction_fixture)
     fixture = load_transaction_fixture('multipayment-single')
 
     builder = (
-        MultipaymentBuilder()
+        MultipaymentBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
@@ -55,7 +57,8 @@ def test_it_should_handle_empty_payment(passphrase, load_transaction_fixture):
     fixture = load_transaction_fixture('multipayment-empty')
 
     builder = (
-        MultipaymentBuilder()
+        MultipaymentBuilder
+            .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])

@@ -5,11 +5,8 @@ from crypto.utils.abi_encoder import AbiEncoder
 from crypto.enums.abi_function import AbiFunction
 
 class Multipayment(AbstractTransaction):
-    def __init__(self, data: Optional[dict] = None, payload: Optional[dict] = None):
-        data = data or {}
-        if payload is None:
-            payload = self.decode_payload(data, ContractAbiType.MULTIPAYMENT)
-
+    def __init__(self, data: dict):
+        payload = self.decode_payload(data, ContractAbiType.MULTIPAYMENT)
         if payload:
             data['pay'] = payload.get('args', [])
 

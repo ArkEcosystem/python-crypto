@@ -64,7 +64,7 @@ class Deserializer:
         if multipayment_payload_data is not None:
             function_name = multipayment_payload_data.get('functionName')
             if function_name == AbiFunction.MULTIPAYMENT.value:
-                return Multipayment(data, multipayment_payload_data)
+                return Multipayment(data)
 
         if data['value'] != '0':
             return Transfer(data)
@@ -73,13 +73,13 @@ class Deserializer:
         if consensus_payload_data is not None:
             function_name = consensus_payload_data.get('functionName')
             if function_name == AbiFunction.VOTE.value:
-                return Vote(data, consensus_payload_data)
+                return Vote(data)
 
             if function_name == AbiFunction.UNVOTE.value:
                 return Unvote(data)
 
             if function_name == AbiFunction.VALIDATOR_REGISTRATION.value:
-                return ValidatorRegistration(data, consensus_payload_data)
+                return ValidatorRegistration(data)
 
             if function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
                 return ValidatorResignation(data)
@@ -88,7 +88,7 @@ class Deserializer:
         if username_payload_data is not None:
             function_name = username_payload_data.get('functionName')
             if function_name == AbiFunction.USERNAME_REGISTRATION.value:
-                return UsernameRegistration(data, username_payload_data)
+                return UsernameRegistration(data)
 
             if function_name == AbiFunction.USERNAME_RESIGNATION.value:
                 return UsernameResignation(data)

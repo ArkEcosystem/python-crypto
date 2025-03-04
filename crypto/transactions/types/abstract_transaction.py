@@ -11,8 +11,8 @@ from coincurve import PublicKey
 from crypto.utils.abi_decoder import AbiDecoder
 
 class AbstractTransaction:
-    def __init__(self, data: Optional[dict] = None):
-        self.data = data or {}
+    def __init__(self, data: dict):
+        self.data = data
         self.refresh_payload_data()
 
     def get_payload(self) -> str:
