@@ -11,7 +11,7 @@ class AbstractTransactionBuilder:
             'senderPublicKey': '',
             'gasPrice': '5',
             'nonce': '1',
-            'network': get_network()['version'],
+            'network': get_network()['chain_id'],
             'gasLimit': 1_000_000,
             'data': '',
 
