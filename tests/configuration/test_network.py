@@ -8,31 +8,29 @@ from crypto.networks.testnet import Testnet
 
 def test_get_network():
     result = get_network()
-    assert result['version'] == 30
-
+    assert result['chain_id'] == 10000
 
 def test_set_network():
     # mainnet
     set_network(Mainnet)
     result = get_network()
-    assert result['version'] == 30
     assert result['wif'] == 186
+    assert result['chain_id'] == 10000
 
     # testnet
     set_network(Testnet)
     result = get_network()
-    assert result['version'] == 30
     assert result['wif'] == 186
+    assert result['chain_id'] == 10000
 
     set_network(Testnet)  # set back to Testnet so other tests don't fail
 
-
 def test_set_custom_network():
     epoch_time = datetime(2017, 1, 1, 13, 00, 00)
-    set_custom_network(epoch_time, 11, 130)
+    set_custom_network(epoch_time, 130, 10000)
     result = get_network()
-    assert result['version'] == 11
     assert result['wif'] == 130
     assert result['epoch'] == epoch_time
+    assert result['chain_id'] == 10000
 
     set_network(Testnet)  # set back to Testnet so other tests don't fail

@@ -5,13 +5,13 @@ from crypto.networks.testnet import Testnet
 
 class NetworkType(TypedDict):
     epoch: datetime
-    version: int
     wif: int
+    chain_id: int
 
 network: NetworkType = {
     'epoch': Testnet.epoch,
-    'version': Testnet.version,
     'wif': Testnet.wif,
+    'chain_id': Testnet.chain_id,
 }
 
 def set_network(network_object: Union[Type[Mainnet], Type[Testnet]]) -> None:
@@ -24,8 +24,8 @@ def set_network(network_object: Union[Type[Mainnet], Type[Testnet]]) -> None:
 
     network = {
         'epoch': network_object.epoch,
-        'version': network_object.version,
         'wif': network_object.wif,
+        'chain_id': network_object.chain_id,
     }
 
 def get_network() -> NetworkType:
@@ -36,18 +36,18 @@ def get_network() -> NetworkType:
     """
     return network
 
-def set_custom_network(epoch: datetime, version: int, wif: int) -> None:
+def set_custom_network(epoch: datetime, wif: int, chain_id: int) -> None:
     """Set custom network
 
     Args:
         epoch (datetime): chains epoch time
-        version (int): chains version
         wif (int): chains wif
+        chain_id (int): chain id
     """
     global network
 
     network = {
         'epoch': epoch,
-        'version': version,
         'wif': wif,
+        'chain_id': chain_id
     }
