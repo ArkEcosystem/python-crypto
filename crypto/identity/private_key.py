@@ -2,7 +2,9 @@ from binascii import hexlify
 from hashlib import sha256
 from coincurve import PrivateKey as PvtKey
 from Cryptodome.Hash import keccak
+from base58 import b58decode
 
+from crypto.configuration.network import get_network
 from crypto.enums.constants import Constants
 
 def keccak256(data: bytes) -> bytes:
@@ -73,4 +75,25 @@ class PrivateKey(object):
         Returns:
             PrivateKey: Private key object
         """
+        return cls(private_key)
+
+    @classmethod
+    def from_wif(cls, wif: str):
+        """Create PrivateKey object from a given wif
+
+        Args:
+            wif (str):
+
+        Returns:
+            PrivateKey: Private key object
+        """
+
+        wif = b58decode(wif).hex()
+
+        version = wif[0:2]
+        if version != get_network()['wif']:
+            raise ValueError(f"Invalid WIF version: {version}")
+
+        private_key = wif[2:66]
+
         return cls(private_key)
