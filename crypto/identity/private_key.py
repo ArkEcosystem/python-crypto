@@ -19,19 +19,6 @@ class PrivateKey(object):
         Returns:
             bytes: signature of the signed message
         """
-        signature = self.private_key.sign(message)
-
-        return hexlify(signature)
-
-    def sign_compact(self, message: bytes) -> bytes:
-        """Sign a message with this private key object
-
-        Args:
-            message (bytes): bytes data you want to sign
-
-        Returns:
-            bytes: signature of the signed message
-        """
 
         message_hash = bytes.fromhex(keccak.new(data=message, digest_bits=256).hexdigest())
 

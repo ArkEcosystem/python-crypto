@@ -48,7 +48,7 @@ class Message(object):
         private_key = PrivateKey.from_passphrase(passphrase)
         public_key = private_key.public_key
 
-        transaction_signature = private_key.sign_compact(message)
+        transaction_signature = private_key.sign(message)
 
         signature_v = bytes([transaction_signature[0]]).hex()
         signature_r = transaction_signature[1:33].hex()
