@@ -3,7 +3,6 @@ from datetime import datetime
 from crypto.configuration.network import get_network, set_custom_network, set_network
 from crypto.networks.testnet import Testnet
 from crypto.networks.mainnet import Mainnet
-from crypto.networks.testnet import Testnet
 
 
 def test_get_network():
@@ -14,22 +13,22 @@ def test_set_network():
     # mainnet
     set_network(Mainnet)
     result = get_network()
-    assert result['wif'] == 186
+    assert result['wif'] == 'ba'
     assert result['chain_id'] == 10000
 
     # testnet
     set_network(Testnet)
     result = get_network()
-    assert result['wif'] == 186
+    assert result['wif'] == 'ba'
     assert result['chain_id'] == 10000
 
     set_network(Testnet)  # set back to Testnet so other tests don't fail
 
 def test_set_custom_network():
     epoch_time = datetime(2017, 1, 1, 13, 00, 00)
-    set_custom_network(epoch_time, 130, 10000)
+    set_custom_network(epoch_time, '82', 10000)
     result = get_network()
-    assert result['wif'] == 130
+    assert result['wif'] == '82'
     assert result['epoch'] == epoch_time
     assert result['chain_id'] == 10000
 

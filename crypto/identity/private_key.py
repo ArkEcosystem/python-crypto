@@ -92,7 +92,7 @@ class PrivateKey(object):
 
         version = wif[0:2]
         if version != get_network()['wif']:
-            raise ValueError(f"Invalid WIF version: {version}")
+            raise ValueError(f"Invalid network version: {version}")
 
         private_key = wif[2:66]
 
