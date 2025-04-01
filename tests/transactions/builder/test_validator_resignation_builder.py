@@ -1,7 +1,7 @@
 from crypto.transactions.builder.validator_resignation_builder import ValidatorResignationBuilder
 
 def test_validator_resignation_transaction(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('validator-resignation')
+    fixture = load_transaction_fixture('transactions/validator-resignation')
 
     builder = (
         ValidatorResignationBuilder
@@ -29,7 +29,7 @@ def test_validator_resignation_transaction(passphrase, load_transaction_fixture)
     assert builder.verify()
 
 def test_validator_resignation_transaction_with_default_recipient_address(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('validator-resignation')
+    fixture = load_transaction_fixture('transactions/validator-resignation')
 
     builder = (
         ValidatorResignationBuilder

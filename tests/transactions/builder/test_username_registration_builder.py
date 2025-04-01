@@ -2,7 +2,7 @@ from crypto.exceptions import InvalidUsernameException
 from crypto.transactions.builder.username_registration_builder import UsernameRegistrationBuilder
 
 def test_username_registration_transaction(passphrase, username, load_transaction_fixture):
-    fixture = load_transaction_fixture('username-registration')
+    fixture = load_transaction_fixture('transactions/username-registration')
 
     builder = (
         UsernameRegistrationBuilder

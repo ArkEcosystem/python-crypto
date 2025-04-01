@@ -2,7 +2,7 @@ from crypto.transactions.builder.transfer_builder import TransferBuilder
 from crypto.utils.unit_converter import UnitConverter
 
 def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('transfer')
+    fixture = load_transaction_fixture('transactions/transfer')
 
     builder = (
         TransferBuilder

@@ -1,7 +1,7 @@
 from crypto.transactions.builder.unvote_builder import UnvoteBuilder
 
 def test_unvote_transaction(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('unvote')
+    fixture = load_transaction_fixture('transactions/unvote')
 
     builder = (
         UnvoteBuilder
@@ -29,7 +29,7 @@ def test_unvote_transaction(passphrase, load_transaction_fixture):
     assert builder.verify()
 
 def test_unvote_transaction_with_default_recipient_address(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('unvote')
+    fixture = load_transaction_fixture('transactions/unvote')
 
     builder = (
         UnvoteBuilder

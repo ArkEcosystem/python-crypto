@@ -1,7 +1,7 @@
 from crypto.transactions.builder.multipayment_builder import MultipaymentBuilder
 
 def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('multipayment')
+    fixture = load_transaction_fixture('transactions/multipayment')
 
     builder = (
         MultipaymentBuilder
@@ -28,7 +28,7 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     assert builder.verify()
 
 def test_it_should_handle_single_recipient(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('multipayment-single')
+    fixture = load_transaction_fixture('transactions/multipayment-single')
 
     builder = (
         MultipaymentBuilder
@@ -54,7 +54,7 @@ def test_it_should_handle_single_recipient(passphrase, load_transaction_fixture)
     assert builder.verify()
 
 def test_it_should_handle_empty_payment(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('multipayment-empty')
+    fixture = load_transaction_fixture('transactions/multipayment-empty')
 
     builder = (
         MultipaymentBuilder
