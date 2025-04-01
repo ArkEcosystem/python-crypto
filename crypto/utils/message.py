@@ -39,13 +39,22 @@ class Message(object):
             Message: returns a message object
         """
 
-        if type(message) is str:
+        if isinstance(message, str):
             message = message.encode()
 
+        if not isinstance(passphrase, str):
+            passphrase = passphrase.hex()
 
         private_key = PrivateKey.from_passphrase(passphrase)
         public_key = private_key.public_key
-        signature = Signature.sign(message, private_key)
+
+        transaction_signature = private_key.sign_compact(message)
+
+        signature_v = bytes([transaction_signature[0]]).hex()
+        signature_r = transaction_signature[1:33].hex()
+        signature_s = transaction_signature[33:].hex()
+
+        signature = signature_r + signature_s + signature_v
 
         return cls(
             message=message,
@@ -60,10 +69,18 @@ class Message(object):
             bool: returns a boolean - true if verified, false if not
         """
 
-        public_key = unhexlify(self.public_key)
         signature = unhexlify(self.signature)
+        message_hash = keccak.new(data=self.message, digest_bits=256).digest()
 
-        return Signature.verify(signature, self.message, public_key)
+        signature_r = signature[0:32]
+        signature_s = signature[32:64]
+        signature_v = signature[64]
+
+        signature = signature_r + signature_s + bytes([signature_v - 27])
+
+        public_key = PublicKey.from_signature_and_message(signature, message_hash, hasher=None)
+
+        return public_key.format() == unhexlify(self.public_key)
 
     def to_dict(self):
         """Return a dictionary of the message
