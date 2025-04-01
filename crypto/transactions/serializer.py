@@ -11,10 +11,6 @@ class Serializer:
     def new(transaction: AbstractTransaction):
         return Serializer(transaction)
 
-    @staticmethod
-    def get_bytes(transaction: AbstractTransaction, skip_signature: bool = False) -> bytes:
-        return transaction.serialize(skip_signature=skip_signature)
-
     def serialize(self, skip_signature: bool = False) -> bytes:
         transaction_hash = TransactionUtils.to_buffer(self.transaction.data, skip_signature=skip_signature).decode()
 
