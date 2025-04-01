@@ -2,7 +2,7 @@ from crypto.utils.rlp_decoder import RlpDecoder
 
 
 def test_decode_function_call(load_transaction_fixture):
-    fixture = load_transaction_fixture('transfer')
+    fixture = load_transaction_fixture('transactions/transfer')
 
     decoded_rlp = RlpDecoder.decode('0x' + fixture['serialized'][2:])
 

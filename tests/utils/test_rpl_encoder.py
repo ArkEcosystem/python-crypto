@@ -3,7 +3,7 @@ from crypto.utils.transaction_utils import TransactionUtils
 
 
 def test_encode_function_call(load_transaction_fixture):
-    fixture = load_transaction_fixture('transfer')
+    fixture = load_transaction_fixture('transactions/transfer')
 
     # Calls RlpEncoder.encode() with the given transaction
     transaction_hash = TransactionUtils.to_buffer(fixture['data'])
