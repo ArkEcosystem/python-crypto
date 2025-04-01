@@ -5,11 +5,6 @@ from Cryptodome.Hash import keccak
 
 from crypto.enums.constants import Constants
 
-def keccak256(data: bytes) -> bytes:
-    """Keccak256 hash function"""
-
-    return bytes.fromhex(keccak.new(data=data, digest_bits=256).hexdigest())
-
 class PrivateKey(object):
     def __init__(self, private_key: str):
         self.private_key = PvtKey.from_hex(private_key)
@@ -37,7 +32,10 @@ class PrivateKey(object):
         Returns:
             bytes: signature of the signed message
         """
-        der = self.private_key.sign_recoverable(message, hasher=keccak256)
+
+        message_hash = bytes.fromhex(keccak.new(data=message, digest_bits=256).hexdigest())
+
+        der = self.private_key.sign_recoverable(message_hash, hasher=None)
 
         return bytes([der[64] + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value]) + der[0:64]
 
