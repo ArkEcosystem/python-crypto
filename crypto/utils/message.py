@@ -3,6 +3,7 @@ from binascii import unhexlify
 from typing import Union
 
 from Cryptodome.Hash import keccak
+from coincurve import PublicKey
 
 from crypto.identity.private_key import PrivateKey
 
