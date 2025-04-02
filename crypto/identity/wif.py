@@ -7,12 +7,12 @@ from binary.unsigned_integer.writer import write_bit8
 
 from crypto.configuration.network import get_network
 
-def wif_from_passphrase(passphrase: str, network_wif: Optional[int] = None):
+def wif_from_passphrase(passphrase: str, network_wif: Optional[str] = None):
     """Get wif from passphrase
 
     Args:
         passphrase (str):
-        network_wif (int, optional):
+        network_wif (str, optional):
 
     Returns:
         string: wif
@@ -23,6 +23,6 @@ def wif_from_passphrase(passphrase: str, network_wif: Optional[int] = None):
         network_wif = network['wif']
 
     private_key = hashlib.sha256(passphrase.encode())
-    seed = write_bit8(network_wif) + private_key.digest() + write_bit8(0x01)
+    seed = write_bit8(int(network_wif, 16)) + private_key.digest() + write_bit8(0x01)
 
     return b58encode_check(seed).decode()

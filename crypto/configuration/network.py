@@ -5,7 +5,7 @@ from crypto.networks.testnet import Testnet
 
 class NetworkType(TypedDict):
     epoch: datetime
-    wif: int
+    wif: str
     chain_id: int
 
 network: NetworkType = {
@@ -36,12 +36,12 @@ def get_network() -> NetworkType:
     """
     return network
 
-def set_custom_network(epoch: datetime, wif: int, chain_id: int) -> None:
+def set_custom_network(epoch: datetime, wif: str, chain_id: int) -> None:
     """Set custom network
 
     Args:
         epoch (datetime): chains epoch time
-        wif (int): chains wif
+        wif (str): chains wif
         chain_id (int): chain id
     """
     global network

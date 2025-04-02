@@ -24,11 +24,6 @@ class AbstractTransaction:
     def get_id(self) -> str:
         return TransactionUtils.get_id(self.data)
 
-    def get_bytes(self, skip_signature: bool = False) -> bytes:
-        from crypto.transactions.serializer import Serializer
-
-        return Serializer.get_bytes(self, skip_signature)
-
     def sign(self, private_key: PrivateKey):
         transaction_hash = TransactionUtils.to_buffer(self.data, skip_signature=True).decode()
 

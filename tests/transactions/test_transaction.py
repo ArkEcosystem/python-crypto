@@ -27,11 +27,6 @@ def test_verify_transaction(load_transaction_fixture):
     transaction = Deserializer.new(load_transaction_fixture('transactions/transfer')['serialized']).deserialize()
     assert transaction.verify()
 
-def test_transaction_to_bytes(load_transaction_fixture):
-    transaction = Deserializer.new(load_transaction_fixture('transactions/transfer')['serialized']).deserialize()
-    actual = transaction.get_bytes()
-    assert isinstance(actual, bytes)
-
 def test_transaction_to_array(load_transaction_fixture):
     transaction = Deserializer.new(load_transaction_fixture('transactions/transfer')['serialized']).deserialize()
     actual = transaction.to_dict()

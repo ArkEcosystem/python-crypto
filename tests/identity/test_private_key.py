@@ -21,3 +21,8 @@ def test_sign_compact(sign_compact):
     assert signature[1:33] == bytes.fromhex(sign_compact['data']['r'])
     assert signature[33:] == bytes.fromhex(sign_compact['data']['s'])
     assert signature.hex() == sign_compact['data']['serialized']
+
+def test_it_should_parse_the_private_key_from_wif(identity):
+    private_key = PrivateKey.from_wif(identity['data']['wif'])
+    assert isinstance(private_key, PrivateKey)
+    assert private_key.to_hex() == identity['data']['private_key']
