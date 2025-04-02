@@ -236,14 +236,3 @@ def transaction_type_9():
         'serialized': 'ff011e0100000009000900000000000000023efc1da7f315f3c533a4080e491f32cd4219731cef008976c3876539e1f192d300f902950000000000728c2c5d5f090e8c5dfd433bb2b15b30442cbafb9b882117f7b6f284da4093c6a96e8456f764628ec809514ac4e8b06d5450978b9b763f7d01f696b8881f702a'
     }
     return data
-
-
-@pytest.fixture
-def message():
-    data = {
-        'publicKey': '034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192',
-        'signature': '22ff2371becb58439efdb95d116215f75bc41a380e1491605cc4874dd0d2c7d7958e4072da22fd307fe419c8864ba313a28bdb6fecbc6407839b6ba472395fe9',  # noqa
-        'message': 'Hello World',
-        'passphrase': 'this is a top secret passphrase',
-    }
-    return data

@@ -1,7 +1,7 @@
 from crypto.transactions.builder.username_resignation_builder import UsernameResignationBuilder
 
 def test_username_resignation_transaction(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('username-resignation')
+    fixture = load_transaction_fixture('transactions/username-resignation')
 
     builder = (
         UsernameResignationBuilder

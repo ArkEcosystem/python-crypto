@@ -29,7 +29,7 @@ class AbstractTransaction:
 
         message = bytes.fromhex(transaction_hash)
 
-        transaction_signature = private_key.sign_compact(message)
+        transaction_signature = private_key.sign(message)
 
         self.data['v'] = transaction_signature[0]
         self.data['r'] = transaction_signature[1:33].hex()

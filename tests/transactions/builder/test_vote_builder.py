@@ -1,7 +1,7 @@
 from crypto.transactions.builder.vote_builder import VoteBuilder
 
 def test_vote_transaction(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('vote')
+    fixture = load_transaction_fixture('transactions/vote')
 
     builder = (
         VoteBuilder
@@ -30,7 +30,7 @@ def test_vote_transaction(passphrase, load_transaction_fixture):
     assert builder.verify()
 
 def test_vote_transaction_with_default_recipient_address(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('vote')
+    fixture = load_transaction_fixture('transactions/vote')
 
     builder = (
         VoteBuilder

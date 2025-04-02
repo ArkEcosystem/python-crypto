@@ -1,33 +1,35 @@
 import json
 from binascii import unhexlify
+from typing import Union
+
+from Cryptodome.Hash import keccak
+from coincurve import PublicKey
 
 from crypto.identity.private_key import PrivateKey
-from crypto.transactions.signature import Signature
-from typing import Union
 
 class Message(object):
     public_key: bytes
     message: bytes
     signature: bytes
 
-    def __init__(self, public_key: bytes, message: bytes, signature: bytes):
-        if type(public_key) is bytes:
-            self.public_key = public_key
-        else:
+    def __init__(self, public_key: Union[bytes, str], message: Union[bytes, str], signature: Union[bytes, str]):
+        if isinstance(public_key, str):
             self.public_key = public_key.encode()
-
-        if type(message) is bytes:
-            self.message = message
         else:
+            self.public_key = public_key
+
+        if isinstance(message, str):
             self.message = message.encode()
-
-        if type(signature) is bytes:
-            self.signature = signature
         else:
+            self.message = message
+
+        if isinstance(signature, str):
             self.signature = signature.encode()
+        else:
+            self.signature = signature
 
     @classmethod
-    def sign(cls, message: Union[bytes, str], passphrase: bytes):
+    def sign(cls, message: Union[bytes, str], passphrase: Union[bytes, str]):
         """Signs a message
 
         Args:
@@ -38,13 +40,22 @@ class Message(object):
             Message: returns a message object
         """
 
-        if type(message) is str:
+        if isinstance(message, str):
             message = message.encode()
 
+        if not isinstance(passphrase, str):
+            passphrase = passphrase.hex()
 
         private_key = PrivateKey.from_passphrase(passphrase)
         public_key = private_key.public_key
-        signature = Signature.sign(message, private_key)
+
+        transaction_signature = private_key.sign(message)
+
+        signature_v = bytes([transaction_signature[0]]).hex()
+        signature_r = transaction_signature[1:33].hex()
+        signature_s = transaction_signature[33:].hex()
+
+        signature = signature_r + signature_s + signature_v
 
         return cls(
             message=message,
@@ -59,10 +70,18 @@ class Message(object):
             bool: returns a boolean - true if verified, false if not
         """
 
-        public_key = unhexlify(self.public_key)
         signature = unhexlify(self.signature)
+        message_hash = keccak.new(data=self.message, digest_bits=256).digest()
 
-        return Signature.verify(signature, self.message, public_key)
+        signature_r = signature[0:32]
+        signature_s = signature[32:64]
+        signature_v = signature[64]
+
+        signature = signature_r + signature_s + bytes([signature_v - 27])
+
+        public_key = PublicKey.from_signature_and_message(signature, message_hash, hasher=None)
+
+        return public_key.format() == unhexlify(self.public_key)
 
     def to_dict(self):
         """Return a dictionary of the message

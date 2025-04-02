@@ -1,7 +1,7 @@
 from crypto.transactions.builder.validator_registration_builder import ValidatorRegistrationBuilder
 
 def test_validator_registration_transaction(passphrase, validator_public_key, load_transaction_fixture):
-    fixture = load_transaction_fixture('validator-registration')
+    fixture = load_transaction_fixture('transactions/validator-registration')
 
     builder = (
         ValidatorRegistrationBuilder
@@ -31,7 +31,7 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
     assert builder.verify()
 
 def test_validator_registration_transaction_with_default_recipient_address(passphrase, validator_public_key, load_transaction_fixture):
-    fixture = load_transaction_fixture('validator-registration')
+    fixture = load_transaction_fixture('transactions/validator-registration')
 
     builder = (
         ValidatorRegistrationBuilder

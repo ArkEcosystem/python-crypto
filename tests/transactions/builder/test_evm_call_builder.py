@@ -1,7 +1,7 @@
 from crypto.transactions.builder.evm_call_builder import EvmCallBuilder
 
 def test_evm_call_transaction(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('evm-sign')
+    fixture = load_transaction_fixture('transactions/evm-sign')
 
     builder = (
         EvmCallBuilder

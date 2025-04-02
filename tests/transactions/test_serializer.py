@@ -6,31 +6,31 @@ from crypto.transactions.types.validator_registration import ValidatorRegistrati
 from crypto.transactions.types.validator_resignation import ValidatorResignation
 
 def test_transfer_serialization(load_transaction_fixture):
-    fixture = load_transaction_fixture('transfer')
+    fixture = load_transaction_fixture('transactions/transfer')
     transaction = Transfer(fixture['data'])
     serializer = Serializer.new(transaction)
     assert serializer.serialize().hex() == fixture['serialized']
 
 def test_vote_serialization(load_transaction_fixture):
-    fixture = load_transaction_fixture('vote')
+    fixture = load_transaction_fixture('transactions/vote')
     transaction = Vote(fixture['data'])
     serializer = Serializer.new(transaction)
     assert serializer.serialize().hex() == fixture['serialized']
 
 def test_unvote_serialization(load_transaction_fixture):
-    fixture = load_transaction_fixture('unvote')
+    fixture = load_transaction_fixture('transactions/unvote')
     transaction = Unvote(fixture['data'])
     serializer = Serializer.new(transaction)
     assert serializer.serialize().hex() == fixture['serialized']
 
 def test_validator_registration_serialization(load_transaction_fixture):
-    fixture = load_transaction_fixture('validator-registration')
+    fixture = load_transaction_fixture('transactions/validator-registration')
     transaction = ValidatorRegistration(fixture['data'])
     serializer = Serializer.new(transaction)
     assert serializer.serialize().hex() == fixture['serialized']
 
 def test_validator_resignation_serialization(load_transaction_fixture):
-    fixture = load_transaction_fixture('validator-resignation')
+    fixture = load_transaction_fixture('transactions/validator-resignation')
     transaction = ValidatorResignation(fixture['data'])
     serializer = Serializer.new(transaction)
     assert serializer.serialize().hex() == fixture['serialized']
