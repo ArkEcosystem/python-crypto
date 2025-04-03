@@ -8,9 +8,6 @@ class PublicKey(object):
     def __init__(self, public_key: str):
         self.public_key = PubKey(unhexlify(public_key.encode()))
 
-    def to_hex(self) -> str:
-        return hexlify(self.public_key.format()).decode()
-
     @classmethod
     def from_passphrase(cls, passphrase: str) -> str:
         private_key = PrivateKey.from_passphrase(passphrase)
