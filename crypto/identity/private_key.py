@@ -4,7 +4,7 @@ from coincurve import PrivateKey as PvtKey
 from Cryptodome.Hash import keccak
 from base58 import b58decode
 
-from crypto.configuration.network import get_network
+from crypto.configuration.network import Network
 from crypto.enums.constants import Constants
 
 class PrivateKey(object):
@@ -76,7 +76,7 @@ class PrivateKey(object):
         wif = b58decode(wif).hex()
 
         version = wif[0:2]
-        if version != get_network()['wif']:
+        if version != Network.get_network().wif():
             raise ValueError(f"Invalid network version: {version}")
 
         private_key = wif[2:66]
