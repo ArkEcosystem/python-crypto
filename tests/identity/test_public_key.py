@@ -1,3 +1,4 @@
+from binascii import hexlify
 from crypto.identity.public_key import PublicKey
 
 
@@ -9,4 +10,7 @@ def test_public_key_from_passphrase(identity):
 def test_public_key_from_hex(identity):
     public_key = PublicKey.from_hex(identity['data']['public_key'])
     assert isinstance(public_key, PublicKey)
-    assert public_key.to_hex() == identity['data']['public_key']
+
+    public_key_hex = hexlify(public_key.public_key.format()).decode()
+
+    assert public_key_hex == identity['data']['public_key']

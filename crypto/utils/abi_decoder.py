@@ -3,7 +3,7 @@
 from crypto.utils.abi_base import AbiBase
 import binascii
 import re
-from crypto.identity.address import get_checksum_address
+from crypto.identity.address import Address
 
 
 class AbiDecoder(AbiBase):
@@ -88,7 +88,7 @@ class AbiDecoder(AbiBase):
         data = bytes_data[offset:offset+32]
         address_bytes = data[12:32]
         address = '0x' + address_bytes.hex()
-        address = get_checksum_address(address)
+        address = Address.get_checksum_address(address)
 
         return address, 32
 

@@ -36,21 +36,21 @@ class Deserializer:
         decoded_rlp = RlpDecoder.decode(self.encoded_rlp)
 
         data = {
-            'network': Deserializer.parse_number(decoded_rlp[0]),
-            'nonce': Deserializer.parse_big_number(decoded_rlp[1]),
-            'gasPrice': Deserializer.parse_number(decoded_rlp[3]),
-            'gasLimit': Deserializer.parse_number(decoded_rlp[4]),
-            'recipientAddress': Deserializer.parse_address(decoded_rlp[5]),
-            'value': Deserializer.parse_big_number(decoded_rlp[6]),
-            'data': Deserializer.parse_hex(decoded_rlp[7]),
+            'network': Deserializer.__parse_number(decoded_rlp[0]),
+            'nonce': Deserializer.__parse_big_number(decoded_rlp[1]),
+            'gasPrice': Deserializer.__parse_number(decoded_rlp[3]),
+            'gasLimit': Deserializer.__parse_number(decoded_rlp[4]),
+            'recipientAddress': Deserializer.__parse_address(decoded_rlp[5]),
+            'value': Deserializer.__parse_big_number(decoded_rlp[6]),
+            'data': Deserializer.__parse_hex(decoded_rlp[7]),
         }
 
         if len(decoded_rlp) == 12:
-            data['v'] = Deserializer.parse_number(decoded_rlp[9]) + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value
-            data['r'] = Deserializer.parse_hex(decoded_rlp[10])
-            data['s'] = Deserializer.parse_hex(decoded_rlp[11])
+            data['v'] = Deserializer.__parse_number(decoded_rlp[9]) + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value
+            data['r'] = Deserializer.__parse_hex(decoded_rlp[10])
+            data['s'] = Deserializer.__parse_hex(decoded_rlp[11])
 
-        transaction = self.guess_transaction_from_data(data)
+        transaction = self.__guess_transaction_from_data(data)
 
         transaction.data = data
         transaction.recover_sender()
@@ -59,7 +59,22 @@ class Deserializer:
 
         return transaction
 
-    def guess_transaction_from_data(self, data: dict) -> AbstractTransaction:
+    @staticmethod
+    def decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
+        payload = data.get('data', '')
+
+        if payload == '':
+            return None
+
+        decoder = AbiDecoder(abi_type)
+        try:
+            return decoder.decode_function_data(payload)
+        except Exception as e:
+            print(f"Error decoding payload: {str(e)}")
+
+        return None
+
+    def __guess_transaction_from_data(self, data: dict) -> AbstractTransaction:
         multipayment_payload_data = self.decode_payload(data, ContractAbiType.MULTIPAYMENT)
         if multipayment_payload_data is not None:
             function_name = multipayment_payload_data.get('functionName')
@@ -96,32 +111,17 @@ class Deserializer:
         return EvmCall(data)
 
     @staticmethod
-    def decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
-        payload = data.get('data', '')
-
-        if payload == '':
-            return None
-
-        decoder = AbiDecoder(abi_type)
-        try:
-            return decoder.decode_function_data(payload)
-        except Exception as e:
-            print(f"Error decoding payload: {str(e)}")
-
-        return None
-
-    @staticmethod
-    def parse_number(value: str) -> int:
+    def __parse_number(value: str) -> int:
         return 0 if value == '0x' else int(value, 16)
 
     @staticmethod
-    def parse_big_number(value: str) -> str:
-        return str(Deserializer.parse_number(value))
+    def __parse_big_number(value: str) -> str:
+        return str(Deserializer.__parse_number(value))
 
     @staticmethod
-    def parse_hex(value: str) -> str:
+    def __parse_hex(value: str) -> str:
         return TransactionUtils.parse_hex_from_str(value)
 
     @staticmethod
-    def parse_address(value: str) -> Optional[str]:
+    def __parse_address(value: str) -> Optional[str]:
         return None if value == '0x' else value
