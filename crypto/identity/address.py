@@ -4,76 +4,81 @@ from binascii import unhexlify
 from crypto.identity.private_key import PrivateKey
 
 from Cryptodome.Hash import keccak
-from coincurve import PrivateKey, PublicKey
+from coincurve import PublicKey
 
-def get_checksum_address(address: str) -> str:
-    """Get checksum address
+class Address:
+    @classmethod
+    def from_public_key(cls, public_key: str) -> str:
+        """Get an address from a public key
 
-    Args:
-        address (str): address to get checksum
+        Args:
+            public_key (str): public key to get address
 
-    Returns:
-        str: checksum address
-    """
-    address = address.lower()
+        Returns:
+            str: address
+        """
 
-    chars = list(address[2:])
+        public_key_bytes = PublicKey(bytes.fromhex(public_key)).format(compressed=False)[1:]
 
-    expanded = bytearray(40)
-    for i in range(40):
-        expanded[i] = ord(chars[i])
+        keccak_hash = keccak.new(
+            data=bytearray.fromhex(public_key_bytes.hex()),
+            digest_bits=256,
+        )
 
-    hashed = keccak.new(data=bytes(expanded), digest_bits=256).digest()
+        return cls.get_checksum_address(unhexlify(keccak_hash.hexdigest()[22:]).hex())
 
-    for i in range(0, 40, 2):
-        if (hashed[i >> 1] >> 4) >= 8:
-            chars[i] = chars[i].upper()
-        if (hashed[i >> 1] & 0x0F) >= 8:
-            chars[i + 1] = chars[i + 1].upper()
+    @classmethod
+    def from_private_key(cls, private_key: str) -> str:
+        """Get an address from private key
 
-    return "0x" + ''.join(chars)
+        Args:
+            private_key (string): private key to get address
 
-def address_from_public_key(public_key: str) -> str:
-    """Get an address from a public key
+        Returns:
+            str: address
+        """
+        private_key_object = PrivateKey.from_hex(private_key)
 
-    Args:
-        public_key (str): public key to get address
+        return cls.from_public_key(private_key_object.public_key)
 
-    Returns:
-        str: address
-    """
+    @classmethod
+    def from_passphrase(cls, passphrase: str) -> str:
+        """Get an address from passphrase
 
-    public_key_bytes = PublicKey(bytes.fromhex(public_key)).format(compressed=False)[1:]
+        Args:
+            passphrase (str): passphrase to get address
 
-    keccak_hash = keccak.new(
-        data=bytearray.fromhex(public_key_bytes.hex()),
-        digest_bits=256,
-    )
+        Returns:
+            str: address
+        """
+        private_key = hashlib.sha256(passphrase.encode()).hexdigest()
 
-    return get_checksum_address(unhexlify(keccak_hash.hexdigest()[22:]).hex())
+        return cls.from_private_key(private_key)
 
-def address_from_private_key(private_key: str) -> str:
-    """Get an address from private key
+    @classmethod
+    def get_checksum_address(cls, address: str) -> str:
+        """Get checksum address
 
-    Args:
-        private_key (string): private key to get address
+        Args:
+            address (str): address to get checksum
 
-    Returns:
-        str: address
-    """
-    private_key_object = PrivateKey.from_hex(private_key)
+        Returns:
+            str: checksum address
+        """
+        address = address.lower()
 
-    return address_from_public_key(private_key_object.public_key.format(compressed=False).hex())
+        chars = list(address[2:])
 
-def address_from_passphrase(passphrase: str) -> str:
-    """Get an address from passphrase
+        expanded = bytearray(40)
+        for i in range(40):
+            expanded[i] = ord(chars[i])
 
-    Args:
-        passphrase (str): passphrase to get address
+        hashed = keccak.new(data=bytes(expanded), digest_bits=256).digest()
 
-    Returns:
-        str: address
-    """
-    private_key = hashlib.sha256(passphrase.encode()).hexdigest()
+        for i in range(0, 40, 2):
+            if (hashed[i >> 1] >> 4) >= 8:
+                chars[i] = chars[i].upper()
+            if (hashed[i >> 1] & 0x0F) >= 8:
+                chars[i + 1] = chars[i + 1].upper()
 
-    return address_from_private_key(private_key)
+        return "0x" + ''.join(chars)
