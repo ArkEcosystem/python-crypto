@@ -1,14 +1,12 @@
 import json
 from typing import Optional
 
-from crypto.configuration.network import get_network
 from crypto.enums.constants import Constants
 from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.identity.address import address_from_public_key
 from crypto.identity.private_key import PrivateKey
 from crypto.utils.transaction_utils import TransactionUtils
 from coincurve import PublicKey
-from crypto.utils.abi_decoder import AbiDecoder
 
 class AbstractTransaction:
     def __init__(self, data: dict):

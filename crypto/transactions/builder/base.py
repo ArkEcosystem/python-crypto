@@ -1,5 +1,4 @@
-from typing import Optional
-from crypto.configuration.network import get_network
+from crypto.configuration.network import Network
 from crypto.identity.private_key import PrivateKey
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 
@@ -11,7 +10,7 @@ class AbstractTransactionBuilder:
             'senderPublicKey': '',
             'gasPrice': '5',
             'nonce': '1',
-            'network': get_network()['chain_id'],
+            'network': Network.get_network().chain_id(),
             'gasLimit': 1_000_000,
             'data': '',
 
