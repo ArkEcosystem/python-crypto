@@ -1,14 +1,12 @@
 import json
 from typing import Optional
 
-from crypto.configuration.network import get_network
 from crypto.enums.constants import Constants
 from crypto.enums.contract_abi_type import ContractAbiType
-from crypto.identity.address import address_from_public_key
+from crypto.identity.address import Address
 from crypto.identity.private_key import PrivateKey
 from crypto.utils.transaction_utils import TransactionUtils
 from coincurve import PublicKey
-from crypto.utils.abi_decoder import AbiDecoder
 
 class AbstractTransaction:
     def __init__(self, data: dict):
@@ -50,7 +48,7 @@ class AbstractTransaction:
         hash_ = bytes.fromhex(self.hash(skip_signature=True))
         public_key = self.get_public_key(signature_with_recid, hash_)
         self.data['senderPublicKey'] = public_key.format().hex()
-        self.data['senderAddress'] = address_from_public_key(self.data['senderPublicKey'])
+        self.data['senderAddress'] = Address.from_public_key(self.data['senderPublicKey'])
 
     def verify(self) -> bool:
         signature_with_recid = self.get_signature()
