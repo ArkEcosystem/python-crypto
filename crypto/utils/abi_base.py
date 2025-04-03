@@ -3,11 +3,10 @@
 import json
 import os
 import re
-from binascii import unhexlify
 from typing import Optional
 from Cryptodome.Hash import keccak
 from crypto.enums.contract_abi_type import ContractAbiType
-from crypto.identity.address import get_checksum_address
+from crypto.identity.address import Address
 
 
 class AbiBase:
@@ -38,7 +37,7 @@ class AbiBase:
 
     def is_valid_address(self, address):
         # Compute the checksum address and compare
-        computed_checksum_address = get_checksum_address(address.lower())
+        computed_checksum_address = Address.get_checksum_address(address.lower())
 
         return address.lower() == computed_checksum_address.lower()
 

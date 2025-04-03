@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
-from crypto.configuration.network import get_network
+from crypto.configuration.network import Network
 
 class Slot:
     @staticmethod
@@ -10,12 +10,16 @@ class Slot:
         Returns:
             int: difference in seconds
         """
-        now = datetime.utcnow()
-        network = get_network()
-        seconds = int((now - network['epoch']).total_seconds())
+        now = datetime.now(timezone.utc)
+
+        seconds = int((now - Slot.epoch()).total_seconds())
+
         return seconds
 
     @staticmethod
     def epoch():
-        network = get_network()
-        return network['epoch']
+        epoch_str = Network.get_network().epoch()
+        if epoch_str.endswith("Z"):
+            epoch_str = epoch_str[:-1] + "+00:00"
+
+        return datetime.fromisoformat(epoch_str)

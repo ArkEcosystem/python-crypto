@@ -69,25 +69,25 @@ def test_deserialize_multipayment(load_transaction_fixture):
     assert isinstance(transaction, Multipayment)
 
 def test_parse_number():
-    assert Deserializer.parse_number('0x01') == 1
-    assert Deserializer.parse_number('0x0100') == 256
-    assert Deserializer.parse_number('0x010000') == 65536
-    assert Deserializer.parse_number('0x') == 0
+    assert Deserializer._Deserializer__parse_number('0x01') == 1
+    assert Deserializer._Deserializer__parse_number('0x0100') == 256
+    assert Deserializer._Deserializer__parse_number('0x010000') == 65536
+    assert Deserializer._Deserializer__parse_number('0x') == 0
 
 def test_parse_hex():
-    assert Deserializer.parse_hex('0x01') == '01'
-    assert Deserializer.parse_hex('0x0100') == '0100'
-    assert Deserializer.parse_hex('0x010000') == '010000'
-    assert Deserializer.parse_hex('0x') == ''
-    assert Deserializer.parse_hex('0x52B7D2DCC80CD2E4000000') == '52B7D2DCC80CD2E4000000'
+    assert Deserializer._Deserializer__parse_hex('0x01') == '01'
+    assert Deserializer._Deserializer__parse_hex('0x0100') == '0100'
+    assert Deserializer._Deserializer__parse_hex('0x010000') == '010000'
+    assert Deserializer._Deserializer__parse_hex('0x') == ''
+    assert Deserializer._Deserializer__parse_hex('0x52B7D2DCC80CD2E4000000') == '52B7D2DCC80CD2E4000000'
 
 def test_parse_big_number():
-    assert Deserializer.parse_big_number('0x01') == '1'
-    assert Deserializer.parse_big_number('0x0100') == '256'
-    assert Deserializer.parse_big_number('0x010000') == '65536'
-    assert Deserializer.parse_big_number('0x') == '0'
-    assert Deserializer.parse_big_number('0x52B7D2DCC80CD2E4000000') == '100000000000000000000000000'
+    assert Deserializer._Deserializer__parse_big_number('0x01') == '1'
+    assert Deserializer._Deserializer__parse_big_number('0x0100') == '256'
+    assert Deserializer._Deserializer__parse_big_number('0x010000') == '65536'
+    assert Deserializer._Deserializer__parse_big_number('0x') == '0'
+    assert Deserializer._Deserializer__parse_big_number('0x52B7D2DCC80CD2E4000000') == '100000000000000000000000000'
 
 def test_parse_address():
-    assert Deserializer.parse_address('0x52B7D2DCC80CD2E4000000') == '0x52B7D2DCC80CD2E4000000'
-    assert Deserializer.parse_address('0x') is None
+    assert Deserializer._Deserializer__parse_address('0x52B7D2DCC80CD2E4000000') == '0x52B7D2DCC80CD2E4000000'
+    assert Deserializer._Deserializer__parse_address('0x') is None
