@@ -90,7 +90,7 @@ class AbstractTransaction:
         return None
 
     @staticmethod
-    def decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
+    def _decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
         from crypto.transactions.deserializer import Deserializer
 
         return Deserializer.decode_payload(data, abi_type)

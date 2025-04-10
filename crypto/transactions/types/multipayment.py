@@ -6,7 +6,7 @@ from crypto.enums.abi_function import AbiFunction
 
 class Multipayment(AbstractTransaction):
     def __init__(self, data: dict):
-        payload = self.decode_payload(data, ContractAbiType.MULTIPAYMENT)
+        payload = self._decode_payload(data, ContractAbiType.MULTIPAYMENT)
         if payload:
             data['pay'] = payload.get('args', [])
 

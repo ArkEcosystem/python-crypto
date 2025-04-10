@@ -6,7 +6,7 @@ from crypto.enums.abi_function import AbiFunction
 
 class UsernameRegistration(AbstractTransaction):
     def __init__(self, data: dict):
-        payload = self.decode_payload(data, ContractAbiType.USERNAMES)
+        payload = self._decode_payload(data, ContractAbiType.USERNAMES)
         if payload:
             data['username'] = payload.get('args', [None])[0] if payload.get('args') else None
 

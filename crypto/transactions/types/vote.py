@@ -5,7 +5,7 @@ from crypto.enums.abi_function import AbiFunction
 
 class Vote(AbstractTransaction):
     def __init__(self, data: dict):
-        payload = self.decode_payload(data)
+        payload = self._decode_payload(data)
         if payload:
             data['vote'] = payload.get('args', [None])[0] if payload.get('args') else None
 
