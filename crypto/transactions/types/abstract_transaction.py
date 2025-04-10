@@ -41,7 +41,7 @@ class AbstractTransaction:
         return public_key
 
     def recover_sender(self):
-        signature_with_recid = self.get_signature()
+        signature_with_recid = self._get_signature()
         if not signature_with_recid:
             return False
 
@@ -51,7 +51,7 @@ class AbstractTransaction:
         self.data['senderAddress'] = Address.from_public_key(self.data['senderPublicKey'])
 
     def verify(self) -> bool:
-        signature_with_recid = self.get_signature()
+        signature_with_recid = self._get_signature()
         if not signature_with_recid:
             return False
 
@@ -79,7 +79,7 @@ class AbstractTransaction:
     def hash(self, skip_signature: bool) -> str:
         return TransactionUtils.to_hash(self.data, skip_signature=skip_signature)
 
-    def get_signature(self):
+    def _get_signature(self):
         recover_id = int(self.data.get('v', 0)) - Constants.ETHEREUM_RECOVERY_ID_OFFSET.value
         r = self.data.get('r')
         s = self.data.get('s')
@@ -90,7 +90,7 @@ class AbstractTransaction:
         return None
 
     @staticmethod
-    def decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
+    def _decode_payload(data: dict, abi_type: ContractAbiType = ContractAbiType.CONSENSUS) -> Optional[dict]:
         from crypto.transactions.deserializer import Deserializer
 
         return Deserializer.decode_payload(data, abi_type)
