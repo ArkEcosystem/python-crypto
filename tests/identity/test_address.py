@@ -13,3 +13,7 @@ def test_address_from_private_key(identity):
 def test_address_from_passphrase(identity):
     address = Address.from_passphrase(identity['passphrase'])
     assert address == identity['data']['address']
+
+def test_it_should_validate_the_address(identity):
+    assert Address.validate(identity['data']['address']) is True
+    assert Address.validate(identity['data']['address'][2:]) is False
