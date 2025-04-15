@@ -28,6 +28,19 @@ class Message(object):
         else:
             self.signature = signature
 
+    @staticmethod
+    def new(public_key: Union[bytes, str], message: Union[bytes, str], signature: Union[bytes, str]):
+        """Creates a new message object
+
+        Returns:
+            Message: returns a message object
+        """
+        return Message(
+            public_key=public_key,
+            message=message,
+            signature=signature,
+        )
+
     @classmethod
     def sign(cls, message: Union[bytes, str], passphrase: Union[bytes, str]):
         """Signs a message
