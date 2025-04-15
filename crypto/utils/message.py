@@ -118,3 +118,11 @@ class Message(object):
         data = self.to_dict()
 
         return json.dumps(data)
+
+    def __str__(self):
+        """Returns a string representation of the message
+
+        Returns:
+            str: string representation of the message
+        """
+        return self.to_json()
