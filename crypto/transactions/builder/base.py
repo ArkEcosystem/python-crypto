@@ -11,7 +11,7 @@ class AbstractTransactionBuilder:
             'gasPrice': '5',
             'nonce': '1',
             'network': Network.get_network().chain_id(),
-            'gasLimit': 1_000_000,
+            'gas': 1_000_000,
             'data': '',
 
             **data,
@@ -26,8 +26,8 @@ class AbstractTransactionBuilder:
     def new(cls):
         return cls({})
 
-    def gas_limit(self, gas_limit: int):
-        self.transaction.data['gasLimit'] = int(gas_limit)
+    def gas(self, gas: int):
+        self.transaction.data['gas'] = int(gas)
         return self
 
     def recipient_address(self, recipient_address: str):

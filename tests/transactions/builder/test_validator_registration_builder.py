@@ -9,7 +9,7 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .validator_public_key(validator_public_key)
             .recipient_address(fixture['data']['recipientAddress'])
             .sign(passphrase)
@@ -19,7 +19,7 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
     assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
+    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['recipientAddress'] == fixture['data']['recipientAddress']
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
@@ -39,7 +39,7 @@ def test_validator_registration_transaction_with_default_recipient_address(passp
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .validator_public_key(validator_public_key)
             .sign(passphrase)
     )
@@ -47,7 +47,7 @@ def test_validator_registration_transaction_with_default_recipient_address(passp
     assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
+    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['recipientAddress'].lower() == fixture['data']['recipientAddress'].lower()
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']

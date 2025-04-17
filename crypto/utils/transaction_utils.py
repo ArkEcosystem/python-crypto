@@ -24,7 +24,7 @@ class TransactionUtils:
             cls.to_be_array(int(transaction.get('nonce', 0))),
             cls.to_be_array(0),
             cls.to_be_array(int(transaction['gasPrice'])),
-            cls.to_be_array(int(transaction['gasLimit'])),
+            cls.to_be_array(int(transaction['gas'])),
             recipient_address,
             cls.to_be_array(int(transaction.get('value', 0))),
             bytes.fromhex(cls.parse_hex_from_str(transaction.get('data', ''))) if transaction.get('data') else b'',

@@ -3,7 +3,7 @@
     "network": 10000,
     "nonce": "1",
     "gasPrice": 5000000000,
-    "gasLimit": 21000,
+    "gas": 21000,
     "recipientAddress": "0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22",
     "value": "0",
     "data": "",

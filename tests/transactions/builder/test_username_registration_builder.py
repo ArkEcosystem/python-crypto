@@ -10,7 +10,7 @@ def test_username_registration_transaction(passphrase, username, load_transactio
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .username(username)
             .sign(passphrase)
     )
