@@ -19,52 +19,52 @@ def assert_deserialized(fixture, keys):
 
 def test_deserialize_transfer(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/transfer')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'value', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'value', 'v', 'r', 's'])
 
     assert isinstance(transaction, Transfer)
     assert transaction.data['value'] == '100000000'
 
 def test_deserialize_vote(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/vote')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'v', 'r', 's'])
 
     assert isinstance(transaction, Vote)
     assert transaction.data['vote'].lower() == '0xc3bbe9b1cee1ff85ad72b87414b0e9b7f2366763'
-    assert transaction.data['id'] == fixture['data']['id']
+    assert transaction.data['hash'] == fixture['data']['hash']
 
 def test_deserialize_unvote(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/unvote')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'v', 'r', 's'])
 
     assert isinstance(transaction, Unvote)
 
 def test_deserialize_validator_registration(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/validator-registration')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'v', 'r', 's'])
 
     assert isinstance(transaction, ValidatorRegistration)
 
 def test_deserialize_validator_resignation(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/validator-resignation')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'v', 'r', 's'])
 
     assert isinstance(transaction, ValidatorResignation)
 
 def test_deserialize_username_registration(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/username-registration')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'v', 'r', 's'])
 
     assert isinstance(transaction, UsernameRegistration)
 
 def test_deserialize_username_resignation(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/username-resignation')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'v', 'r', 's'])
 
     assert isinstance(transaction, UsernameResignation)
 
 def test_deserialize_multipayment(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/multipayment')
-    transaction = assert_deserialized(fixture, ['id', 'nonce', 'gasPrice', 'gasLimit', 'value', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gas', 'value', 'v', 'r', 's'])
 
     assert isinstance(transaction, Multipayment)
 
