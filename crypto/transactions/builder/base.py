@@ -30,8 +30,8 @@ class AbstractTransactionBuilder:
         self.transaction.data['gas'] = int(gas)
         return self
 
-    def recipient_address(self, recipient_address: str):
-        self.transaction.data['recipientAddress'] = recipient_address
+    def to(self, to: str):
+        self.transaction.data['to'] = to
         return self
 
     def gas_price(self, gas_price: int):

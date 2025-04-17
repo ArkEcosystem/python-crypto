@@ -6,7 +6,7 @@ class VoteBuilder(AbstractTransactionBuilder):
     def __init__(self, data: dict):
         super().__init__(data)
 
-        self.recipient_address(ContractAddresses.CONSENSUS.value)
+        self.to(ContractAddresses.CONSENSUS.value)
 
     def vote(self, vote: str):
         self.transaction.data['vote'] = vote

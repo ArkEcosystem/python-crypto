@@ -8,7 +8,7 @@ class UsernameRegistrationBuilder(AbstractTransactionBuilder):
     def __init__(self, data: dict):
         super().__init__(data)
 
-        self.recipient_address(ContractAddresses.USERNAMES.value)
+        self.to(ContractAddresses.USERNAMES.value)
 
     def username(self, username: str):
         self.is_valid_username(username)

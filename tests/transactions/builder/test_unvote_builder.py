@@ -10,7 +10,7 @@ def test_unvote_transaction(passphrase, load_transaction_fixture):
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
             .gas(fixture['data']['gas'])
-            .recipient_address(fixture['data']['recipientAddress'])
+            .to(fixture['data']['to'])
             .sign(passphrase)
     )
 
@@ -18,7 +18,7 @@ def test_unvote_transaction(passphrase, load_transaction_fixture):
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
     assert builder.transaction.data['gas'] == fixture['data']['gas']
-    assert builder.transaction.data['recipientAddress'] == fixture['data']['recipientAddress']
+    assert builder.transaction.data['to'] == fixture['data']['to']
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
@@ -28,7 +28,7 @@ def test_unvote_transaction(passphrase, load_transaction_fixture):
     assert builder.transaction.data['id'] == fixture['data']['id']
     assert builder.verify()
 
-def test_unvote_transaction_with_default_recipient_address(passphrase, load_transaction_fixture):
+def test_unvote_transaction_with_default_to(passphrase, load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/unvote')
 
     builder = (
@@ -45,7 +45,7 @@ def test_unvote_transaction_with_default_recipient_address(passphrase, load_tran
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
     assert builder.transaction.data['gas'] == fixture['data']['gas']
-    assert builder.transaction.data['recipientAddress'].lower() == fixture['data']['recipientAddress'].lower()
+    assert builder.transaction.data['to'].lower() == fixture['data']['to'].lower()
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']

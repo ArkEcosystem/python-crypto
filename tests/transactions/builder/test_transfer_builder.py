@@ -11,7 +11,7 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
             .gas(fixture['data']['gas'])
-            .recipient_address(fixture['data']['recipientAddress'])
+            .to(fixture['data']['to'])
             .value(fixture['data']['value'])
             .sign(passphrase)
     )
@@ -20,7 +20,7 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
     assert builder.transaction.data['gas'] == fixture['data']['gas']
-    assert builder.transaction.data['recipientAddress'] == fixture['data']['recipientAddress']
+    assert builder.transaction.data['to'] == fixture['data']['to']
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
@@ -37,7 +37,7 @@ def test_it_should_handle_unit_converter(passphrase, address):
             .gas_price(UnitConverter.parse_units(5, 'gwei'))
             .nonce('1')
             .gas(UnitConverter.parse_units(0.1, 'gwei'))
-            .recipient_address(address)
+            .to(address)
             .value(UnitConverter.parse_units(10, 'ark'))
             .sign(passphrase)
     )

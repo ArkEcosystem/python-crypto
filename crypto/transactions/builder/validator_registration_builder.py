@@ -6,7 +6,7 @@ class ValidatorRegistrationBuilder(AbstractTransactionBuilder):
     def __init__(self, data: dict):
         super().__init__(data)
 
-        self.recipient_address(ContractAddresses.CONSENSUS.value)
+        self.to(ContractAddresses.CONSENSUS.value)
 
     def validator_public_key(self, validator_public_key: str):
         self.transaction.data['validatorPublicKey'] = validator_public_key

@@ -4,7 +4,7 @@
     "nonce": "1",
     "gasPrice": 5000000000,
     "gas": 200000,
-    "recipientAddress": "0x2c1DE3b4Dbb4aDebEbB5dcECAe825bE2a9fc6eb6",
+    "to": "0x2c1DE3b4Dbb4aDebEbB5dcECAe825bE2a9fc6eb6",
     "value": "0",
     "data": "ebed6dab",
     "v": 27,

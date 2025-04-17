@@ -8,7 +8,7 @@ class MultipaymentBuilder(AbstractTransactionBuilder):
 
         self.transaction.data['pay'] = [[], []]
 
-        self.recipient_address(ContractAddresses.MULTIPAYMENT.value)
+        self.to(ContractAddresses.MULTIPAYMENT.value)
         self.transaction.refresh_payload_data()
 
     def pay(self, address: str, amount: str):

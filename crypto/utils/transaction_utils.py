@@ -9,14 +9,13 @@ from crypto.utils.rlp_encoder import RlpEncoder
 class TransactionUtils:
     @classmethod
     def to_buffer(cls, transaction: dict, skip_signature: bool = False) -> bytes:
-        # Process recipientAddress
-        hex_address = cls.parse_hex_from_str(transaction.get('recipientAddress', ''))
+        hex_address = cls.parse_hex_from_str(transaction.get('to', ''))
 
         # Pad with leading zero if necessary
         if len(hex_address) % 2 != 0:
             hex_address = '0' + hex_address
 
-        recipient_address = bytes.fromhex(hex_address.lower())
+        to = bytes.fromhex(hex_address.lower())
 
         # Build the fields array
         fields = [
@@ -25,7 +24,7 @@ class TransactionUtils:
             cls.to_be_array(0),
             cls.to_be_array(int(transaction['gasPrice'])),
             cls.to_be_array(int(transaction['gas'])),
-            recipient_address,
+            to,
             cls.to_be_array(int(transaction.get('value', 0))),
             bytes.fromhex(cls.parse_hex_from_str(transaction.get('data', ''))) if transaction.get('data') else b'',
             [],
