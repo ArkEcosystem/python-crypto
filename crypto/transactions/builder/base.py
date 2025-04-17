@@ -50,7 +50,7 @@ class AbstractTransactionBuilder:
         keys = PrivateKey.from_passphrase(passphrase)
         self.transaction.data['senderPublicKey'] = keys.public_key
         self.transaction = self.transaction.sign(keys)
-        self.transaction.data['id'] = self.transaction.get_id()
+        self.transaction.data['hash'] = self.transaction.get_id()
         return self
 
     def verify(self):

@@ -27,7 +27,7 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()
 
 def test_it_should_handle_unit_converter(passphrase, address):

@@ -25,7 +25,7 @@ def test_validator_resignation_transaction(passphrase, load_transaction_fixture)
     assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()
 
 def test_validator_resignation_transaction_with_default_to(passphrase, load_transaction_fixture):
@@ -52,5 +52,5 @@ def test_validator_resignation_transaction_with_default_to(passphrase, load_tran
     assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()

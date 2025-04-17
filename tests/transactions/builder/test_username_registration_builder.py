@@ -16,7 +16,7 @@ def test_username_registration_transaction(passphrase, username, load_transactio
     )
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()
 
 def test_it_accepts_valid_usernames():

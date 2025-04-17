@@ -14,5 +14,5 @@ def test_username_resignation_transaction(passphrase, load_transaction_fixture):
     )
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()

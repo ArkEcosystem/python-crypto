@@ -55,7 +55,7 @@ class Deserializer:
         transaction.data = data
         transaction.recover_sender()
 
-        transaction.data['id'] = transaction.get_id()
+        transaction.data['hash'] = transaction.get_id()
 
         return transaction
 
