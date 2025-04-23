@@ -4,7 +4,7 @@ from crypto.configuration.network import Network
 
 class Slot:
     @staticmethod
-    def time():
+    def time() -> int:
         """Get the time difference between now and network start.
 
         Returns:
@@ -12,14 +12,12 @@ class Slot:
         """
         now = datetime.now(timezone.utc)
 
-        seconds = int((now - Slot.epoch()).total_seconds())
-
-        return seconds
+        return int(now.timestamp() - Slot.epoch())
 
     @staticmethod
-    def epoch():
+    def epoch() -> int:
         epoch_str = Network.get_network().epoch()
         if epoch_str.endswith("Z"):
             epoch_str = epoch_str[:-1] + "+00:00"
 
-        return datetime.fromisoformat(epoch_str)
+        return int(datetime.fromisoformat(epoch_str).timestamp())

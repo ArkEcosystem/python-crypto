@@ -1,5 +1,6 @@
 import hashlib
 from binascii import unhexlify
+import re
 
 from crypto.identity.private_key import PrivateKey
 
@@ -82,3 +83,8 @@ class Address:
                 chars[i + 1] = chars[i + 1].upper()
 
         return "0x" + ''.join(chars)
+
+    @classmethod
+    def validate(cls, address: str) -> bool:
+        # Simple validation to check if the address starts with 0x and is 42 characters long
+        return re.search(r'^0x[a-fA-F0-9]{40}$', address) is not None

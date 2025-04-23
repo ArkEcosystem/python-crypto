@@ -1,4 +1,4 @@
-from crypto.transactions.builder.base import AbstractTransactionBuilder
+from crypto.transactions.builder.abstract_transaction_builder import AbstractTransactionBuilder
 from crypto.transactions.types.transfer import Transfer
 
 

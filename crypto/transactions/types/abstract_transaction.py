@@ -5,8 +5,8 @@ from crypto.enums.constants import Constants
 from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.identity.address import Address
 from crypto.identity.private_key import PrivateKey
+from crypto.identity.public_key import PublicKey
 from crypto.utils.transaction_utils import TransactionUtils
-from coincurve import PublicKey
 
 class AbstractTransaction:
     def __init__(self, data: dict):
@@ -35,19 +35,14 @@ class AbstractTransaction:
 
         return self
 
-    def get_public_key(self, compact_signature, hash_):
-        public_key = PublicKey.from_signature_and_message(compact_signature, hash_, hasher=None)
-
-        return public_key
-
     def recover_sender(self):
         signature_with_recid = self._get_signature()
         if not signature_with_recid:
             return False
 
         hash_ = bytes.fromhex(self.hash(skip_signature=True))
-        public_key = self.get_public_key(signature_with_recid, hash_)
-        self.data['senderPublicKey'] = public_key.format().hex()
+        public_key = self.__recover_public_key(signature_with_recid, hash_)
+        self.data['senderPublicKey'] = public_key.public_key
         self.data['from'] = Address.from_public_key(self.data['senderPublicKey'])
 
     def verify(self) -> bool:
@@ -56,14 +51,12 @@ class AbstractTransaction:
             return False
 
         hash_ = bytes.fromhex(self.hash(skip_signature=True))
-        recovered_public_key = self.get_public_key(signature_with_recid, hash_)
+        recovered_public_key = self.__recover_public_key(signature_with_recid, hash_)
         sender_public_key_hex = self.data.get('senderPublicKey')
         if not sender_public_key_hex:
             return False
 
-        sender_public_key_bytes = bytes.fromhex(sender_public_key_hex)
-
-        return recovered_public_key.format() == sender_public_key_bytes
+        return recovered_public_key.public_key == sender_public_key_hex
 
     def serialize(self, skip_signature: bool = False) -> bytes:
         from crypto.transactions.serializer import Serializer
@@ -94,3 +87,6 @@ class AbstractTransaction:
         from crypto.transactions.deserializer import Deserializer
 
         return Deserializer.decode_payload(data, abi_type)
+
+    def __recover_public_key(self, compact_signature, hash_):
+        return PublicKey.recover(hash_, compact_signature)
