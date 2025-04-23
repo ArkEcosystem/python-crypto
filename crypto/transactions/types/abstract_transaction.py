@@ -43,7 +43,7 @@ class AbstractTransaction:
         hash_ = bytes.fromhex(self.hash(skip_signature=True))
         public_key = self.__recover_public_key(signature_with_recid, hash_)
         self.data['senderPublicKey'] = public_key.public_key
-        self.data['senderAddress'] = Address.from_public_key(self.data['senderPublicKey'])
+        self.data['from'] = Address.from_public_key(self.data['senderPublicKey'])
 
     def verify(self) -> bool:
         signature_with_recid = self._get_signature()

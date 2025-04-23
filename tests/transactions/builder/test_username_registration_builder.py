@@ -10,13 +10,13 @@ def test_username_registration_transaction(passphrase, username, load_transactio
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .username(username)
             .sign(passphrase)
     )
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()
 
 def test_it_accepts_valid_usernames():

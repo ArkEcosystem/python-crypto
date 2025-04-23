@@ -6,7 +6,7 @@ class ValidatorResignationBuilder(AbstractTransactionBuilder):
     def __init__(self, data: dict):
         super().__init__(data)
 
-        self.recipient_address(ContractAddresses.CONSENSUS.value)
+        self.to(ContractAddresses.CONSENSUS.value)
 
     def get_transaction_instance(self, data: dict):
         return ValidatorResignation(data)

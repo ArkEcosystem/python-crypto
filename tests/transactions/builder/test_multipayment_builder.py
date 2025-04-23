@@ -9,7 +9,7 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .pay('0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22', '100000')
             .pay('0xc3bbe9b1cee1ff85ad72b87414b0e9b7f2366763', '200000')
             .sign(passphrase)
@@ -18,13 +18,13 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
+    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
     assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()
 
 def test_it_should_handle_single_recipient(passphrase, load_transaction_fixture):
@@ -36,7 +36,7 @@ def test_it_should_handle_single_recipient(passphrase, load_transaction_fixture)
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .pay('0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22', '100000')
             .sign(passphrase)
     )
@@ -44,13 +44,13 @@ def test_it_should_handle_single_recipient(passphrase, load_transaction_fixture)
     assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
+    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
     assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()
 
 def test_it_should_handle_empty_payment(passphrase, load_transaction_fixture):
@@ -62,18 +62,18 @@ def test_it_should_handle_empty_payment(passphrase, load_transaction_fixture):
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .sign(passphrase)
     )
 
     assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
     assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gasLimit'] == fixture['data']['gasLimit']
+    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['v'] == fixture['data']['v']
     assert builder.transaction.data['r'] == fixture['data']['r']
     assert builder.transaction.data['s'] == fixture['data']['s']
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()

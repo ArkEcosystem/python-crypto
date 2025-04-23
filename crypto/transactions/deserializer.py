@@ -39,8 +39,8 @@ class Deserializer:
             'network': Deserializer.__parse_number(decoded_rlp[0]),
             'nonce': Deserializer.__parse_big_number(decoded_rlp[1]),
             'gasPrice': Deserializer.__parse_number(decoded_rlp[3]),
-            'gasLimit': Deserializer.__parse_number(decoded_rlp[4]),
-            'recipientAddress': Deserializer.__parse_address(decoded_rlp[5]),
+            'gas': Deserializer.__parse_number(decoded_rlp[4]),
+            'to': Deserializer.__parse_address(decoded_rlp[5]),
             'value': Deserializer.__parse_big_number(decoded_rlp[6]),
             'data': Deserializer.__parse_hex(decoded_rlp[7]),
         }
@@ -55,7 +55,7 @@ class Deserializer:
         transaction.data = data
         transaction.recover_sender()
 
-        transaction.data['id'] = transaction.get_id()
+        transaction.data['hash'] = transaction.get_id()
 
         return transaction
 

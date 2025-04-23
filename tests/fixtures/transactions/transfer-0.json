@@ -3,16 +3,16 @@
     "network": 10000,
     "nonce": "1",
     "gasPrice": 5000000000,
-    "gasLimit": 21000,
-    "recipientAddress": "0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22",
+    "gas": 21000,
+    "to": "0x6F0182a0cc707b055322CcF6d4CB6a5Aff1aEb22",
     "value": "0",
     "data": "",
     "v": 27,
     "r": "2c42ef45cb01b01c0a59b61a7e82d37c8566e0fc0f0f47c2a2825d1cbc8abefc",
     "s": "455bb2aec9d8d038db506d5a964728c78eaa4f237e0d40666742e4d5d686f576",
     "senderPublicKey": "0243333347c8cbf4e3cbc7a96964181d02a2b0c854faa2fef86b4b8d92afcf473d",
-    "senderAddress": "0x1E6747BEAa5B4076a6A98D735DF8c35a70D18Bdd",
-    "id": "241ce787680623dea7b9acf2951e2f8b8afac5f92b33b9909ab2bfbadf4be92c"
+    "from": "0x1E6747BEAa5B4076a6A98D735DF8c35a70D18Bdd",
+    "hash": "241ce787680623dea7b9acf2951e2f8b8afac5f92b33b9909ab2bfbadf4be92c"
   },
   "serialized": "02f869822710018085012a05f200825208946f0182a0cc707b055322ccf6d4cb6a5aff1aeb228080c080a02c42ef45cb01b01c0a59b61a7e82d37c8566e0fc0f0f47c2a2825d1cbc8abefca0455bb2aec9d8d038db506d5a964728c78eaa4f237e0d40666742e4d5d686f576"
 }

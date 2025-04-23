@@ -9,10 +9,10 @@ def test_username_resignation_transaction(passphrase, load_transaction_fixture):
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
             .network(fixture['data']['network'])
-            .gas_limit(fixture['data']['gasLimit'])
+            .gas(fixture['data']['gas'])
             .sign(passphrase)
     )
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['id'] == fixture['data']['id']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()

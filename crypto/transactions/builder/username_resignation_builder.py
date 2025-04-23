@@ -6,7 +6,7 @@ class UsernameResignationBuilder(AbstractTransactionBuilder):
     def __init__(self, data: dict):
         super().__init__(data)
 
-        self.recipient_address(ContractAddresses.USERNAMES.value)
+        self.to(ContractAddresses.USERNAMES.value)
 
     def get_transaction_instance(self, data: dict):
         return UsernameResignation(data)
