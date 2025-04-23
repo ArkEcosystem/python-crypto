@@ -3,9 +3,9 @@ from binascii import unhexlify
 from typing import Union
 
 from Cryptodome.Hash import keccak
-from coincurve import PublicKey
 
 from crypto.identity.private_key import PrivateKey
+from crypto.identity.public_key import PublicKey
 
 class Message(object):
     public_key: bytes
@@ -79,9 +79,9 @@ class Message(object):
 
         signature = signature_r + signature_s + bytes([signature_v - 27])
 
-        public_key = PublicKey.from_signature_and_message(signature, message_hash, hasher=None)
+        public_key = PublicKey.recover(message_hash, signature)
 
-        return public_key.format() == unhexlify(self.public_key)
+        return public_key.public_key == unhexlify(self.public_key).hex()
 
     def to_dict(self):
         """Return a dictionary of the message

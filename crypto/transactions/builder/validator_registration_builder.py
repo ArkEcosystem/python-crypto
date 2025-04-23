@@ -1,5 +1,5 @@
 from crypto.enums.contract_addresses import ContractAddresses
-from crypto.transactions.builder.base import AbstractTransactionBuilder
+from crypto.transactions.builder.abstract_transaction_builder import AbstractTransactionBuilder
 from crypto.transactions.types.validator_registration import ValidatorRegistration
 
 class ValidatorRegistrationBuilder(AbstractTransactionBuilder):
