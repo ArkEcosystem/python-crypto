@@ -81,9 +81,6 @@ class Deserializer:
             if function_name == AbiFunction.MULTIPAYMENT.value:
                 return Multipayment(data)
 
-        if data['data'] == '':
-            return Transfer(data)
-
         consensus_payload_data = self.decode_payload(data)
         if consensus_payload_data is not None:
             function_name = consensus_payload_data.get('functionName')
@@ -107,6 +104,9 @@ class Deserializer:
 
             if function_name == AbiFunction.USERNAME_RESIGNATION.value:
                 return UsernameResignation(data)
+
+        if data['value'] != '0':
+            return Transfer(data)
 
         return EvmCall(data)
 
