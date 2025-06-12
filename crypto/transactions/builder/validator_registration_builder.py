@@ -13,5 +13,10 @@ class ValidatorRegistrationBuilder(AbstractTransactionBuilder):
         self.transaction.refresh_payload_data()
         return self
 
+    def value(self, value: int):
+        self.transaction.data['value'] = int(value)
+        self.transaction.refresh_payload_data()
+        return self
+
     def get_transaction_instance(self, data: dict):
         return ValidatorRegistration(data)

@@ -81,7 +81,7 @@ class Deserializer:
             if function_name == AbiFunction.MULTIPAYMENT.value:
                 return Multipayment(data)
 
-        if data['value'] != '0':
+        if data['data'] == '':
             return Transfer(data)
 
         consensus_payload_data = self.decode_payload(data)
