@@ -45,7 +45,7 @@ class Deserializer:
         }
 
         if len(decoded_rlp) >= 9:
-            data['v'] = Deserializer.__parse_number(decoded_rlp[6]) + (Network.get_network().chain_id() * 2 + 35)
+            data['v'] = Deserializer.__parse_number(decoded_rlp[6]) - (Network.get_network().chain_id() * 2 + 35)
             data['r'] = Deserializer.__parse_hex(decoded_rlp[7])
             data['s'] = Deserializer.__parse_hex(decoded_rlp[8])
 

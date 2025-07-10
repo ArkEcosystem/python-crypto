@@ -90,7 +90,7 @@ class Message(object):
         signature_s = signature[32:64]
         signature_v = signature[64]
 
-        signature = signature_r + signature_s + bytes([signature_v - 27])
+        signature = signature_r + signature_s + bytes([signature_v])
 
         public_key = PublicKey.recover(message_hash, signature)
 
