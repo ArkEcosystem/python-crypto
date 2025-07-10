@@ -12,7 +12,10 @@ def assert_deserialized(fixture, keys):
     deserializer = Deserializer.new(fixture['serialized'])
     transaction = deserializer.deserialize()
     for key in keys:
-        assert transaction.data[key] == fixture['data'][key], f"Mismatch in {key}"
+        if key in ['gasPrice', 'gasLimit']:
+            assert transaction.data[key] == int(fixture['data'][key]), f"Mismatch in {key}"
+        else:
+            assert transaction.data[key] == fixture['data'][key], f"Mismatch in {key}"
     assert transaction.serialize().hex() == fixture['serialized']
     assert transaction.verify()
     return transaction
