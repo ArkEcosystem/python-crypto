@@ -17,20 +17,20 @@ class CustomNetwork(AbstractNetwork):
 
 def test_get_network():
     result = Network.get_network()
-    assert result.chain_id() == 10000
+    assert result.chain_id() == 11812
 
 def test_set_network():
     # mainnet
     Network.set_network(Mainnet())
     result = Network.get_network()
     assert result.wif() == 'ba'
-    assert result.chain_id() == 10000
+    assert result.chain_id() == 11811
 
     # testnet
     Network.set_network(Testnet())
     result = Network.get_network()
     assert result.wif() == 'ba'
-    assert result.chain_id() == 10000
+    assert result.chain_id() == 11812
 
     Network.set_network(Testnet())  # set back to Testnet so other tests don't fail
 
