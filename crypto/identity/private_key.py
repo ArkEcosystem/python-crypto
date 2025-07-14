@@ -27,6 +27,22 @@ class PrivateKey(object):
 
         return bytes([der[64]]) + der[0:64]
 
+    def sign_to_ecdsa(self, message: bytes) -> bytes:
+        """Sign a message with this private key object in ECDSA format
+
+        Args:
+            message (bytes): bytes data you want to sign
+
+        Returns:
+            bytes: signature of the signed message
+        """
+
+        message_hash = bytes.fromhex(keccak.new(data=message, digest_bits=256).hexdigest())
+
+        der = self.private_key.sign_recoverable(message_hash, hasher=None)
+
+        return der[0:64] + bytes([der[64]])
+
     def to_hex(self):
         """Returns a private key in hex format
 

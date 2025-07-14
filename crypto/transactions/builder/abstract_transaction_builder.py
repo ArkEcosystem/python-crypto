@@ -47,6 +47,13 @@ class AbstractTransactionBuilder:
         self.transaction.data['hash'] = self.transaction.get_id()
         return self
 
+    def legacy_second_sign(self, passphrase: str, second_passphrase: str):
+        self.sign(passphrase)
+
+        self.transaction.legacy_second_sign(PrivateKey.from_passphrase(second_passphrase))
+
+        return self
+
     def verify(self):
         return self.transaction.verify()
 
