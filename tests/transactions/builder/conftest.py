@@ -7,6 +7,12 @@ def passphrase():
     return 'found lobster oblige describe ready addict body brave live vacuum display salute lizard combine gift resemble race senior quality reunion proud tell adjust angle'
 
 @pytest.fixture
+def second_passphrase():
+    """Second Passphrase used for tests"""
+
+    return 'gold favorite math anchor detect march purpose such sausage crucial reform novel connect misery update episode invite salute barely garbage exclude winner visa cruise'
+
+@pytest.fixture
 def validator_public_key():
     """BLS Public used for validator tests"""
 
