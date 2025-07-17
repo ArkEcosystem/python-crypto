@@ -7,6 +7,8 @@ from Cryptodome.Hash import keccak
 from crypto.identity.private_key import PrivateKey
 from crypto.identity.public_key import PublicKey
 
+MESSAGE_PREFIX = b"\x19Ethereum Signed Message:\n"
+
 class Message(object):
     public_key: bytes
     message: bytes
@@ -62,7 +64,7 @@ class Message(object):
         private_key = PrivateKey.from_passphrase(passphrase)
         public_key = private_key.public_key
 
-        transaction_signature = private_key.sign(message)
+        transaction_signature = private_key.sign(MESSAGE_PREFIX + (str(len(message))).encode() + message)
 
         signature_v = bytes([transaction_signature[0]]).hex()
         signature_r = transaction_signature[1:33].hex()
@@ -84,7 +86,9 @@ class Message(object):
         """
 
         signature = unhexlify(self.signature)
-        message_hash = keccak.new(data=self.message, digest_bits=256).digest()
+
+        message = MESSAGE_PREFIX + (str(len(self.message))).encode() + self.message
+        message_hash = keccak.new(data=message, digest_bits=256).digest()
 
         signature_r = signature[0:32]
         signature_s = signature[32:64]
