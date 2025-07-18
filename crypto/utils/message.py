@@ -90,6 +90,12 @@ class Message(object):
         message = MESSAGE_PREFIX + (str(len(self.message))).encode() + self.message
         message_hash = keccak.new(data=message, digest_bits=256).digest()
 
+        signature_r = signature[0:32]
+        signature_s = signature[32:64]
+        signature_v = signature[64]
+
+        signature = signature_r + signature_s + bytes([signature_v - 27])
+
         public_key = PublicKey.recover(message_hash, signature)
 
         return public_key.public_key == unhexlify(self.public_key).hex()
