@@ -7,7 +7,7 @@ def test_verify_with_publicKey(load_transaction_fixture):
 
     result = Message(
         message=fixture['message'],
-        signature=fixture['signature'],
+        signature=fixture['signature'][2:],
         public_key=fixture['publicKey'],
     )
 
@@ -20,7 +20,7 @@ def test_message_sign_verification(load_transaction_fixture, passphrase):
 
     message: Message = Message.sign(fixture['message'], passphrase)
 
-    assert message.signature.decode() == fixture['signature']
+    assert message.signature.decode() == fixture['signature'][2:]
     assert message.public_key.decode() == fixture['publicKey']
     assert message.message.decode() == fixture['message']
 
