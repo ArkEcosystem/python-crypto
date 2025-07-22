@@ -43,9 +43,10 @@ def test_deserialize_unvote(load_transaction_fixture):
 
 def test_deserialize_validator_registration(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/validator-registration')
-    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gasLimit', 'v', 'r', 's'])
+    transaction = assert_deserialized(fixture, ['hash', 'nonce', 'gasPrice', 'gasLimit', 'value', 'v', 'r', 's'])
 
     assert isinstance(transaction, ValidatorRegistration)
+    assert transaction.data['value'] == '250000000000000000000'
 
 def test_deserialize_validator_resignation(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/validator-resignation')

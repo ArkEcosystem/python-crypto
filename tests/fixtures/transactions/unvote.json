@@ -1,17 +1,18 @@
 {
-	"data": {
-		"nonce": "1",
-		"gasPrice": "5000000000",
-		"gasLimit": "200000",
-		"to": "0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1",
-		"value": "0",
-		"data": "3174b689",
-		"v": 0,
-		"r": "7e05d686131973a9fbda9028f9df5702d9a229823b183caac03ec3a874ccec52",
-		"s": "1980fbc959612d8c7b97f6f16742259635f42a2039839a81aaaeb7ae6930a5f5",
-		"senderPublicKey": "0243333347c8cbf4e3cbc7a96964181d02a2b0c854faa2fef86b4b8d92afcf473d",
-		"from": "0x1E6747BEAa5B4076a6A98D735DF8c35a70D18Bdd",
-		"hash": "38d018d22e2cef185dc3c2f5d25ec63535160d8dfeaf78da8db719cb7ffc730d"
-	},
-	"serialized": "f86b0185012a05f20083030d4094535b3d7a252fa034ed71f0c53ec0c6f784cb64e180843174b689825c6ba07e05d686131973a9fbda9028f9df5702d9a229823b183caac03ec3a874ccec52a01980fbc959612d8c7b97f6f16742259635f42a2039839a81aaaeb7ae6930a5f5"
+    "data": {
+        "nonce": "1",
+        "gasPrice": "5000000000",
+        "gasLimit": "200000",
+        "to": "0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1",
+        "value": "0",
+        "data": "3174b689",
+        "network": 11812,
+        "v": 0,
+        "r": "7e05d686131973a9fbda9028f9df5702d9a229823b183caac03ec3a874ccec52",
+        "s": "1980fbc959612d8c7b97f6f16742259635f42a2039839a81aaaeb7ae6930a5f5",
+        "senderPublicKey": "0243333347c8cbf4e3cbc7a96964181d02a2b0c854faa2fef86b4b8d92afcf473d",
+        "from": "0x1E6747BEAa5B4076a6A98D735DF8c35a70D18Bdd",
+        "hash": "38d018d22e2cef185dc3c2f5d25ec63535160d8dfeaf78da8db719cb7ffc730d"
+    },
+    "serialized": "f86b0185012a05f20083030d4094535b3d7a252fa034ed71f0c53ec0c6f784cb64e180843174b689825c6ba07e05d686131973a9fbda9028f9df5702d9a229823b183caac03ec3a874ccec52a01980fbc959612d8c7b97f6f16742259635f42a2039839a81aaaeb7ae6930a5f5"
 }
