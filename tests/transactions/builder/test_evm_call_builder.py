@@ -7,18 +7,16 @@ def test_evm_call_transaction(passphrase, load_transaction_fixture):
         EvmCallBuilder
             .new()
             .gas_price(fixture['data']['gasPrice'])
+            .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .network(fixture['data']['network'])
             .payload(fixture['data']['data'])
-            .gas(fixture['data']['gas'])
             .to('0xE536720791A7DaDBeBdBCD8c8546fb0791a11901')
             .sign(passphrase)
     )
 
-    assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
+    assert builder.transaction.data['gasPrice'] == int(fixture['data']['gasPrice'])
+    assert builder.transaction.data['gasLimit'] == int(fixture['data']['gasLimit'])
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
-    assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['to'].lower() == fixture['data']['to'].lower()
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']

@@ -1,6 +1,6 @@
 from binascii import unhexlify
 from typing import Optional
-from crypto.enums.constants import Constants
+from crypto.configuration.network import Network
 from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 from crypto.transactions.types.multipayment import Multipayment
@@ -26,7 +26,7 @@ class Deserializer:
         self.serialized = unhexlify(serialized) if isinstance(serialized, str) else serialized
         self.pointer = 0
 
-        self.encoded_rlp = '0x' + serialized[2:]
+        self.encoded_rlp = '0x' + serialized
 
     @staticmethod
     def new(serialized: str):
@@ -36,19 +36,18 @@ class Deserializer:
         decoded_rlp = RlpDecoder.decode(self.encoded_rlp)
 
         data = {
-            'network': Deserializer.__parse_number(decoded_rlp[0]),
-            'nonce': Deserializer.__parse_big_number(decoded_rlp[1]),
-            'gasPrice': Deserializer.__parse_number(decoded_rlp[3]),
-            'gas': Deserializer.__parse_number(decoded_rlp[4]),
-            'to': Deserializer.__parse_address(decoded_rlp[5]),
-            'value': Deserializer.__parse_big_number(decoded_rlp[6]),
-            'data': Deserializer.__parse_hex(decoded_rlp[7]),
+            'nonce': Deserializer.__parse_big_number(decoded_rlp[0]),
+            'gasPrice': Deserializer.__parse_number(decoded_rlp[1]),
+            'gasLimit': Deserializer.__parse_number(decoded_rlp[2]),
+            'to': Deserializer.__parse_address(decoded_rlp[3]),
+            'value': Deserializer.__parse_big_number(decoded_rlp[4]),
+            'data': Deserializer.__parse_hex(decoded_rlp[5]),
         }
 
-        if len(decoded_rlp) == 12:
-            data['v'] = Deserializer.__parse_number(decoded_rlp[9]) + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value
-            data['r'] = Deserializer.__parse_hex(decoded_rlp[10])
-            data['s'] = Deserializer.__parse_hex(decoded_rlp[11])
+        if len(decoded_rlp) >= 9:
+            data['v'] = Deserializer.__parse_number(decoded_rlp[6]) - (Network.get_network().chain_id() * 2 + 35)
+            data['r'] = Deserializer.__parse_hex(decoded_rlp[7])
+            data['s'] = Deserializer.__parse_hex(decoded_rlp[8])
 
         transaction = self.__guess_transaction_from_data(data)
 

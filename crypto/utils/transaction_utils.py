@@ -1,9 +1,8 @@
 from binascii import unhexlify
-import hashlib
 import re
 
 from Cryptodome.Hash import keccak
-from crypto.enums.constants import Constants
+from crypto.configuration.network import Network
 from crypto.utils.rlp_encoder import RlpEncoder
 
 class TransactionUtils:
@@ -19,25 +18,29 @@ class TransactionUtils:
 
         # Build the fields array
         fields = [
-            cls.to_be_array(int(transaction['network'])),
             cls.to_be_array(int(transaction.get('nonce', 0))),
-            cls.to_be_array(0),
             cls.to_be_array(int(transaction['gasPrice'])),
-            cls.to_be_array(int(transaction['gas'])),
+            cls.to_be_array(int(transaction['gasLimit'])),
             to,
             cls.to_be_array(int(transaction.get('value', 0))),
             bytes.fromhex(cls.parse_hex_from_str(transaction.get('data', ''))) if transaction.get('data') else b'',
-            [],
         ]
 
-        if not skip_signature and 'v' in transaction and 'r' in transaction and 's' in transaction:
-            fields.append(cls.to_be_array(int(transaction['v']) - Constants.ETHEREUM_RECOVERY_ID_OFFSET.value))
+        if not skip_signature and 'v' in transaction and transaction['v'] is not None and 'r' in transaction and 's' in transaction:
+            fields.append(cls.to_be_array(int(transaction['v']) + (Network.get_network().chain_id() * 2 + 35)))
             fields.append(bytes.fromhex(transaction['r']))
             fields.append(bytes.fromhex(transaction['s']))
+        else:
+            # Push chainId + 0s for r and s
+            fields.append(cls.to_be_array(Network.get_network().chain_id()))
+            fields.append(cls.to_be_array(0))
+            fields.append(cls.to_be_array(0))
+
+        # TODO: second signature handling
 
         encoded = RlpEncoder.encode(fields)
 
-        hash_input = Constants.EIP_1559_PREFIX.value + encoded
+        hash_input = encoded
 
         return hash_input.encode()
 

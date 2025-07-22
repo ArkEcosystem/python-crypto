@@ -5,7 +5,6 @@ from Cryptodome.Hash import keccak
 from base58 import b58decode
 
 from crypto.configuration.network import Network
-from crypto.enums.constants import Constants
 
 class PrivateKey(object):
     def __init__(self, private_key: str):
@@ -26,7 +25,7 @@ class PrivateKey(object):
 
         der = self.private_key.sign_recoverable(message_hash, hasher=None)
 
-        return bytes([der[64] + Constants.ETHEREUM_RECOVERY_ID_OFFSET.value]) + der[0:64]
+        return bytes([der[64]]) + der[0:64]
 
     def to_hex(self):
         """Returns a private key in hex format

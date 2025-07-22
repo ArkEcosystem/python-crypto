@@ -25,7 +25,7 @@ def sign_compact():
         'data': {
             'serialized': '1c104665257d4dea61c4654e74c6c0f6cd0a398905781c3040bea67dc641a66da046d718d04b2331f3b0561808549ed3f3f0d867a284acf6b334869078df7a9136',
             'message': '02ea822710018085012a05f200825208946f0182a0cc707b055322ccf6d4cb6a5aff1aeb228405f5e10080c0',
-            'v': 28,
+            'v': 1,
             'r': '104665257d4dea61c4654e74c6c0f6cd0a398905781c3040bea67dc641a66da0',
             's': '46d718d04b2331f3b0561808549ed3f3f0d867a284acf6b334869078df7a9136',
         },

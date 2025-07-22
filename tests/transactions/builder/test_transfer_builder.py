@@ -9,17 +9,15 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
             .new()
             .gas_price(fixture['data']['gasPrice'])
             .nonce(fixture['data']['nonce'])
-            .network(fixture['data']['network'])
-            .gas(fixture['data']['gas'])
+            .gas_limit(fixture['data']['gasLimit'])
             .to(fixture['data']['to'])
             .value(fixture['data']['value'])
             .sign(passphrase)
     )
 
-    assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
+    assert builder.transaction.data['gasPrice'] == int(fixture['data']['gasPrice'])
+    assert builder.transaction.data['gasLimit'] == int(fixture['data']['gasLimit'])
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
-    assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['to'] == fixture['data']['to']
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
@@ -36,15 +34,15 @@ def test_it_should_handle_unit_converter(passphrase, address):
             .new()
             .gas_price(UnitConverter.parse_units(5, 'gwei'))
             .nonce('1')
-            .gas(UnitConverter.parse_units(0.1, 'gwei'))
+            .gas_limit(UnitConverter.parse_units(0.1, 'gwei'))
             .to(address)
             .value(UnitConverter.parse_units(10, 'ark'))
             .sign(passphrase)
     )
 
     assert builder.transaction.data['gasPrice'] == 5000000000
+    assert builder.transaction.data['gasLimit'] == 100000000
     assert builder.transaction.data['nonce'] == '1'
-    assert builder.transaction.data['gas'] == 100000000
     assert builder.transaction.data['value'] == 10000000000000000000
 
     assert builder.verify()

@@ -1,4 +1,3 @@
-from crypto.configuration.network import Network
 from crypto.identity.private_key import PrivateKey
 from crypto.transactions.types.abstract_transaction import AbstractTransaction
 
@@ -9,9 +8,8 @@ class AbstractTransactionBuilder:
             'value': 0,
             'senderPublicKey': '',
             'gasPrice': '5',
+            'gasLimit': 1_000_000,
             'nonce': '1',
-            'network': Network.get_network().chain_id(),
-            'gas': 1_000_000,
             'data': '',
 
             **data,
@@ -26,8 +24,8 @@ class AbstractTransactionBuilder:
     def new(cls):
         return cls({})
 
-    def gas(self, gas: int):
-        self.transaction.data['gas'] = int(gas)
+    def gas_limit(self, gas_limit: int):
+        self.transaction.data['gasLimit'] = int(gas_limit)
         return self
 
     def to(self, to: str):
@@ -40,10 +38,6 @@ class AbstractTransactionBuilder:
 
     def nonce(self, nonce: str):
         self.transaction.data['nonce'] = nonce
-        return self
-
-    def network(self, network: int):
-        self.transaction.data['network'] = network
         return self
 
     def sign(self, passphrase: str):

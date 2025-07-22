@@ -7,9 +7,8 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
         ValidatorRegistrationBuilder
             .new()
             .gas_price(fixture['data']['gasPrice'])
+            .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .network(fixture['data']['network'])
-            .gas(fixture['data']['gas'])
             .value(fixture['data']['value'])
             .validator_public_key(validator_public_key)
             .to(fixture['data']['to'])
@@ -17,10 +16,9 @@ def test_validator_registration_transaction(passphrase, validator_public_key, lo
     )
 
     assert builder.transaction.serialize().hex() == fixture['serialized']
-    assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
+    assert builder.transaction.data['gasPrice'] == int(fixture['data']['gasPrice'])
+    assert builder.transaction.data['gasLimit'] == int(fixture['data']['gasLimit'])
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
-    assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['to'] == fixture['data']['to']
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']
@@ -38,18 +36,16 @@ def test_validator_registration_transaction_with_default_to(passphrase, validato
         ValidatorRegistrationBuilder
             .new()
             .gas_price(fixture['data']['gasPrice'])
+            .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .network(fixture['data']['network'])
-            .gas(fixture['data']['gas'])
             .value(fixture['data']['value'])
             .validator_public_key(validator_public_key)
             .sign(passphrase)
     )
 
-    assert builder.transaction.data['gasPrice'] == fixture['data']['gasPrice']
+    assert builder.transaction.data['gasPrice'] == int(fixture['data']['gasPrice'])
+    assert builder.transaction.data['gasLimit'] == int(fixture['data']['gasLimit'])
     assert builder.transaction.data['nonce'] == fixture['data']['nonce']
-    assert builder.transaction.data['network'] == fixture['data']['network']
-    assert builder.transaction.data['gas'] == fixture['data']['gas']
     assert builder.transaction.data['to'].lower() == fixture['data']['to'].lower()
     assert builder.transaction.data['value'] == int(fixture['data']['value'])
     assert builder.transaction.data['v'] == fixture['data']['v']

@@ -7,9 +7,8 @@ def test_username_resignation_transaction(passphrase, load_transaction_fixture):
         UsernameResignationBuilder
             .new()
             .gas_price(fixture['data']['gasPrice'])
+            .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .network(fixture['data']['network'])
-            .gas(fixture['data']['gas'])
             .sign(passphrase)
     )
 
