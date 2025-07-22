@@ -28,6 +28,34 @@ def test_it_should_sign_it_with_a_passphrase(passphrase, load_transaction_fixtur
     assert builder.transaction.data['hash'] == fixture['data']['hash']
     assert builder.verify()
 
+def test_it_should_sign_with_a_legacy_second_signature(passphrase, second_passphrase, load_transaction_fixture):
+    fixture = load_transaction_fixture('transactions/transfer-legacy-second-signature')
+
+    builder = (
+        TransferBuilder
+            .new()
+            .gas_price(fixture['data']['gasPrice'])
+            .nonce(fixture['data']['nonce'])
+            .gas_limit(fixture['data']['gasLimit'])
+            .to(fixture['data']['to'])
+            .value(fixture['data']['value'])
+            .legacy_second_sign(passphrase, second_passphrase)
+    )
+
+    assert builder.transaction.data['gasPrice'] == int(fixture['data']['gasPrice'])
+    assert builder.transaction.data['gasLimit'] == int(fixture['data']['gasLimit'])
+    assert builder.transaction.data['nonce'] == fixture['data']['nonce']
+    assert builder.transaction.data['to'] == fixture['data']['to']
+    assert builder.transaction.data['value'] == int(fixture['data']['value'])
+    assert builder.transaction.data['v'] == fixture['data']['v']
+    assert builder.transaction.data['r'] == fixture['data']['r']
+    assert builder.transaction.data['s'] == fixture['data']['s']
+    assert builder.transaction.data['legacySecondSignature'] == fixture['data']['legacySecondSignature']
+
+    assert builder.transaction.serialize().hex() == fixture['serialized']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
+    assert builder.verify()
+
 def test_it_should_handle_unit_converter(passphrase, address):
     builder = (
         TransferBuilder

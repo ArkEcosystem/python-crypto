@@ -35,6 +35,15 @@ class AbstractTransaction:
 
         return self
 
+    def legacy_second_sign(self, second_private_key: PrivateKey):
+        transaction_hash = TransactionUtils.to_buffer(self.data, skip_signature=True).decode()
+
+        message = bytes.fromhex(transaction_hash)
+
+        self.data['legacySecondSignature'] = second_private_key.sign_to_ecdsa(message).hex()
+
+        return self
+
     def recover_sender(self):
         signature_with_recid = self._get_signature()
         if not signature_with_recid:

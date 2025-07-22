@@ -30,19 +30,18 @@ class TransactionUtils:
             fields.append(cls.to_be_array(int(transaction['v']) + (Network.get_network().chain_id() * 2 + 35)))
             fields.append(bytes.fromhex(transaction['r']))
             fields.append(bytes.fromhex(transaction['s']))
+
+            if 'legacySecondSignature' in transaction and transaction['legacySecondSignature']:
+                fields.append(bytes.fromhex(transaction['legacySecondSignature']))
         else:
             # Push chainId + 0s for r and s
             fields.append(cls.to_be_array(Network.get_network().chain_id()))
             fields.append(cls.to_be_array(0))
             fields.append(cls.to_be_array(0))
 
-        # TODO: second signature handling
-
         encoded = RlpEncoder.encode(fields)
 
-        hash_input = encoded
-
-        return hash_input.encode()
+        return encoded.encode()
 
     @classmethod
     def to_hash(cls, transaction: dict, skip_signature: bool = False) -> str:
