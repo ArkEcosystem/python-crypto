@@ -37,6 +37,7 @@ setuptools.setup(
     url='https://github.com/ArkEcosystem/python-crypto',
     packages=setuptools.find_packages(exclude=['tests', 'tests.*', 'crypto/thirdparty/bls-signatures'])
         + ['crypto/thirdparty/bls-signatures/python-impl'],
+    include_package_data=True,
     install_requires=requires,
     extras_require=extras_require,
     tests_require=tests_require,
