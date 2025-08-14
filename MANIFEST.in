@@ -1,2 +1,2 @@
 include config.ini
-include utils/abi/*.json
+include utils/abi/json/*.json
