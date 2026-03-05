@@ -2,6 +2,7 @@
 from decimal import Decimal, getcontext
 from typing import Union
 
+# 78 digits to cover uint256 max value (2^256 - 1)
 getcontext().prec = 78
 
 class UnitConverter:
