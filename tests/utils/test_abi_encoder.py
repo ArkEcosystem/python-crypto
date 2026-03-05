@@ -1,3 +1,4 @@
+from crypto.enums.contract_abi_type import ContractAbiType
 from crypto.utils.abi_encoder import AbiEncoder
 
 
@@ -22,3 +23,17 @@ def test_encode_address():
         'dynamic': False,
         'encoded': '0x000000000000000000000000c3bbe9b1cee1ff85ad72b87414b0e9b7f2366763',
     }
+
+
+def test_encode_token_transfer():
+    encoder = AbiEncoder(ContractAbiType.TOKEN)
+    encoded = encoder.encode_function_call(
+        'transfer',
+        ['0xC3bBE9B1CeE1ff85Ad72b87414B0E9B7F2366763', 1000]
+    )
+    expected = (
+        '0xa9059cbb'
+        '000000000000000000000000c3bbe9b1cee1ff85ad72b87414b0e9b7f2366763'
+        '00000000000000000000000000000000000000000000000000000000000003e8'
+    )
+    assert encoded == expected
