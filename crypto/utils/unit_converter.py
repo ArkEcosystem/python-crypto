@@ -2,7 +2,9 @@
 from decimal import Decimal, getcontext
 from typing import Union
 
-# 78 digits to cover uint256 max value (2^256 - 1)
+# Python's Decimal type defaults to 28 digits of precision, which is not enough
+# for blockchain math. The largest possible value (uint256) has 78 digits, so we
+# increase the precision to 78 to avoid rounding errors when working with big numbers.
 getcontext().prec = 78
 
 class UnitConverter:
