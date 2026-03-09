@@ -65,6 +65,9 @@ class AbiBase:
         if abi_type == ContractAbiType.MULTIPAYMENT:
             return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Multipayment.json')
 
+        if abi_type == ContractAbiType.TOKEN:
+            return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Token.json')
+
         if abi_type == ContractAbiType.USERNAMES:
             return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Usernames.json')
 
