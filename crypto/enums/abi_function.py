@@ -10,3 +10,4 @@ class AbiFunction(Enum):
     VALIDATOR_RESIGNATION = 'resignValidator'
     UPDATE_VALIDATOR = 'updateValidator'
     TRANSFER = 'transfer'
+    APPROVE = 'approve'
