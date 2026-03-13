@@ -1,6 +1,11 @@
 # import numpy as np
-from decimal import Decimal
+from decimal import Decimal, getcontext
 from typing import Union
+
+# Python's Decimal type defaults to 28 digits of precision, which is not enough
+# for blockchain math. The largest possible value (uint256) has 78 digits, so we
+# increase the precision to 78 to avoid rounding errors when working with big numbers.
+getcontext().prec = 78
 
 class UnitConverter:
     WEI_MULTIPLIER = '1'
@@ -8,18 +13,18 @@ class UnitConverter:
     ARK_MULTIPLIER = '1000000000000000000'  # 1e18
 
     @staticmethod
-    def parse_units(value: Union[float, int, str, Decimal], unit='ark') -> int:
+    def parse_units(value: Union[float, int, str, Decimal], unit='ark') -> Decimal:
         value = Decimal(str(value))
 
         unit = unit.lower()
         if unit == 'wei':
-            return int((value * Decimal(UnitConverter.WEI_MULTIPLIER)).normalize())
+            return (value * Decimal(UnitConverter.WEI_MULTIPLIER)).normalize()
 
         if unit == 'gwei':
-            return int((value * Decimal(UnitConverter.GWEI_MULTIPLIER)).normalize())
+            return (value * Decimal(UnitConverter.GWEI_MULTIPLIER)).normalize()
 
         if unit == 'ark':
-            return int((value * Decimal(UnitConverter.ARK_MULTIPLIER)).normalize())
+            return (value * Decimal(UnitConverter.ARK_MULTIPLIER)).normalize()
 
         raise ValueError(f"Unsupported unit: {unit}. Supported units are 'wei', 'gwei', and 'ark'.")
 
