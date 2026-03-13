@@ -13,6 +13,12 @@ class AbiEncoder(AbiBase):
         }
         return self.encode_function_data(parameters)
 
+    def encode_function_call_hex(self, function_name, args=[]):
+        result = self.encode_function_call(function_name, args)
+        if not result.startswith('0x'):
+            return '0x' + result
+        return result
+
     def encode_function_data(self, parameters):
         args = parameters.get('args', [])
 

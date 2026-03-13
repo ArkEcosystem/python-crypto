@@ -8,3 +8,5 @@ class AbiFunction(Enum):
     USERNAME_RESIGNATION = 'resignUsername'
     VALIDATOR_REGISTRATION = 'registerValidator'
     VALIDATOR_RESIGNATION = 'resignValidator'
+    UPDATE_VALIDATOR = 'updateValidator'
+    TRANSFER = 'transfer'
