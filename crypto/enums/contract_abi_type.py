@@ -6,3 +6,4 @@ class ContractAbiType(Enum):
     MULTIPAYMENT = 'multipayment'
     TOKEN = 'token'
     USERNAMES = 'usernames'
+    ERC20BATCH_TRANSFER = 'erc20BatchTransfer'
