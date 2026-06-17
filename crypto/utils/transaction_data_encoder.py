@@ -1,5 +1,6 @@
 from crypto.enums.abi_function import AbiFunction
 from crypto.enums.contract_abi_type import ContractAbiType
+from crypto.identity.proof_of_possession import ProofOfPossession
 from crypto.utils.abi_encoder import AbiEncoder
 
 
@@ -11,12 +12,10 @@ class TransactionDataEncoder:
         )
 
     @staticmethod
-    def update_validator(validator_public_key):
-        key = validator_public_key
-        if not key.startswith('0x'):
-            key = '0x' + key
+    def update_validator(passphrase: str):
+        bls = ProofOfPossession.from_passphrase(passphrase)
         return AbiEncoder(ContractAbiType.CONSENSUS).encode_function_call_hex(
-            AbiFunction.UPDATE_VALIDATOR.value, [key]
+            AbiFunction.UPDATE_VALIDATOR.value, ['0x' + bls['pk'], '0x' + bls['pop']]
         )
 
     @staticmethod
@@ -32,12 +31,10 @@ class TransactionDataEncoder:
         )
 
     @staticmethod
-    def validator_registration(validator_public_key):
-        key = validator_public_key
-        if not key.startswith('0x'):
-            key = '0x' + key
+    def validator_registration(passphrase: str):
+        bls = ProofOfPossession.from_passphrase(passphrase)
         return AbiEncoder(ContractAbiType.CONSENSUS).encode_function_call_hex(
-            AbiFunction.VALIDATOR_REGISTRATION.value, [key]
+            AbiFunction.VALIDATOR_REGISTRATION.value, ['0x' + bls['pk'], '0x' + bls['pop']]
         )
 
     @staticmethod

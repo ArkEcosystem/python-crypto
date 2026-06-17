@@ -1,10 +1,10 @@
 from crypto.enums.contract_addresses import ContractAddresses
 from crypto.identity.proof_of_possession import ProofOfPossession
 from crypto.transactions.builder.abstract_transaction_builder import AbstractTransactionBuilder
-from crypto.transactions.types.validator_registration import ValidatorRegistration
+from crypto.transactions.types.validator_update import ValidatorUpdate
 
 
-class ValidatorRegistrationBuilder(AbstractTransactionBuilder):
+class ValidatorUpdateBuilder(AbstractTransactionBuilder):
     def __init__(self, data: dict):
         super().__init__(data)
         self.to(ContractAddresses.CONSENSUS.value)
@@ -16,10 +16,5 @@ class ValidatorRegistrationBuilder(AbstractTransactionBuilder):
         self.transaction.refresh_payload_data()
         return self
 
-    def value(self, value: int):
-        self.transaction.data['value'] = int(value)
-        self.transaction.refresh_payload_data()
-        return self
-
     def get_transaction_instance(self, data: dict):
-        return ValidatorRegistration(data)
+        return ValidatorUpdate(data)
