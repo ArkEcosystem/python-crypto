@@ -1,6 +1,6 @@
 {
     "data": {
-        "value": 250000000000000000000,
+        "value": "250000000000000000000",
         "senderPublicKey": "0243333347c8cbf4e3cbc7a96964181d02a2b0c854faa2fef86b4b8d92afcf473d",
         "gasPrice": 5000000000,
         "gasLimit": 200000,
