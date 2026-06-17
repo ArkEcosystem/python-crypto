@@ -1,55 +1,58 @@
-from crypto.enums.contract_addresses import ContractAddresses
-from crypto.identity.proof_of_possession import ProofOfPossession
 from crypto.transactions.builder.validator_update_builder import ValidatorUpdateBuilder
 
 
-def test_validator_update_derives_bls_keys(passphrase, validator_passphrase):
+def test_validator_update_transaction(passphrase, load_transaction_fixture):
+    fixture = load_transaction_fixture('transactions/validator-update')
+
     builder = (
         ValidatorUpdateBuilder
             .new()
-            .gas_price(5000000000)
-            .gas_limit(200000)
-            .nonce('1')
-            .validator_passphrase(validator_passphrase)
+            .gas_price(fixture['data']['gasPrice'])
+            .gas_limit(fixture['data']['gasLimit'])
+            .nonce(fixture['data']['nonce'])
+            .validator_passphrase(fixture['validatorPassphrase'])
+            .to(fixture['data']['to'])
             .sign(passphrase)
     )
 
-    bls = ProofOfPossession.from_passphrase(validator_passphrase)
+    assert builder.transaction.data['gasPrice'] == int(fixture['data']['gasPrice'])
+    assert builder.transaction.data['gasLimit'] == int(fixture['data']['gasLimit'])
+    assert builder.transaction.data['nonce'] == fixture['data']['nonce']
+    assert builder.transaction.data['to'] == fixture['data']['to']
+    assert builder.transaction.data['value'] == int(fixture['data']['value'])
+    assert builder.transaction.data['validatorPublicKey'] == fixture['data']['validatorPublicKey']
+    assert builder.transaction.data['validatorProof'] == fixture['data']['validatorProof']
+    assert builder.transaction.data['v'] == fixture['data']['v']
+    assert builder.transaction.data['r'] == fixture['data']['r']
+    assert builder.transaction.data['s'] == fixture['data']['s']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
+    assert builder.transaction.serialize().hex() == fixture['serialized']
+    assert builder.verify()
 
-    assert builder.transaction.data['validatorPublicKey'] == '0x' + bls['pk']
-    assert builder.transaction.data['validatorProof']     == '0x' + bls['pop']
-    assert len(builder.transaction.data['validatorPublicKey']) == 98   # 0x + 96 hex = 48 bytes
-    assert len(builder.transaction.data['validatorProof'])     == 194  # 0x + 192 hex = 96 bytes
 
+def test_validator_update_transaction_with_default_to(passphrase, load_transaction_fixture):
+    fixture = load_transaction_fixture('transactions/validator-update')
 
-def test_validator_update_targets_consensus_contract(passphrase, validator_passphrase):
     builder = (
         ValidatorUpdateBuilder
             .new()
-            .validator_passphrase(validator_passphrase)
+            .gas_price(fixture['data']['gasPrice'])
+            .gas_limit(fixture['data']['gasLimit'])
+            .nonce(fixture['data']['nonce'])
+            .validator_passphrase(fixture['validatorPassphrase'])
             .sign(passphrase)
     )
 
-    assert builder.transaction.data['to'].lower() == ContractAddresses.CONSENSUS.value.lower()
-
-
-def test_validator_update_value_is_zero(passphrase, validator_passphrase):
-    builder = (
-        ValidatorUpdateBuilder
-            .new()
-            .validator_passphrase(validator_passphrase)
-            .sign(passphrase)
-    )
-
-    assert builder.transaction.data['value'] == 0
-
-
-def test_validator_update_verifies(passphrase, validator_passphrase):
-    builder = (
-        ValidatorUpdateBuilder
-            .new()
-            .validator_passphrase(validator_passphrase)
-            .sign(passphrase)
-    )
-
+    assert builder.transaction.data['gasPrice'] == int(fixture['data']['gasPrice'])
+    assert builder.transaction.data['gasLimit'] == int(fixture['data']['gasLimit'])
+    assert builder.transaction.data['nonce'] == fixture['data']['nonce']
+    assert builder.transaction.data['to'].lower() == fixture['data']['to'].lower()
+    assert builder.transaction.data['value'] == int(fixture['data']['value'])
+    assert builder.transaction.data['validatorPublicKey'] == fixture['data']['validatorPublicKey']
+    assert builder.transaction.data['validatorProof'] == fixture['data']['validatorProof']
+    assert builder.transaction.data['v'] == fixture['data']['v']
+    assert builder.transaction.data['r'] == fixture['data']['r']
+    assert builder.transaction.data['s'] == fixture['data']['s']
+    assert builder.transaction.data['hash'] == fixture['data']['hash']
+    assert builder.transaction.serialize().hex() == fixture['serialized']
     assert builder.verify()
