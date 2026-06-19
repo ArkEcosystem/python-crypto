@@ -1,16 +1,15 @@
-from crypto.transactions.builder.validator_registration_builder import ValidatorRegistrationBuilder
+from crypto.transactions.builder.validator_update_builder import ValidatorUpdateBuilder
 
 
-def test_validator_registration_transaction(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('transactions/validator-registration')
+def test_validator_update_transaction(passphrase, load_transaction_fixture):
+    fixture = load_transaction_fixture('transactions/validator-update')
 
     builder = (
-        ValidatorRegistrationBuilder
+        ValidatorUpdateBuilder
             .new()
             .gas_price(fixture['data']['gasPrice'])
             .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .value(fixture['data']['value'])
             .validator_passphrase(fixture['validatorPassphrase'])
             .to(fixture['data']['to'])
             .sign(passphrase)
@@ -31,16 +30,15 @@ def test_validator_registration_transaction(passphrase, load_transaction_fixture
     assert builder.verify()
 
 
-def test_validator_registration_transaction_with_default_to(passphrase, load_transaction_fixture):
-    fixture = load_transaction_fixture('transactions/validator-registration')
+def test_validator_update_transaction_with_default_to(passphrase, load_transaction_fixture):
+    fixture = load_transaction_fixture('transactions/validator-update')
 
     builder = (
-        ValidatorRegistrationBuilder
+        ValidatorUpdateBuilder
             .new()
             .gas_price(fixture['data']['gasPrice'])
             .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .value(fixture['data']['value'])
             .validator_passphrase(fixture['validatorPassphrase'])
             .sign(passphrase)
     )

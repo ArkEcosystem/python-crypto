@@ -12,6 +12,7 @@ from crypto.transactions.types.vote import Vote
 from crypto.transactions.types.unvote import Unvote
 from crypto.transactions.types.validator_registration import ValidatorRegistration
 from crypto.transactions.types.validator_resignation import ValidatorResignation
+from crypto.transactions.types.validator_update import ValidatorUpdate
 
 from crypto.enums.abi_function import AbiFunction
 from crypto.utils.abi_decoder import AbiDecoder
@@ -94,6 +95,9 @@ class Deserializer:
 
             if function_name == AbiFunction.VALIDATOR_RESIGNATION.value:
                 return ValidatorResignation(data)
+
+            if function_name == AbiFunction.UPDATE_VALIDATOR.value:
+                return ValidatorUpdate(data)
 
         username_payload_data = self.decode_payload(data, ContractAbiType.USERNAMES)
         if username_payload_data is not None:

@@ -3,7 +3,7 @@ from crypto.utils.abi_encoder import AbiEncoder
 from crypto.enums.abi_function import AbiFunction
 
 
-class ValidatorRegistration(AbstractTransaction):
+class ValidatorUpdate(AbstractTransaction):
     def __init__(self, data: dict):
         payload = self._decode_payload(data)
         if payload:
@@ -16,6 +16,6 @@ class ValidatorRegistration(AbstractTransaction):
             return ''
         encoder = AbiEncoder()
         return encoder.encode_function_call(
-            AbiFunction.VALIDATOR_REGISTRATION.value,
+            AbiFunction.UPDATE_VALIDATOR.value,
             [self.data['validatorPublicKey'], self.data['validatorProof']],
         )

@@ -109,7 +109,7 @@ class AbiDecoder(AbiBase):
     @classmethod
     def decode_string(cls, bytes_data, offset):
         data_offset = cls.read_uint(bytes_data, offset)
-        string_offset = offset + data_offset
+        string_offset = data_offset
         length = cls.read_uint(bytes_data, string_offset)
         string_data = bytes_data[string_offset+32:string_offset+32+length]
         value = string_data.decode('utf-8')
@@ -118,7 +118,7 @@ class AbiDecoder(AbiBase):
 
     def decode_dynamic_bytes(self, bytes_data, offset):
         data_offset = self.read_uint(bytes_data, offset)
-        bytes_offset = offset + data_offset
+        bytes_offset = data_offset
         length = self.read_uint(bytes_data, bytes_offset)
         bytes_data_value = bytes_data[bytes_offset+32:bytes_offset+32+length]
         value = '0x' + bytes_data_value.hex()

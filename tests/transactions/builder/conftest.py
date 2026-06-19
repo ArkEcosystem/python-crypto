@@ -19,6 +19,12 @@ def validator_public_key():
     return '30954f46d6097a1d314e900e66e11e0dad0a57cd03e04ec99f0dedd1c765dcb11e6d7fa02e22cf40f9ee23d9cc1c0624'
 
 @pytest.fixture
+def validator_passphrase():
+    """BIP39 mnemonic used for BLS validator key derivation"""
+
+    return 'bless organ december boring ill obvious unaware dinosaur broccoli build hamster rebuild skin airport stay entry denial agent october thought duck trouble decorate way'
+
+@pytest.fixture
 def username():
     """Username used for tests"""
 
