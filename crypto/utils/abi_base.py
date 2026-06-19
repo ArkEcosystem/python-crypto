@@ -71,4 +71,7 @@ class AbiBase:
         if abi_type == ContractAbiType.USERNAMES:
             return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.Usernames.json')
 
+        if abi_type == ContractAbiType.ERC20BATCH_TRANSFER:
+            return os.path.join(os.path.dirname(__file__), 'abi/json', 'Abi.ERC20BatchTransfer.json')
+
         return path

@@ -11,3 +11,4 @@ class AbiFunction(Enum):
     UPDATE_VALIDATOR = 'updateValidator'
     TRANSFER = 'transfer'
     APPROVE = 'approve'
+    BATCH_TRANSFER_FROM = 'batchTransferFrom'
