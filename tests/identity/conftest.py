@@ -18,6 +18,18 @@ def identity():
     return data
 
 @pytest.fixture
+def legacy_identity():
+    return {
+        'data': {
+            'public_key': '02a7c5ca78f6abbced169cb883aec3ffc0a0950affc0de575fb211873b5846e668',
+            'private_key': 'c7a0df6e1c42268946af49af28c49c6da64419f0203fa970b6e9be9f85a44875',
+            'address': 'D6WFwqYDRiFkSf4ezzWRt3jCsUp2sRmDMi',
+        },
+        'passphrase': 'enact busy minimum fantasy endless shoot reduce few inject ostrich snow promote',
+        'pub_key_hash': 30,
+    }
+
+@pytest.fixture
 def sign_compact():
     """Identity fixture
     """
