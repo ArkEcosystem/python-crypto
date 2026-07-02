@@ -15,3 +15,7 @@ dist/
 venv
 venv/
 .venv/
+
+# airc
+CLAUDE.local.md
+.claude/settings.local.json
