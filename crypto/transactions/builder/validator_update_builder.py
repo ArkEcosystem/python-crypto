@@ -9,8 +9,8 @@ class ValidatorUpdateBuilder(AbstractTransactionBuilder):
         super().__init__(data)
         self.to(ContractAddresses.CONSENSUS.value)
 
-    def validator_passphrase(self, passphrase: str):
-        bls = ProofOfPossession.from_passphrase(passphrase)
+    def validator_proof(self, passphrase: str, registrant_address: str):
+        bls = ProofOfPossession.from_passphrase(passphrase, registrant_address)
         self.transaction.data['validatorPublicKey'] = '0x' + bls['pk']
         self.transaction.data['validatorProof']     = '0x' + bls['pop']
         self.transaction.refresh_payload_data()

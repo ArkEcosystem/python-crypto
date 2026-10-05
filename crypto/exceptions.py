@@ -12,3 +12,7 @@ class ArkInvalidTransaction(ArkCryptoException):
 
 class InvalidUsernameException(Exception):
     """Raised when username is invalid"""
+
+
+class InvalidProofOfPossessionException(ArkCryptoException):
+    """Raised when a proof of possession can't be built from the given input"""
