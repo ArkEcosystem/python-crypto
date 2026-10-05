@@ -10,7 +10,7 @@ def test_validator_update_transaction(passphrase, load_transaction_fixture):
             .gas_price(fixture['data']['gasPrice'])
             .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .validator_passphrase(fixture['validatorPassphrase'])
+            .validator_proof(fixture['validatorPassphrase'], fixture['registrantAddress'])
             .to(fixture['data']['to'])
             .sign(passphrase)
     )
@@ -39,7 +39,7 @@ def test_validator_update_transaction_with_default_to(passphrase, load_transacti
             .gas_price(fixture['data']['gasPrice'])
             .gas_limit(fixture['data']['gasLimit'])
             .nonce(fixture['data']['nonce'])
-            .validator_passphrase(fixture['validatorPassphrase'])
+            .validator_proof(fixture['validatorPassphrase'], fixture['registrantAddress'])
             .sign(passphrase)
     )
 
