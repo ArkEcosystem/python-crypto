@@ -8,7 +8,7 @@ requires = [
     'binary-helpers',
     'coincurve',
     'pycryptodomex',
-    'btclib',
+    'btclib==2023.7.12',
     'cryptography',
 ]
 

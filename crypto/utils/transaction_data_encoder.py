@@ -12,8 +12,8 @@ class TransactionDataEncoder:
         )
 
     @staticmethod
-    def update_validator(passphrase: str):
-        bls = ProofOfPossession.from_passphrase(passphrase)
+    def update_validator(passphrase: str, registrant_address: str):
+        bls = ProofOfPossession.from_passphrase(passphrase, registrant_address)
         return AbiEncoder(ContractAbiType.CONSENSUS).encode_function_call_hex(
             AbiFunction.UPDATE_VALIDATOR.value, ['0x' + bls['pk'], '0x' + bls['pop']]
         )
@@ -31,8 +31,8 @@ class TransactionDataEncoder:
         )
 
     @staticmethod
-    def validator_registration(passphrase: str):
-        bls = ProofOfPossession.from_passphrase(passphrase)
+    def validator_registration(passphrase: str, registrant_address: str):
+        bls = ProofOfPossession.from_passphrase(passphrase, registrant_address)
         return AbiEncoder(ContractAbiType.CONSENSUS).encode_function_call_hex(
             AbiFunction.VALIDATOR_REGISTRATION.value, ['0x' + bls['pk'], '0x' + bls['pop']]
         )

@@ -24,7 +24,7 @@ def test_encode_username_resignation(load_transaction_fixture):
 def test_encode_validator_registration(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/transaction-data-encoder')
     encoded = TransactionDataEncoder.validator_registration(
-        fixture['ValidatorPassphrase']
+        fixture['ValidatorPassphrase'], fixture['RegistrantAddress']
     )
     assert encoded == fixture['Encoded']['ValidatorRegistration']
 
@@ -32,7 +32,7 @@ def test_encode_validator_registration(load_transaction_fixture):
 def test_encode_update_validator(load_transaction_fixture):
     fixture = load_transaction_fixture('transactions/transaction-data-encoder')
     encoded = TransactionDataEncoder.update_validator(
-        fixture['ValidatorPassphrase']
+        fixture['ValidatorPassphrase'], fixture['RegistrantAddress']
     )
     assert encoded == fixture['Encoded']['UpdateValidator']
 
