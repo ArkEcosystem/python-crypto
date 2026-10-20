@@ -7,7 +7,12 @@ from crypto.utils.rlp_encoder import RlpEncoder
 
 class TransactionUtils:
     @classmethod
-    def to_buffer(cls, transaction: dict, skip_signature: bool = False) -> bytes:
+    def to_buffer(
+        cls,
+        transaction: dict,
+        skip_signature: bool = False,
+        skip_legacy_second_signature: bool = False,
+    ) -> bytes:
         hex_address = cls.parse_hex_from_str(transaction.get('to', ''))
 
         # Pad with leading zero if necessary
@@ -28,10 +33,10 @@ class TransactionUtils:
 
         if not skip_signature and 'v' in transaction and transaction['v'] is not None and 'r' in transaction and 's' in transaction:
             fields.append(cls.to_be_array(int(transaction['v']) + (Network.get_network().chain_id() * 2 + 35)))
-            fields.append(bytes.fromhex(transaction['r']))
-            fields.append(bytes.fromhex(transaction['s']))
+            fields.append(bytes.fromhex(transaction['r']).lstrip(b'\x00'))
+            fields.append(bytes.fromhex(transaction['s']).lstrip(b'\x00'))
 
-            if 'legacySecondSignature' in transaction and transaction['legacySecondSignature']:
+            if not skip_legacy_second_signature and transaction.get('legacySecondSignature'):
                 fields.append(bytes.fromhex(transaction['legacySecondSignature']))
         else:
             # Push chainId + 0s for r and s
@@ -45,7 +50,10 @@ class TransactionUtils:
 
     @classmethod
     def to_hash(cls, transaction: dict, skip_signature: bool = False) -> str:
-        return keccak.new(data=unhexlify(cls.to_buffer(transaction, skip_signature)), digest_bits=256).hexdigest()
+        # The transaction hash never covers the legacy second signature
+        encoded = cls.to_buffer(transaction, skip_signature, skip_legacy_second_signature=True)
+
+        return keccak.new(data=unhexlify(encoded), digest_bits=256).hexdigest()
 
     @classmethod
     def get_id(cls, transaction: dict) -> str:
