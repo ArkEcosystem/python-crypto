@@ -61,10 +61,13 @@ class RlpEncoder:
     @classmethod
     def __get_bytes(cls, value: Union[str, bytes, int, list]) -> list:
         if isinstance(value, str) or isinstance(value, bytes):
+            # Only strings carry a `0x` hex prefix, raw bytes can start with 0x3078 too
+            is_hex_string = isinstance(value, str) and value.startswith('0x')
+
             if isinstance(value, str):
                 value = value.encode()
 
-            if value.startswith(b'0x'):
+            if is_hex_string:
                 hex_str = value[2:]
                 if hex_str == '':
                     return []
