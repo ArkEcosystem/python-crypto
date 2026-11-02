@@ -8,6 +8,9 @@ from crypto.identity.private_key import PrivateKey
 from crypto.identity.public_key import PublicKey
 from crypto.utils.transaction_utils import TransactionUtils
 
+# 0x8f ‖ "MAINSAIL_LSS_V1"
+LEGACY_SECOND_SIGNATURE_DOMAIN = '8f4d41494e5341494c5f4c53535f5631'
+
 class AbstractTransaction:
     def __init__(self, data: dict):
         self.data = data
@@ -36,9 +39,10 @@ class AbstractTransaction:
         return self
 
     def legacy_second_sign(self, second_private_key: PrivateKey):
-        transaction_hash = TransactionUtils.to_buffer(self.data, skip_signature=True).decode()
+        if self.data.get('v') is None or not self.data.get('r') or not self.data.get('s'):
+            raise ValueError('Transaction must be signed before adding a legacy second signature')
 
-        message = bytes.fromhex(transaction_hash)
+        message = bytes.fromhex(LEGACY_SECOND_SIGNATURE_DOMAIN + self.get_id())
 
         self.data['legacySecondSignature'] = second_private_key.sign_to_ecdsa(message).hex()
 

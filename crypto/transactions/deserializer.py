@@ -47,8 +47,11 @@ class Deserializer:
 
         if len(decoded_rlp) >= 9:
             data['v'] = Deserializer.__parse_number(decoded_rlp[6]) - (Network.get_network().chain_id() * 2 + 35)
-            data['r'] = Deserializer.__parse_hex(decoded_rlp[7])
-            data['s'] = Deserializer.__parse_hex(decoded_rlp[8])
+            data['r'] = Deserializer.__parse_hex(decoded_rlp[7]).zfill(64)
+            data['s'] = Deserializer.__parse_hex(decoded_rlp[8]).zfill(64)
+
+        if len(decoded_rlp) == 10:
+            data['legacySecondSignature'] = Deserializer.__parse_hex(decoded_rlp[9])
 
         transaction = self.__guess_transaction_from_data(data)
 

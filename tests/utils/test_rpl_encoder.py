@@ -29,3 +29,13 @@ def test_encoding_int():
     encoded = RlpEncoder.encode('123456')
 
     assert encoded == '86313233343536'
+
+def test_encoding_bytes_starting_with_0x():
+    encoded = RlpEncoder.encode(bytes.fromhex('3078ab'))
+
+    assert encoded == '833078ab'
+
+def test_encoding_hex_str():
+    encoded = RlpEncoder.encode('0x3078ab')
+
+    assert encoded == '833078ab'
